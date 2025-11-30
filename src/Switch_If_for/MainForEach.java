@@ -29,5 +29,16 @@ public class MainForEach {
 
         System.out.println("Io sono un foreach più furbo: \n(list.forEach(System.out::println);)");
         list.forEach(System.out::println);
+
+        //modo più furbo usando lambda
+        //si può mettere qualsiasi tipo di print all'interno del forEach
+        System.out.println("Io sono un foreach più furbo con lambda formattato: \n(list.forEach(n -> System.out.printf(\"%5d\",n));)");
+        list.forEach(n -> System.out.printf("%5d",n));
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Io sono un foreach più furbo con lambda: \n(list.forEach(n -> System.out.println(n+' '));)");
+        list.forEach(n -> System.out.print(n+" "));
     }
 }
