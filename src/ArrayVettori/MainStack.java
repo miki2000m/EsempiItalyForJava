@@ -8,7 +8,7 @@ public class MainStack {
         // Uno Stack è una struttura dati che segue il principio LIFO (Last-In, First-Out),
         // dove l'ultimo elemento aggiunto è il primo a essere rimosso, come una pila di piatti.
         // Qui viene istanziato uno Stack di Stringhe per mostrarne i metodi principali.
-        
+
         Stack<String> stack=new Stack<>();
 
         //Usando il comando push
