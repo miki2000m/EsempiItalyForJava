@@ -111,7 +111,20 @@ public class MainString {
         System.out.println("\nnome.replace('e','3') retituisce la stringa con la e sostituita con 3");
         System.out.println(resultReplace);
 
-        //split
-        String resultSubstring;
+        System.out.println();
+
+        //split -------------
+        //xxxx.split(regex) oppure xxxx.split(regex, limit)
+        //restituisce un array di stringhe ottenute dividendo la stringa originale
+        //in corrispondenza del separatore (espresso come regex).
+        //Se si usa limit, si limita il numero di elementi nell'array.
+
+        String csv = "Mario,Rossi,30";
+        String[] parts = csv.split(","); //divide usando la virgola come separatore
+        System.out.println("\ncsv.split(\",\") restituisce un array di stringhe");
+        System.out.println("Lunghezza array: " + parts.length);
+        for (int i = 0; i < parts.length; i++) {
+            System.out.println("parts[" + i + "] = " + parts[i]);
+        }
     }
 }

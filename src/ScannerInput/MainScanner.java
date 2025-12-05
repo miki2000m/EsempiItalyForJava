@@ -1,18 +1,16 @@
 package ScannerInput;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainScanner {
     //creo l'oggetto scanner che ha bisogno della libreria java.util
-    private static Scanner input = new Scanner(System.in);
+    private static final Scanner input = new Scanner(System.in);
 
     //variabili
     private static String nome;
     private static String cognome;
     private static int anni;
     private static String citta;
-    private static boolean errore = true;
 
     public static void main(String[] args) {
         System.out.println("Questo esempio spiega la funzione di scanner (cioè input inserito nel terminale)\n");

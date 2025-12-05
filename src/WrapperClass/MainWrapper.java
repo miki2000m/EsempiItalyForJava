@@ -89,6 +89,6 @@ public class MainWrapper {
 
         //String
         String stringa ="bel corso";
-
+        System.out.println("La stringa è: " + stringa);
     }
 }

@@ -3,15 +3,18 @@ package Random;
 import java.util.Random;
 
 public class MainRandom {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static void main(String[] args) {
         //RANDOM INT ----------------------------------------------------------------------
 
         //recupero la lunghezza di Inetger
         int maxInteger= Integer.MAX_VALUE;//2147483647
-        int minInteger= Integer.MIN_VALUE;//-2147483648
+        System.out.println("Max Integer: " + maxInteger);
 
+        int minInteger= Integer.MIN_VALUE;//-2147483648
+        System.out.println("Min Integer: " + minInteger);
+        
         //numero casuale tra maxInteger e minInteger
         int int1 = random.nextInt();
         System.out.printf("\nrandom maxInteger - minInteger: %d\n",int1);
@@ -27,7 +30,10 @@ public class MainRandom {
 
         //RANDOM DOUBLE ---------------------------------------------------------------------
         double maxDouble = Double.MAX_VALUE;//1.7976931348623157E308
+        System.out.println("\nMax Double: " + maxDouble);
+
         double minDouble = Double.MIN_VALUE;//4.9E-324
+        System.out.println("Min Double: " + minDouble);
 
         //numero casuale tra maxDouble e minDouble
         double double1 = random.nextDouble();
