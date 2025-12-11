@@ -61,7 +61,7 @@ public class MainCreate {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("La creazione del file.txt è fallita");
         }
 
         //SCRITTURA SU UN FILE ###############
