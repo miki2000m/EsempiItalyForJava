@@ -1,4 +1,4 @@
-package ArrayVettori;
+package ArrayVettori.Queue;
 
 import java.util.*;
 
@@ -48,5 +48,6 @@ public class MainQueue {
         System.out.println("Quanti clienti sono ancora in coda? " + coda.size());
         // .contains() -> controlla se un elemento è presente nella coda
         System.out.println("C'è ancora Luca in coda? " + coda.contains("Luca"));
+
     }
 }

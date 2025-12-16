@@ -1,4 +1,4 @@
-package ArrayVettori;
+package ArrayVettori.Array;
 
 import java.util.Random;
 

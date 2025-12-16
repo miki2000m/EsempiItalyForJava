@@ -1,4 +1,4 @@
-package ArrayVettori;
+package ArrayVettori.Array;
 
 //sia ArrayList che Vector arrivano dalla libreria util
 //chiamate API

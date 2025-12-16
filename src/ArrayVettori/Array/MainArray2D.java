@@ -1,4 +1,4 @@
-package ArrayVettori;
+package ArrayVettori.Array;
 
 //gli array 2d sono array con due dimensioni
 //come una tabella
