@@ -1,0 +1,55 @@
+RIEPILOGO CONCETTI E COMANDI - JAVA STREAM API
+
+Questo file contiene un riassunto dei concetti e dei comandi principali della Stream API di Java.
+
+--- CONCETTI TEORICI FONDAMENTALI ---
+
+*   Stream: Una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate. Non memorizza dati, ma li processa 'on-demand' in una pipeline.
+*   Pipeline di Stream: Una catena di operazioni: inizia con una sorgente, seguita da zero o più operazioni intermedie e termina con una singola operazione terminale.
+*   Operazioni Intermedie: Trasformano una stream in un'altra stream (es. `filter`, `map`). Sono 'lazy' (pigre), cioè vengono eseguite solo quando viene chiamata un'operazione terminale.
+*   Operazioni Terminali: Avviano l'elaborazione della stream e producono un risultato o un effetto collaterale (es. `collect`, `forEach`, `reduce`). Dopo un'operazione terminale, la stream non può più essere usata.
+*   Stream Primitivi (`IntStream`, `LongStream`, `DoubleStream`): Stream specializzate per i tipi primitivi. Sono più efficienti perché evitano il "boxing" (la conversione da `int` a `Integer`) e offrono operazioni matematiche specializzate (es. `sum()`, `average()`).
+*   Stream Paralleli: Stream che dividono il lavoro su più core della CPU. Possono aumentare le performance su grandi dataset, ma introducono un costo di gestione (overhead) e non garantiscono l'ordine di esecuzione degli elementi.
+
+--- RIEPILOGO COMANDI PER TIPO ---
+
+**1. Creazione di una Stream**
+*   `collezione.stream()` -> Crea una stream sequenziale da una collezione (List, Set, etc.).
+*   `collezione.parallelStream()` -> Crea una stream parallela da una collezione.
+*   `Stream.of(el1, el2, ...)` -> Crea una stream da una serie di elementi.
+*   `IntStream.range(start, endExclusive)` -> Crea una stream di `int` da `start` a `end-1`.
+*   `IntStream.rangeClosed(start, endInclusive)` -> Crea una stream di `int` da `start` a `end`.
+
+**2. Operazioni Intermedie (Trasformazione)**
+*   `.filter(lambda)` -> Filtra gli elementi, mantenendo solo quelli per cui la lambda restituisce `true`.
+*   `.map(lambda)` -> Trasforma ogni elemento della stream in un altro oggetto, applicando la funzione lambda.
+*   `.flatMap(lambda)` -> Simile a map, ma "appiattisce" una stream di stream (o di collezioni) in una singola stream. Utile per trasformare un elemento in zero, uno o più elementi nella stream risultante.
+*   `.sorted()` -> Ordina gli elementi secondo il loro ordine naturale (se implementano `Comparable`).
+*   `.sorted(comparator)` -> Ordina gli elementi usando un `Comparator` personalizzato.
+*   `.limit(n)` -> Tronca la stream, mantenendo solo i primi `n` elementi.
+*   `.skip(n)` -> Scarta i primi `n` elementi della stream.
+*   `.peek(lambda)` -> Esegue un'azione su ogni elemento senza modificarlo. Utile principalmente per il debug per "sbirciare" dentro la stream a un certo punto della pipeline.
+*   `.distinct()` -> Rimuove gli elementi duplicati dalla stream (basato sul metodo `.equals()`).
+
+**3. Operazioni Terminali (Produzione di un Risultato)**
+*   `.collect(collector)` -> Raccoglie gli elementi della stream in un contenitore (es. List, Set, Map). È l'operazione terminale più comune e versatile.
+*   `.reduce(valoreIniziale, operatoreBinario)` -> Combina gli elementi di una stream per produrre un singolo valore (es. la somma di tutti gli elementi).
+*   `.forEach(lambda)` -> Esegue un'azione per ogni elemento della stream.
+*   `.count()` -> Restituisce il numero di elementi nella stream.
+*   `.anyMatch(lambda)`, `.allMatch(lambda)`, `.noneMatch(lambda)` -> Controllano se alcuni, tutti o nessuno degli elementi soddisfano una condizione.
+*   `.findFirst()`, `.findAny()` -> Trovano un elemento della stream (restituiscono un `Optional`).
+
+**4. Collectors (Usati con `.collect()`)**
+*   `Collectors.toList()` -> Raccoglie gli elementi in una `java.util.List`.
+*   `Collectors.toSet()` -> Raccoglie gli elementi in una `java.util.Set` (rimuovendo i duplicati).
+*   `Collectors.toMap(keyMapper, valueMapper)` -> Raccoglie gli elementi in una `java.util.Map`.
+*   `Collectors.groupingBy(funzioneDiClassificazione)` -> Raggruppa gli elementi in una `Map` dove le chiavi sono il risultato della funzione e i valori sono liste di elementi.
+*   `Collectors.partitioningBy(predicato)` -> Divide la stream in due partizioni (una `Map<Boolean, List>`) in base a una condizione booleana.
+*   `Collectors.joining(delimitatore)` -> Concatena gli elementi di una `Stream<String>` in una singola stringa.
+
+**5. Operazioni su Stream Primitivi**
+*   `.sum()` -> Calcola la somma degli elementi.
+*   `.average()` -> Calcola la media (restituisce un `OptionalDouble`).
+*   `.summaryStatistics()` -> Restituisce un oggetto (`IntSummaryStatistics`, etc.) che contiene conteggio, somma, media, min e max in un colpo solo.
+*   `.mapToObj(lambda)` -> Converte uno stream primitivo in uno stream di oggetti.
+*   `streamDiOggetti.mapToInt(lambda)` -> Converte uno stream di oggetti in un `IntStream`.
