@@ -29,7 +29,8 @@ public class MainSteamAPI {
         );
 
         System.out.println("--- GUIDA ALLA STREAM API ---");
-        System.out.println("Spiegazione Concettuale: Una Stream è una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate. Non memorizza dati, ma li processa 'on-demand' in una pipeline di operazioni.\n");
+        System.out.println("Spiegazione Concettuale: Una Stream è una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate." +
+                "\nNon memorizza dati, ma li processa 'on-demand' in una pipeline di operazioni.\n");
 
         sezione1_OperazioniIntermedie(prodotti);
         sezione2_OperazioniTerminali(prodotti);
@@ -40,7 +41,8 @@ public class MainSteamAPI {
 
     private static void sezione1_OperazioniIntermedie(List<Prodotto> prodotti) {
         System.out.println("\n--- 1. Operazioni Intermedie: Filtrare e Trasformare ---");
-        System.out.println("Spiegazione: Le operazioni intermedie trasformano una stream in un'altra stream. Sono 'lazy' (pigre), cioè non vengono eseguite finché non viene chiamata un'operazione terminale.\n");
+        System.out.println("Spiegazione: Le operazioni intermedie trasformano una stream in un'altra stream." +
+                "\nSono 'lazy' (pigre), cioè non vengono eseguite finché non viene chiamata un'operazione terminale.\n");
 
         System.out.println("Azione: Pipeline complessa che usa filter, map, sorted, limit, skip e peek.");
         System.out.println("Obiettivo: Trovare i nomi, in maiuscolo, dei 2 prodotti di categoria 'Elettronica' più economici, ma saltando il più economico in assoluto.\n");

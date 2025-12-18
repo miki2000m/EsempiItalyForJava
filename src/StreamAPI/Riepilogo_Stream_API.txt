@@ -5,11 +5,22 @@ Questo file contiene un riassunto dei concetti e dei comandi principali della St
 --- CONCETTI TEORICI FONDAMENTALI ---
 
 *   Stream: Una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate. Non memorizza dati, ma li processa 'on-demand' in una pipeline.
-*   Pipeline di Stream: Una catena di operazioni: inizia con una sorgente, seguita da zero o più operazioni intermedie e termina con una singola operazione terminale.
-*   Operazioni Intermedie: Trasformano una stream in un'altra stream (es. `filter`, `map`). Sono 'lazy' (pigre), cioè vengono eseguite solo quando viene chiamata un'operazione terminale.
-*   Operazioni Terminali: Avviano l'elaborazione della stream e producono un risultato o un effetto collaterale (es. `collect`, `forEach`, `reduce`). Dopo un'operazione terminale, la stream non può più essere usata.
-*   Stream Primitivi (`IntStream`, `LongStream`, `DoubleStream`): Stream specializzate per i tipi primitivi. Sono più efficienti perché evitano il "boxing" (la conversione da `int` a `Integer`) e offrono operazioni matematiche specializzate (es. `sum()`, `average()`).
-*   Stream Paralleli: Stream che dividono il lavoro su più core della CPU. Possono aumentare le performance su grandi dataset, ma introducono un costo di gestione (overhead) e non garantiscono l'ordine di esecuzione degli elementi.
+
+*   Pipeline di Stream: (Una catena di operazioni) inizia con una sorgente, seguita da zero o più operazioni intermedie e termina con una singola operazione terminale.
+    Questo è il modo in cui le operazioni Stream vengono concatenate per elaborare i dati.
+
+*   Operazioni Intermedie: Trasformano una stream in un'altra stream (es. `filter`, `map`). Sono 'lazy' (pigre),
+    cioè vengono eseguite solo quando viene chiamata un'operazione terminale.
+
+*   Operazioni Terminali: Avviano l'elaborazione della stream e producono un risultato o un effetto collaterale (es. `collect`, `forEach`, `reduce`).
+    Dopo un'operazione terminale, la stream non può più essere usata.
+
+*   Stream Primitivi (`IntStream`, `LongStream`, `DoubleStream`): Stream specializzate per i tipi primitivi.
+    Sono più efficienti perché evitano il "boxing" (la conversione da `int` a `Integer`) e offrono operazioni matematiche specializzate (es. `sum()`, `average()`).
+
+*   Stream Paralleli: Stream che dividono il lavoro su più core della CPU. Possono aumentare le performance su grandi dataset,
+    ma introducono un costo di gestione (overhead) e non garantiscono l'ordine di esecuzione degli elementi.
+
 
 --- RIEPILOGO COMANDI PER TIPO ---
 
