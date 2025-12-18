@@ -1,3 +1,5 @@
+QUESTA GUIDA IN ITALIANO HA LA BASI PER OCA E OCP (certificazioni per Java)
+
 EsempiItalyForJava
 
 Raccolta di esempi base in Java, pensata per aiutare chi vuole imparare le fondamenta del linguaggio in modo semplice e immediato.
