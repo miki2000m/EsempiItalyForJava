@@ -1,4 +1,4 @@
-package CreateReadFile;
+package CreateReadFile.OldMethod;
 
 import java.io.*;
 

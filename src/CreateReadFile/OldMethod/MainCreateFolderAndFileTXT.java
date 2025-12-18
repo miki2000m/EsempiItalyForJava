@@ -1,14 +1,16 @@
-package CreateReadFile;
+package CreateReadFile.OldMethod;
 
 import java.io.*;
 
-public class MainCreate {
+public class MainCreateFolderAndFileTXT {
     public static void main(String[] args) {
         //creazione di una cartella -------------------------
 
         //creo un oggetto file
         //File(indirizzo,"nome(.tipo)")
         File cartella=new File("/Users/michel/Desktop/programmazione/JAVA/JAVAdallaBasi/src/CreateReadFile","newCartella");
+
+        //Controllo se la cartella è già esistente
         if(!cartella.exists()){
             //creo la cartella (come linux)
             boolean generate= cartella.mkdir();
@@ -23,7 +25,7 @@ public class MainCreate {
         }
 
 
-        //creazione di un file -------------------------------
+        //creazione di un file.txt -------------------------------
 
         //creo un oggetto file all'interno della cartella creata in precedenza
         File file=new File(cartella,"file.txt");
