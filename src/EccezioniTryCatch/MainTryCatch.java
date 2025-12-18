@@ -6,7 +6,10 @@ import java.util.Scanner;
 public class MainTryCatch {
     private static Scanner input = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    //Si forma ... throws ECCEZIONE
+    //Questo permette di non dover avere try-catch con quella eccezione
+    //in questo caso ci permette di non avere try-catch con le eccezioni di Exception (quindi qualsiasi tipo di eccezione all'interno della classe)
+    public static void main(String[] args) throws Exception{
         double n1=0;
         double n2=0;
         double result=0;
