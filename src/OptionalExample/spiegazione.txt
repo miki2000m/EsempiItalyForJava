@@ -1,0 +1,63 @@
+GUIDA RAPIDA ALLA CLASSE OPTIONAL IN JAVA
+
+--- CONCETTO TEORICO FONDAMENTALE ---
+
+`Optional` è un contenitore, una "scatola" che può contenere un valore di un certo tipo oppure essere vuota.
+Il suo scopo principale è eliminare l'uso di `null` nel codice e forzare il programmatore a gestire esplicitamente il caso in cui un valore è assente.
+Questo previene i `NullPointerException` e rende il codice più sicuro e leggibile.
+
+Invece di avere un metodo che restituisce `String` (che potrebbe essere `null`), si ha un metodo che restituisce `Optional<String>`.
+
+--- RIEPILOGO COMANDI PER CATEGORIA ---
+
+**1. Creazione di un Optional**
+
+*   `Optional.of(valore)`
+    -> Crea un Optional che contiene un valore. Lancia `NullPointerException` se il valore è `null`. Si usa quando si è sicuri che il valore esista.
+
+*   `Optional.ofNullable(valore)`
+    -> Crea un Optional che contiene il valore se non è nullo, altrimenti crea un Optional vuoto. È il modo più sicuro e comune per creare un Optional da un valore che potrebbe essere nullo.
+
+*   `Optional.empty()`
+    -> Crea un Optional esplicitamente vuoto. È l'alternativa a restituire `null`.
+
+--------------------------------------------------------------------------------
+
+**2. Controllo della Presenza di un Valore**
+
+*   `optional.isPresent()`
+    -> Restituisce `true` se l'Optional contiene un valore, `false` altrimenti. È l'equivalente del vecchio `if (valore != null)`.
+
+*   `optional.ifPresent(lambda)`
+    -> Esegue il codice della lambda (un `Consumer`) SOLO SE l'Optional contiene un valore. Il valore viene passato come argomento alla lambda. È il modo funzionale e preferito per eseguire un'azione se un valore esiste.
+
+--------------------------------------------------------------------------------
+
+**3. Estrazione Sicura del Valore**
+
+*   `optional.orElse(valoreDefault)`
+    -> Restituisce il valore se presente, altrimenti restituisce il `valoreDefault` fornito. Il valore di default viene sempre creato, anche se l'Optional non è vuoto.
+
+*   `optional.orElseGet(supplier)`
+    -> Restituisce il valore se presente, altrimenti esegue la lambda (`supplier`) e restituisce il suo risultato. La lambda viene eseguita SOLO se l'Optional è vuoto, rendendolo più efficiente di `orElse` se la creazione del valore di default è un'operazione costosa.
+
+*   `optional.orElseThrow()`
+    -> Restituisce il valore se presente, altrimenti lancia una `NoSuchElementException`.
+
+*   `optional.orElseThrow(supplierEccezione)`
+    -> Restituisce il valore se presente, altrimenti lancia l'eccezione creata dalla lambda (`supplier`). È il modo corretto per gestire casi in cui un valore è obbligatorio per proseguire.
+
+--------------------------------------------------------------------------------
+
+**4. Trasformazione Funzionale del Valore (Metodi Intermedi)**
+
+Questi metodi permettono di concatenare operazioni in modo "funzionale", senza dover estrarre esplicitamente il valore.
+
+*   `optional.map(lambda)`
+    -> Se l'Optional contiene un valore, applica la lambda di trasformazione a quel valore e restituisce un nuovo `Optional` con il risultato. Se è vuoto, restituisce un `Optional` vuoto. Permette di trasformare il valore all'interno della "scatola".
+
+*   `optional.filter(predicato)`
+    -> Se l'Optional contiene un valore E quel valore soddisfa la condizione (predicato), restituisce l'Optional stesso. Altrimenti, restituisce un `Optional` vuoto. Permette di "svuotare" l'Optional se il suo contenuto non è valido.
+
+*   `optional.flatMap(lambda)`
+    -> Simile a `map`, ma si usa quando la funzione di trasformazione restituisce GIA' un `Optional`. `flatMap` evita di creare un `Optional` annidato (es. `Optional<Optional<String>>`) e "appiattisce" il risultato in un singolo `Optional`.

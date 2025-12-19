@@ -1,0 +1,47 @@
+GUIDA RAPIDA E SEMPLICE ALLE SEALED CLASSES (CLASSI SIGILLATE)
+
+--- CONCETTO TEORICO DI BASE: LA "FAMIGLIA CHIUSA" ---
+
+Immagina di voler creare le regole per un gioco. Vuoi definire una "Forma" e vuoi che le uniche forme possibili siano "Cerchio" e "Quadrato". Non vuoi che qualcuno in futuro possa inventarsi una "FormaEsagonale" e rompere il tuo gioco.
+
+Le `Sealed Classes` (Classi Sigillate) servono proprio a questo: a creare una "famiglia chiusa" di classi, dove solo i membri che decidi tu sono ammessi.
+
+--- LE PAROLE CHIAVE FONDAMENTALI ---
+
+1.  `sealed` (sigillato)
+    *   È la parola chiave che usi per "sigillare" una classe o un'interfaccia (il "capofamiglia").
+    *   Cosa significa: "Sto creando una famiglia con regole di appartenenza precise. Non tutti possono entrare."
+
+2.  `permits` (permette)
+    *   È la "lista degli invitati" ufficiale.
+    *   Cosa significa: Elenca, separati da virgole, tutti e soli i membri diretti che sono autorizzati a far parte della famiglia.
+    *   Esempio: `sealed interface Forma permits Cerchio, Quadrato`
+
+--- LE 3 REGOLE PER I MEMBRI DELLA FAMIGLIA ---
+
+Ogni classe nella lista `permits` (ogni "invitato") deve dichiarare come intende proseguire la sua discendenza. Ha tre scelte obbligatorie:
+
+1.  `final` -> "La mia discendenza finisce qui."
+    *   Questa è la scelta più comune e sicura.
+    *   Significa che la classe non può essere ulteriormente estesa. La gerarchia per questo ramo termina qui.
+
+2.  `non-sealed` -> "La mia discendenza è aperta a tutti."
+    *   Questa classe "rompe il sigillo".
+    *   Significa che, da questo punto in poi, chiunque può creare nuove sottoclassi, tornando al comportamento normale di Java.
+
+3.  `sealed` -> "Anche la mia discendenza ha una lista di invitati."
+    *   Questa classe continua la sigillatura a un livello più profondo.
+    *   Deve avere a sua volta una clausola `permits` per definire la sua "sotto-famiglia" chiusa.
+
+--- IL VERO POTERE: SWITCH A PROVA DI ERRORE ---
+
+Il vantaggio più grande delle classi sigillate si vede negli `switch`.
+
+*   **Controllo di Completezza**: Poiché il compilatore conosce TUTTI i possibili tipi che fanno parte della famiglia sigillata (es. `Forma` può essere solo `Cerchio` o `Quadrato`), può verificare che il tuo `switch` gestisca ogni singolo caso.
+
+*   **Nessun `default` Necessario**: Se hai gestito tutti i casi permessi, non hai bisogno di un blocco `default`. Il compilatore sa che non ci sono altre possibilità.
+
+*   **Prevenzione di Bug**: Se in futuro aggiungi un nuovo membro alla famiglia (es. `permits Cerchio, Quadrato, Triangolo`), ma ti dimentichi di aggiornare lo `switch`, il tuo codice NON COMPILERÀ. Il compilatore ti avviserà dell'errore, costringendoti a gestire il nuovo caso. Questo previene errori che altrimenti si manifesterebbero solo durante l'esecuzione del programma.
+
+*   **Pattern Matching**: Spesso si usa con il "Pattern Matching" per `switch`.
+    *   `case Cerchio c -> ...`: Questa sintassi fa due cose: controlla se l'oggetto è un `Cerchio` e, se sì, lo mette in una nuova variabile `c` già del tipo giusto, pronta per essere usata.
