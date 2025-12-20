@@ -1,4 +1,4 @@
-package WrapperClass;
+package Variabili.WrapperClass;
 /*
 PRIMITIVE   |   WRAPPER
 --------------------------
