@@ -1,0 +1,65 @@
+STRUTTURA DEL PROGETTO JAVAdallaBasi
+
+Questo documento descrive l'organizzazione dei package all'interno del progetto JAVAdallaBasi, fornendo una breve spiegazione per ciascuno.
+
+--- PACKAGE PRINCIPALI ---
+
+- AnonymusClass: Contiene esempi relativi alle classi anonime in Java.
+
+- ArrayVettori: Esempi sull'uso di array e vettori, inclusi algoritmi di ricerca (come InterpolationSearch).
+
+- AudioPlayer: Probabilmente contiene codice per la gestione della riproduzione audio.
+
+- ClassiAstratte: Esempi e spiegazioni sulle classi astratte.
+
+- CreateReadFile: Esempi sulla creazione, lettura e scrittura di file.
+    - APIJavaNioFile: Sottopackage dedicato alla libreria Java NIO.2 per la gestione avanzata dei file (include una guida interattiva).
+    - NewMethod: Probabilmente contiene metodi più recenti o alternativi per la gestione dei file.
+
+- DataOra: Esempi sull'uso delle API per la gestione di date e orari.
+
+- EccezioniTryCatch: Esempi sulla gestione delle eccezioni tramite blocchi try-catch.
+
+- Ereditarieta: Esempi e spiegazioni sul concetto di ereditarietà in Java.
+
+- Enum: Esempi sull'uso delle enumerazioni.
+
+- Generics: Esempi sull'uso dei Generics in Java.
+
+- HashMap: Esempi sull'uso della classe HashMap.
+
+- Interfacce: Esempi e spiegazioni sulle interfacce.
+
+- Iterator: Esempi sull'uso degli iteratori.
+
+- Lambda: Esempi sull'uso delle espressioni Lambda.
+
+- Math: Probabilmente contiene esempi sull'uso della classe Math.
+
+- Methods: Probabilmente contiene esempi su vari tipi di metodi.
+
+- OptionalExample: Contiene una guida completa e interattiva sulla classe `Optional` per la gestione dei valori assenti, inclusi esempi e un file di riepilogo (`spiegazione.txt`).
+
+- Polimorfismo: Esempi e spiegazioni sul concetto di polimorfismo.
+
+- Random: Probabilmente contiene esempi sull'uso della classe Random.
+
+- RecordExample: Contiene una guida completa e interattiva sui `record` di Java per la creazione di classi contenitore di dati immutabili.
+
+- ScannerInput: Esempi sull'acquisizione di input da console tramite `Scanner`.
+
+- SealedExample: Contiene una guida completa e interattiva sulle `Sealed Classes` per il controllo delle gerarchie di ereditarietà, inclusi esempi e un file di riepilogo (`spiegazione.txt`).
+
+- StreamAPI: Contiene una guida completa e interattiva sulla Stream API di Java 8 per l'elaborazione funzionale delle collezioni, inclusi esempi e un file di riepilogo (`Riepilogo_Stream_API.txt`).
+
+- String: Esempi sull'uso della classe String.
+
+- Switch_If_for: Esempi sull'uso delle strutture di controllo (switch, if, for).
+
+- Threading: Esempi sull'uso dei thread per la programmazione concorrente.
+
+- Timer: Probabilmente contiene esempi sull'uso di timer.
+
+- ToString: Esempi sull'override del metodo `toString()`.
+
+- Variabili: Esempi sui diversi tipi di variabili in Java.

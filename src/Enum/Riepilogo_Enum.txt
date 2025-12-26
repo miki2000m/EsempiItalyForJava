@@ -1,0 +1,50 @@
+RIEPILOGO SUGLI ENUM (ENUMERAZIONI) IN JAVA
+
+1.  COSA SONO GLI ENUM?
+    Un "enum" è un tipo di dato speciale che permette a una variabile di essere un valore proveniente da un insieme predefinito di costanti.
+    In pratica, è un modo per definire e raggruppare un set fisso di valori noti a tempo di compilazione.
+
+    Esempi comuni: i giorni della settimana, i mesi dell'anno, gli stati di un processo (ES: IN_ATTESA, IN_ESECUZIONE, COMPLETATO), i punti cardinali.
+
+2.  PERCHÉ USARE GLI ENUM? (VANTAGGI)
+    - SICUREZZA DEL TIPO (TYPE SAFETY): Un enum garantisce che una variabile possa contenere solo uno dei valori dichiarati. Previene errori comuni dovuti a "magic strings" (stringhe digitate a mano, es. "Lunedì" vs "lunedi") o "magic numbers" (numeri arbitrari, es. 1 per Lunedì, 2 per Martedì).
+    - LEGGIBILITÀ: Il codice diventa molto più chiaro e auto-documentante. `Giorno.LUNEDI` è molto più espressivo di `1`.
+    - ROBUSTEZZA: Sono ideali per le istruzioni `switch`, poiché il compilatore può avvisare se non hai gestito tutti i possibili valori dell'enum.
+
+3.  COME SI DICHIARA UN ENUM?
+    - Semplice:
+      `enum Livello { BASSO, MEDIO, ALTO }`
+
+    - Complesso (come una classe):
+      Un enum può avere campi (fields), un costruttore e metodi. Questo lo rende estremamente potente.
+      Il costruttore di un enum è sempre `private` (o package-private) e viene chiamato automaticamente per ogni costante definita.
+
+      `enum Pianeta {`
+      `    TERRA(5.97e24, 6371); // Chiama il costruttore`
+
+      `    private final double massa;`
+      `    private final double raggio;`
+
+      `    Pianeta(double massa, double raggio) {`
+      `        this.massa = massa;`
+      `        this.raggio = raggio;`
+      `    }`
+
+      `    public double getMassa() { return massa; }`
+      `}`
+
+4.  METODI FONDAMENTALI DEGLI ENUM
+    Ogni enum in Java eredita dalla classe `java.lang.Enum` e ha a disposizione alcuni metodi statici e di istanza molto utili:
+
+    - `values()`: (Statico) Restituisce un array contenente tutte le costanti dell'enum, nell'ordine in cui sono state dichiarate. È perfetto per iterare su tutti i possibili valori.
+      `for (Pianeta p : Pianeta.values()) { ... }`
+
+    - `valueOf(String nome)`: (Statico) Restituisce la costante dell'enum che ha esattamente quel `nome`. È case-sensitive e lancia `IllegalArgumentException` se il nome non esiste.
+      `Pianeta p = Pianeta.valueOf("TERRA");`
+
+    - `name()`: (Di istanza) Restituisce il nome della costante (es. "TERRA") come una `String`.
+
+    - `ordinal()`: (Di istanza) Restituisce la posizione (un `int`) della costante nella sua dichiarazione, partendo da 0. Il suo uso è sconsigliato per la logica di business, perché può cambiare se si riordina l'enum.
+
+IN SINTESI:
+Usa un enum ogni volta che hai un insieme fisso e limitato di valori possibili per una variabile. Renderà il tuo codice più sicuro, più leggibile e più facile da mantenere.

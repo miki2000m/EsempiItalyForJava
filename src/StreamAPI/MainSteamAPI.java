@@ -29,8 +29,10 @@ public class MainSteamAPI {
         );
 
         System.out.println("--- GUIDA ALLA STREAM API ---");
-        System.out.println("Spiegazione Concettuale: Una Stream è una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate." +
-                "\nNon memorizza dati, ma li processa 'on-demand' in una pipeline di operazioni.\n");
+        System.out.println("""
+                Spiegazione Concettuale: Una Stream è una sequenza di elementi proveniente da una sorgente (es. una Lista) che supporta operazioni aggregate." +
+                Non memorizza dati, ma li processa 'on-demand' in una pipeline di operazioni.\n
+                """);
 
         sezione1_OperazioniIntermedie(prodotti);
         sezione2_OperazioniTerminali(prodotti);
@@ -90,7 +92,10 @@ public class MainSteamAPI {
 
     private static void sezione2_OperazioniTerminali(List<Prodotto> prodotti) {
         System.out.println("\n--- 2. Operazioni Terminali: Produrre un Risultato ---");
-        System.out.println("Spiegazione: Le operazioni terminali avviano l'elaborazione della stream e producono un risultato. Una stream non può più essere usata dopo un'operazione terminale.\n");
+        System.out.println("""
+        Spiegazione: Le operazioni terminali avviano l'elaborazione della stream e producono un risultato.
+        Una stream non può più essere usata dopo un'operazione terminale.\n
+        """);
 
         // .reduce(valoreIniziale, operatoreBinario) -> Combina gli elementi di una stream per produrre un singolo valore.
         System.out.println("Azione: Uso di `reduce` per calcolare il valore totale del magazzino (prezzo * quantità).");
@@ -102,7 +107,9 @@ public class MainSteamAPI {
 
     private static void sezione3_Collectors(List<Prodotto> prodotti) {
         System.out.println("\n--- 3. Collectors: Raccogliere i Risultati in Contenitori ---");
-        System.out.println("Spiegazione: `collect` è un'operazione terminale molto versatile che, usando un `Collector`, può trasformare una stream in quasi ogni tipo di struttura dati.\n");
+        System.out.println("""
+                Spiegazione: `collect` è un'operazione terminale molto versatile che, usando un `Collector`, può trasformare una stream in quasi ogni tipo di struttura dati.\n
+                """);
 
         // .collect(Collectors.toList()) -> Raccoglie gli elementi in una `List`.
         List<Prodotto> elettronici = prodotti.stream().filter(p -> p.categoria().equals("Elettronica")).collect(Collectors.toList());
@@ -128,7 +135,10 @@ public class MainSteamAPI {
 
     private static void sezione4_StreamPrimitivi() {
         System.out.println("\n--- 4. Stream Primitivi: IntStream, LongStream, DoubleStream ---");
-        System.out.println("Spiegazione: Per i tipi primitivi (int, long, double), esistono stream specializzate che sono più efficienti (evitano il 'boxing'/'unboxing') e offrono operazioni statistiche.\n");
+        System.out.println("""
+        Spiegazione: Per i tipi primitivi (int, long, double), 
+        esistono stream specializzate che sono più efficienti (evitano il 'boxing'/'unboxing') e offrono operazioni statistiche.\n
+        """);
 
         // IntStream.range(start, endExclusive) -> Crea una stream di `int` da `start` a `end-1`.
         System.out.println("Azione: Uso di `IntStream` per calcolare la somma dei numeri da 1 a 100.");
@@ -146,7 +156,10 @@ public class MainSteamAPI {
 
     private static void sezione5_StreamParalleli() {
         System.out.println("\n--- 5. Stream Paralleli ---");
-        System.out.println("Spiegazione: Una stream parallela divide il lavoro su più core della CPU. Può velocizzare le operazioni su grandi quantità di dati, ma ha un costo di gestione (overhead) e non garantisce l'ordine di esecuzione.\n");
+        System.out.println("""
+                Spiegazione: Una stream parallela divide il lavoro su più core della CPU.
+                Può velocizzare le operazioni su grandi quantità di dati, ma ha un costo di gestione (overhead) e non garantisce l'ordine di esecuzione.\n
+                """);
 
         // .parallelStream() o .stream().parallel() -> Crea una stream parallela.
         System.out.println("Azione: Esecuzione di un'operazione su una stream sequenziale e una parallela.");
