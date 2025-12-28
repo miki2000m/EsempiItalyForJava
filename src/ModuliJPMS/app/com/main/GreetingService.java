@@ -1,4 +1,4 @@
-package ModuliJPMS.service.com.service;
+package com.main;
 
 public class GreetingService {
     public String sayHello(String name) {

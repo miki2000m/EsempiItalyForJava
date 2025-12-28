@@ -6,52 +6,54 @@ Il Java Platform Module System (JPMS), introdotto in Java 9, è un cambiamento f
 1.  Le sue **dipendenze** (quali altri moduli gli servono per funzionare).
 2.  I **package che espone** (quali parti del suo codice sono pubbliche per altri moduli).
 
---- IL FILE `module-info.java` ---
+--- STRUTTURA DI QUESTO ESEMPIO ---
 
-Il cuore di un modulo è il file `module-info.java`, che deve trovarsi nella root del codice sorgente del modulo. Questo file definisce le proprietà del modulo.
+Per mostrarti i concetti senza causare errori di compilazione in un progetto a modulo singolo, è stata adottata la seguente struttura:
 
-**NOTA IMPORTANTE PER QUESTO PROGETTO:**
-Questo progetto è configurato come un **singolo modulo**. Per mostrarti come funziona una struttura multi-modulo, i file di dichiarazione sono stati rinominati in **`module-info.java.txt`**. Questo permette di studiarli senza causare errori di compilazione. In un vero progetto multi-modulo, si chiamerebbero `module-info.java` e sarebbero in cartelle sorgente separate riconosciute dall'IDE.
+1.  **Codice Eseguibile Semplificato:**
+    - Le classi `MainApp` e `GreetingService` sono state messe nello **stesso package** (`com.main`) per permettere al progetto di compilare ed eseguire senza problemi.
+    - Questo **NON** è come funzionerebbe un vero progetto modulare, ma serve a rendere l'esempio funzionante.
+
+2.  **File di Esempio `.txt`:**
+    - I file **`module-info.java.txt`** (nelle sottocartelle `app` e `service`) mostrano come sarebbero scritte le **vere dichiarazioni dei moduli**. Questi file sono la parte più importante da studiare per capire il JPMS.
+
+--- IL FILE `module-info.java` (SPIEGAZIONE TEORICA) ---
+
+Il cuore di un modulo è il file `module-info.java`.
 
 **Direttive Principali:**
 
 **1. `module nome.del.modulo { ... }`**
-   Dichiara un modulo. Per convenzione, il nome del modulo segue spesso il nome del package principale che contiene.
+   Dichiara un modulo.
 
 **2. `requires nome.altro.modulo;`**
-   Dichiara una **dipendenza**. Il modulo corrente ha bisogno del codice esposto da `nome.altro.modulo` per compilare ed essere eseguito. Questa è la base dell'**affidabilità della configurazione**: se un modulo richiesto manca, l'applicazione non parte.
+   Dichiara una **dipendenza**. Il modulo corrente ha bisogno del codice esposto da `nome.altro.modulo`.
 
 **3. `exports nome.del.package;`**
-   Rende i tipi `public` del package `nome.del.package` accessibili ai moduli che dipendono da questo modulo. Questa è la base dell'**incapsulamento forte**: per default, tutto ciò che è in un modulo è privato a quel modulo, anche se è dichiarato `public`. Devi esportarlo esplicitamente per renderlo visibile all'esterno.
+   Rende i tipi `public` del package `nome.del.package` accessibili ai moduli che dipendono da questo modulo. Per default, tutto ciò che è in un modulo è privato a quel modulo.
 
-**Esempio di Struttura (simulata in questo progetto):**
+**Esempio di Struttura Multi-Modulo Reale (come descritto nei file `.txt`):**
 
 `-- src`
-`   |-- ModuliJPMS`
-`   |   |-- app`
-`   |   |   |-- module-info.java.txt`
-`   |   |   `-- com/main/MainApp.java`
-`   |   `-- service`
-`   |       |-- module-info.java.txt`
-`   |       `-- com/service/GreetingService.java`
+`   |-- app.main`
+`   |   |-- module-info.java`
+`   |   `-- com/main/MainApp.java`
+`   `-- app.service`
+`       |-- module-info.java`
+`       `-- com/service/GreetingService.java`
 
-**`service/module-info.java.txt`:**
+**`service/module-info.java`:**
 `module app.service {`
 `    exports com.service; // Rende pubblico il package com.service`
 `}`
 
-**`app/module-info.java.txt`:**
+**`app/module-info.java`:**
 `module app.main {`
 `    requires app.service; // Dichiara che app.main dipende da app.service`
 `}`
 
 --- VANTAGGI DEL JPMS ---
 
-1.  **Affidabilità della Configurazione:** L'applicazione non si avvia se mancano dei moduli o se ci sono conflitti.
-2.  **Incapsulamento Forte:** Le classi interne di una libreria non sono accessibili per default, impedendo l'uso di API non destinate al pubblico.
+1.  **Affidabilità della Configurazione:** L'applicazione non si avvia se mancano dei moduli.
+2.  **Incapsulamento Forte:** Le classi interne di una libreria non sono accessibili per default.
 3.  **Scalabilità e Performance:** Permette di creare immagini di runtime personalizzate (`jlink`) che includono solo i moduli strettamente necessari.
-
---- CLASSPATH vs MODULE PATH ---
-
-- **Classpath:** Il vecchio modo. Un "calderone" di file `.class` e JAR senza controllo sulle dipendenze.
-- **Module Path:** Il nuovo modo. Un percorso in cui la JVM cerca i moduli e ne valida le dipendenze tramite i file `module-info.java`.

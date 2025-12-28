@@ -1,12 +1,9 @@
 package Localizzazione;
 
 import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
 /**
  * GUIDA ALLA LOCALIZZAZIONE (i18n) IN JAVA
