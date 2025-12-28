@@ -1,6 +1,6 @@
 package NovitaJava;
 
-import static java.lang.StringTemplate.STR;
+// import static java.lang.StringTemplate.STR; // Commentato per evitare errori di compilazione
 
 /**
  * GUIDA AD ALCUNE NOVITÀ RECENTI DI JAVA (POST-JAVA 17)
@@ -133,7 +133,7 @@ public class MainNovitaJava {
         // devi configurare il tuo progetto in modo specifico.
         //
         // Per riattivare questo esempio:
-        // 1. De-commenta il blocco di codice sottostante.
+        // 1. De-commenta il blocco di codice sottostante E la riga di import all'inizio del file.
         // 2. In IntelliJ IDEA, vai su: File -> Project Structure...
         // 3. In "Project", imposta "Project SDK" su Java 21 e "Project language level" su "21 (Preview)".
         // 4. In "Modules", seleziona il tuo modulo e imposta "Language level" su "21 (Preview)".

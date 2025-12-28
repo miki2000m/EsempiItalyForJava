@@ -10,6 +10,9 @@ Il Java Platform Module System (JPMS), introdotto in Java 9, è un cambiamento f
 
 Il cuore di un modulo è il file `module-info.java`, che deve trovarsi nella root del codice sorgente del modulo. Questo file definisce le proprietà del modulo.
 
+**NOTA IMPORTANTE PER QUESTO PROGETTO:**
+Questo progetto è configurato come un **singolo modulo**. Per mostrarti come funziona una struttura multi-modulo, i file di dichiarazione sono stati rinominati in **`module-info.java.txt`**. Questo permette di studiarli senza causare errori di compilazione. In un vero progetto multi-modulo, si chiamerebbero `module-info.java` e sarebbero in cartelle sorgente separate riconosciute dall'IDE.
+
 **Direttive Principali:**
 
 **1. `module nome.del.modulo { ... }`**
@@ -21,45 +24,34 @@ Il cuore di un modulo è il file `module-info.java`, che deve trovarsi nella roo
 **3. `exports nome.del.package;`**
    Rende i tipi `public` del package `nome.del.package` accessibili ai moduli che dipendono da questo modulo. Questa è la base dell'**incapsulamento forte**: per default, tutto ciò che è in un modulo è privato a quel modulo, anche se è dichiarato `public`. Devi esportarlo esplicitamente per renderlo visibile all'esterno.
 
-**Esempio di Struttura:**
+**Esempio di Struttura (simulata in questo progetto):**
 
 `-- src`
-`   |-- app.main`
-`   |   |-- module-info.java`
-`   |   `-- com/main/MainApp.java`
-`   `-- app.service`
-`       |-- module-info.java`
-`       `-- com/service/GreetingService.java`
+`   |-- ModuliJPMS`
+`   |   |-- app`
+`   |   |   |-- module-info.java.txt`
+`   |   |   `-- com/main/MainApp.java`
+`   |   `-- service`
+`   |       |-- module-info.java.txt`
+`   |       `-- com/service/GreetingService.java`
 
-**`app.service/module-info.java`:**
+**`service/module-info.java.txt`:**
 `module app.service {`
 `    exports com.service; // Rende pubblico il package com.service`
 `}`
 
-**`app.main/module-info.java`:**
+**`app/module-info.java.txt`:**
 `module app.main {`
 `    requires app.service; // Dichiara che app.main dipende da app.service`
 `}`
 
 --- VANTAGGI DEL JPMS ---
 
-1.  **Affidabilità della Configurazione (Reliable Configuration):** L'applicazione non si avvia se mancano dei moduli o se ci sono conflitti, evitando errori a runtime.
-2.  **Incapsulamento Forte (Strong Encapsulation):** Le classi interne di una libreria (anche se `public`) non sono accessibili per default, impedendo l'uso di API non destinate al pubblico e rendendo le librerie più facili da manutenere.
-3.  **Scalabilità e Performance:** Permette di creare immagini di runtime personalizzate (con `jlink`) che includono solo i moduli strettamente necessari, riducendo la dimensione dell'applicazione.
+1.  **Affidabilità della Configurazione:** L'applicazione non si avvia se mancano dei moduli o se ci sono conflitti.
+2.  **Incapsulamento Forte:** Le classi interne di una libreria non sono accessibili per default, impedendo l'uso di API non destinate al pubblico.
+3.  **Scalabilità e Performance:** Permette di creare immagini di runtime personalizzate (`jlink`) che includono solo i moduli strettamente necessari.
 
 --- CLASSPATH vs MODULE PATH ---
 
-- **Classpath:** Il vecchio modo. Un "calderone" di file `.class` e JAR. Non c'è controllo sulle dipendenze o sui conflitti di versione.
-- **Module Path:** Il nuovo modo. Un percorso in cui la JVM cerca i moduli. La JVM analizza i file `module-info.java` per costruire un "grafo di leggibilità" e assicurarsi che tutte le dipendenze siano soddisfatte.
-
---- MIGRAZIONE: MODULI SENZA NOME E AUTOMATICI ---
-
-Per facilitare la transizione, JPMS introduce due concetti:
-
-- **Modulo Senza Nome (Unnamed Module):** Tutti i JAR e le classi caricate dal classpath finiscono in questo speciale modulo. Può leggere tutti gli altri moduli, ma il suo codice non può essere letto dai moduli nominati. È una misura di retrocompatibilità.
-- **Modulo Automatico (Automatic Module):** Se metti un JAR tradizionale (senza `module-info.java`) nel module path, viene trattato come un modulo automatico. Il nome del modulo viene derivato dal nome del JAR. Un modulo automatico, per compatibilità, **esporta tutti i suoi package** e **può leggere tutti gli altri moduli**.
-
-Questi meccanismi permettono di usare librerie vecchie in un'applicazione a moduli, ma sono da considerare come una soluzione temporanea durante la migrazione.
-
-IN SINTESI:
-JPMS è un sistema che porta ordine e robustezza nell'ecosistema Java. Anche se per progetti piccoli può sembrare un'aggiunta complessa, è fondamentale per costruire applicazioni grandi, manutenibili e performanti.
+- **Classpath:** Il vecchio modo. Un "calderone" di file `.class` e JAR senza controllo sulle dipendenze.
+- **Module Path:** Il nuovo modo. Un percorso in cui la JVM cerca i moduli e ne valida le dipendenze tramite i file `module-info.java`.
