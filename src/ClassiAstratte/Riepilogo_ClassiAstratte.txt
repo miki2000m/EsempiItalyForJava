@@ -1,0 +1,79 @@
+RIEPILOGO SULLE CLASSI ASTRATTE
+
+--- COS'È UNA CLASSE ASTRATTA? ---
+
+Una classe astratta è una classe che **non può essere istanziata direttamente**. Funge da "modello" o "base" per altre classi.
+Viene dichiarata usando la keyword `abstract`.
+
+`public abstract class Veicolo { ... }`
+
+Lo scopo di una classe astratta è fornire una **struttura comune** e condividere codice tra più sottoclassi correlate.
+
+--- CARATTERISTICHE PRINCIPALI ---
+
+Una classe astratta è un ibrido tra un'interfaccia e una classe concreta:
+
+1.  **Non può essere istanziata:** Non puoi creare un oggetto di una classe astratta.
+    `Veicolo v = new Veicolo(); // ERRORE DI COMPILAZIONE!`
+
+2.  **Può contenere Metodi Astratti:** Un metodo astratto è un metodo dichiarato senza un corpo (senza `{...}`), usando la keyword `abstract`.
+    `public abstract void muovi();`
+    Le sottoclassi **concrete** (non astratte) che estendono la classe astratta sono **obbligate** a fornire un'implementazione per tutti i metodi astratti ereditati.
+
+3.  **Può contenere Metodi Concreti:** Può avere metodi con un'implementazione completa, che vengono ereditati normalmente dalle sottoclassi. Questo è il vantaggio principale rispetto a un'interfaccia (pre-Java 8), in quanto permette di **condividere codice**.
+    `public void stampaInfo() { System.out.println("Sono un veicolo."); }`
+
+4.  **Può avere Campi e Costruttori:** Può contenere campi (variabili d'istanza) e costruttori. Il costruttore di una classe astratta viene chiamato dalle sottoclassi tramite `super(...)` per inizializzare i campi comuni.
+
+--- ESEMPIO PRATICO ---
+
+`// 1. La classe astratta definisce la struttura comune`
+`public abstract class Animale {`
+`    private String nome;`
+
+`    public Animale(String nome) { // Costruttore per inizializzare lo stato comune`
+`        this.nome = nome;`
+`    }`
+
+`    // Metodo astratto: ogni sottoclasse DEVE implementarlo`
+`    public abstract void emettiSuono();`
+
+`    // Metodo concreto: ereditato da tutte le sottoclassi`
+`    public void dormi() {`
+`        System.out.println("Zzz...");`
+`    }`
+
+`    public String getNome() {`
+`        return nome;`
+`    }`
+`}`
+
+`// 2. La sottoclasse concreta estende la classe astratta e implementa i metodi astratti`
+`public class Cane extends Animale {`
+`    public Cane(String nome) {`
+`        super(nome); // Chiama il costruttore della superclasse`
+`    }`
+
+`    @Override`
+`    public void emettiSuono() {`
+`        System.out.println("Bau!");`
+`    }`
+`}`
+
+--- CLASSI ASTRATTE vs INTERFACCE ---
+
+La scelta tra una classe astratta e un'interfaccia dipende da ciò che si vuole ottenere.
+
+| Caratteristica          | Classe Astratta                           | Interfaccia                               |
+|-------------------------|-------------------------------------------|-------------------------------------------|
+| Ereditarietà Multipla   | **No** (una classe può estendere solo una classe astratta) | **Sì** (una classe può implementare più interfacce) |
+| Campi (Variabili)       | Può avere campi di istanza (non `final`)  | Solo costanti (`public static final`)     |
+| Costruttore             | **Sì**, può avere un costruttore.         | **No**, non può avere un costruttore.     |
+| Metodi                  | Astratti e concreti (con corpo).          | Astratti, `default`, `static`.            |
+| Scopo                   | Condividere **codice e stato comune** tra sottoclassi correlate (relazione "is-a"). | Definire un **contratto di comportamenti** che classi anche non correlate possono avere (relazione "can-do"). |
+
+**Regola generale:**
+- Se stai creando una gerarchia di classi strettamente correlate e vuoi evitare di duplicare codice (campi e metodi), una **classe astratta** è probabilmente la scelta giusta. (Es: `Veicolo` -> `Automobile`, `Motocicletta`).
+- Se vuoi definire un'abilità o un comportamento che può essere implementato da classi molto diverse tra loro, un'**interfaccia** è la scelta migliore. (Es: `Comparable`, `Serializable`, `Runnable`).
+
+Con l'introduzione dei metodi `default` in Java 8, le interfacce possono ora condividere codice, ma le classi astratte rimangono l'unica opzione per condividere lo **stato** (campi di istanza).

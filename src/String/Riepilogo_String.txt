@@ -1,0 +1,59 @@
+RIEPILOGO SULLA CLASSE `java.lang.String`
+
+--- COS'È UNA STRINGA IN JAVA? ---
+
+In Java, una stringa è una sequenza di caratteri. La classe `String` è usata per rappresentare e manipolare queste sequenze. È una delle classi più usate in qualsiasi programma Java.
+
+**Il Concetto Fondamentale: l'Immutabilità**
+
+La caratteristica più importante della classe `String` è la sua **immutabilità**. Una volta che un oggetto `String` è stato creato, il suo valore (la sequenza di caratteri) **non può più essere modificato**.
+
+Qualsiasi metodo che sembra "modificare" una stringa (come `toUpperCase()`, `replace()`, `trim()`, ecc.) in realtà **crea e restituisce un nuovo oggetto `String`** con il risultato della modifica, lasciando l'originale invariato.
+
+`String s1 = "ciao";`
+`String s2 = s1.toUpperCase(); // s1 è ancora "ciao", s2 è un NUOVO oggetto "CIAO"`
+
+Questo garantisce che le stringhe siano prevedibili e sicure da usare in ambienti multi-threaded, ma può avere implicazioni sulle performance se si eseguono molte modifiche (in quel caso, si usano `StringBuilder` o `StringBuffer`).
+
+--- METODI PRINCIPALI DELLA CLASSE `String` ---
+
+**1. Confronto di Stringhe**
+
+*   `equals(Object anotherObject)`: Restituisce `true` se le due stringhe contengono la stessa sequenza di caratteri. **È case-sensitive** (fa distinzione tra maiuscole e minuscole). È il metodo corretto per confrontare il contenuto di due stringhe.
+*   `equalsIgnoreCase(String anotherString)`: Come `equals`, ma ignora le differenze tra maiuscole e minuscole.
+*   `==` (operatore di confronto): **NON USARE `==` PER CONFRONTARE IL CONTENUTO DELLE STRINGHE!** L'operatore `==` confronta i riferimenti degli oggetti, cioè controlla se due variabili puntano allo stesso oggetto in memoria, non se hanno lo stesso contenuto.
+
+**2. Analisi e Ispezione**
+
+*   `length()`: Restituisce la lunghezza della stringa (il numero di caratteri) come un `int`.
+*   `isEmpty()`: Restituisce `true` se la stringa ha lunghezza 0.
+*   `isBlank()`: (Introdotto in Java 11) Restituisce `true` se la stringa è vuota o contiene solo spazi bianchi (spazi, tab, a capo).
+*   `charAt(int index)`: Restituisce il carattere (`char`) alla posizione specificata (`index`). L'indice parte da 0.
+*   `indexOf(String str)`: Restituisce l'indice della prima occorrenza della sottostringa `str`. Se non la trova, restituisce `-1`.
+*   `lastIndexOf(String str)`: Come `indexOf`, ma parte dalla fine della stringa.
+*   `startsWith(String prefix)`: Restituisce `true` se la stringa inizia con il prefisso specificato.
+*   `endsWith(String suffix)`: Restituisce `true` se la stringa finisce con il suffisso specificato.
+*   `contains(CharSequence s)`: Restituisce `true` se la stringa contiene la sequenza di caratteri specificata.
+
+**3. Creazione di Nuove Stringhe (Modifica)**
+
+Ricorda: questi metodi non modificano la stringa originale, ma ne restituiscono una nuova.
+
+*   `substring(int beginIndex)`: Restituisce una nuova stringa che è una sottostringa di quella originale, a partire dall'`beginIndex` fino alla fine.
+*   `substring(int beginIndex, int endIndex)`: Restituisce una sottostringa che va dall'`beginIndex` (incluso) all'`endIndex` (**escluso**).
+*   `toUpperCase()`: Restituisce una nuova stringa con tutti i caratteri in maiuscolo.
+*   `toLowerCase()`: Restituisce una nuova stringa con tutti i caratteri in minuscolo.
+*   `trim()`: Restituisce una nuova stringa rimuovendo tutti gli spazi bianchi all'inizio e alla fine.
+*   `replace(char oldChar, char newChar)`: Restituisce una nuova stringa sostituendo tutte le occorrenze di `oldChar` con `newChar`.
+*   `replaceAll(String regex, String replacement)`: Sostituisce tutte le sottostringhe che corrispondono all'espressione regolare (`regex`) con la stringa di rimpiazzo.
+
+**4. Divisione di Stringhe**
+
+*   `split(String regex)`: Divide la stringa in un array di stringhe (`String[]`) usando il delimitatore specificato (che è un'espressione regolare).
+    *Esempio: `"nome,cognome,eta".split(",")` restituisce `["nome", "cognome", "eta"]`.*
+
+--- `String` vs `StringBuilder` vs `StringBuffer` ---
+
+- **`String`**: Immutabile. Perfetta per valori che non cambiano.
+- **`StringBuilder`**: **Mutabile**. La scelta migliore quando devi concatenare o modificare stringhe molte volte in un ciclo. È più efficiente perché lavora sempre sullo stesso oggetto. **Non è thread-safe**.
+- **`StringBuffer`**: **Mutabile e thread-safe**. Come `StringBuilder`, ma con metodi `synchronized`. È più lenta di `StringBuilder` e va usata solo quando più thread devono modificare la stessa sequenza di caratteri.

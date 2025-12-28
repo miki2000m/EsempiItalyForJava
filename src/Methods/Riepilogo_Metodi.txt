@@ -1,0 +1,86 @@
+RIEPILOGO SUI METODI IN JAVA
+
+--- COS'È UN METODO? ---
+
+Un metodo è un blocco di codice che esegue un'azione specifica. I metodi sono una parte fondamentale della programmazione orientata agli oggetti, in quanto definiscono il **comportamento** di un oggetto.
+
+**Scopi Principali di un Metodo:**
+- **Riusabilità del Codice:** Scrivi un'azione una sola volta e puoi richiamarla (invocarla) quante volte vuoi.
+- **Organizzazione:** Suddividono un programma complesso in parti più piccole, gestibili e leggibili.
+- **Astrazione:** Nascondono i dettagli implementativi. Chi usa un metodo deve solo sapere *cosa fa*, non *come lo fa*.
+
+--- SINTASSI DI DICHIARAZIONE DI UN METODO ---
+
+La dichiarazione di un metodo, chiamata anche **firma del metodo** (method signature), ha la seguente struttura:
+
+`[modificatori] <tipo_ritorno> nomeMetodo([parametri]) {`
+`    // Corpo del metodo: il codice da eseguire`
+`    return [valore]; // Opzionale, dipende dal tipo di ritorno`
+`}`
+
+- **Modificatori (opzionali):**
+  - **Di accesso:** `public`, `protected`, `private` (o package-private se omesso). Definiscono chi può vedere e usare il metodo.
+  - **Altri:** `static` (il metodo appartiene alla classe, non a un'istanza), `final` (il metodo non può essere sovrascritto/overridden), `abstract` (il metodo non ha un corpo e deve essere implementato da una sottoclasse).
+
+- **Tipo di Ritorno (`<tipo_ritorno>`):**
+  - Il tipo di dato che il metodo "restituisce" al chiamante dopo aver terminato la sua esecuzione.
+  - Se un metodo non restituisce nulla, si usa la keyword `void`.
+  - Se il tipo di ritorno non è `void`, il metodo **deve** avere un'istruzione `return` che restituisca un valore di quel tipo.
+
+- **Nome del Metodo (`nomeMetodo`):**
+  - Un nome che descrive l'azione del metodo. Per convenzione, i nomi dei metodi iniziano con una lettera minuscola e usano il camelCase (es. `calcolaArea`).
+
+- **Parametri (opzionali):**
+  - Una lista di variabili (tipo e nome) che il metodo accetta come input. Questi valori vengono passati dal codice che chiama il metodo.
+
+--- OVERLOADING (SOVRACCARICO) DEI METODI ---
+
+L'overloading consiste nel definire, all'interno della stessa classe, **più metodi con lo stesso nome ma con una lista di parametri diversa**.
+
+La "diversità" della lista di parametri può essere dovuta a:
+1.  **Numero diverso di parametri:**
+    `void stampa(String s) { ... }`
+    `void stampa(String s, int volte) { ... }`
+
+2.  **Tipo diverso di parametri:**
+    `int somma(int a, int b) { ... }`
+    `double somma(double a, double b) { ... }`
+
+3.  **Ordine diverso dei tipi di parametri:**
+    `void elabora(int i, String s) { ... }`
+    `void elabora(String s, int i) { ... }`
+
+Il compilatore decide quale versione del metodo chiamare in base al numero e al tipo degli argomenti passati durante l'invocazione.
+**NOTA:** Non è possibile fare l'overload di un metodo cambiando solo il tipo di ritorno.
+
+--- VARARGS (VARIABLE-LENGTH ARGUMENTS) ---
+
+I varargs, introdotti in Java 5, permettono di creare un metodo che accetta un **numero variabile di argomenti** dello stesso tipo.
+
+**- Sintassi:**
+  Si dichiara un parametro vararg usando tre punti (`...`) dopo il tipo.
+
+  `public static int somma(int... numeri) { ... }`
+
+**- Come funziona:**
+  All'interno del metodo, il parametro vararg viene trattato come un **array** del tipo specificato.
+
+  `public static int somma(int... numeri) {`
+  `    int totale = 0;`
+  `    for (int numero : numeri) { // 'numeri' è un array di int`
+  `        totale += numero;`
+  `    }`
+  `    return totale;`
+  `}`
+
+**- Regole dei Varargs:**
+  1.  Ci può essere **un solo parametro vararg** in un metodo.
+  2.  Il parametro vararg deve essere **l'ultimo parametro** nella lista.
+
+  `// CORRETTO`
+  `void mioMetodo(String nome, int... valori) { ... }`
+
+  `// SBAGLIATO`
+  `void mioMetodo(int... valori, String nome) { ... }`
+
+I varargs sono molto comodi per creare metodi di utilità flessibili (come `System.out.printf` o `String.format`) senza costringere l'utente a creare manualmente un array.

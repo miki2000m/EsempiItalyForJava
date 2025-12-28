@@ -1,0 +1,91 @@
+RIEPILOGO SULLE INTERFACCE IN JAVA
+
+--- COS'È UN'INTERFACCIA? ---
+
+Un'interfaccia in Java è un "contratto" che una classe può promettere di rispettare. È un tipo di riferimento, simile a una classe, ma può contenere solo:
+- Metodi astratti (senza corpo).
+- Metodi `default` (con un'implementazione di default).
+- Metodi `static` (con un'implementazione, appartenenti all'interfaccia stessa).
+- Costanti (`public static final`).
+
+Una classe che **implementa** un'interfaccia (`implements NomeInterfaccia`) è obbligata a fornire un'implementazione concreta per tutti i metodi astratti definiti in quell'interfaccia.
+
+**Scopo Principale:**
+L'obiettivo delle interfacce è raggiungere l'**astrazione totale**. Definiscono un insieme di comportamenti (metodi) che una classe deve avere, senza specificare *come* questi comportamenti vengono realizzati. Questo permette di disaccoppiare il codice, rendendolo più flessibile e manutenibile.
+
+--- DICHIARAZIONE E IMPLEMENTAZIONE ---
+
+**1. Dichiarare un'interfaccia:**
+   `public interface Volante {`
+   `    void decolla(); // Metodo astratto (public e abstract sono impliciti)`
+   `    void atterra();`
+   `}`
+
+**2. Implementare un'interfaccia:**
+   Una classe usa la keyword `implements` per implementare un'interfaccia.
+
+   `public class Aereo implements Volante {`
+   `    @Override`
+   `    public void decolla() {`
+   `        System.out.println("L'aereo accelera e decolla.");`
+   `    }`
+
+   `    @Override`
+   `    public void atterra() {`
+   `        System.out.println("L'aereo atterra sulla pista.");`
+   `    }`
+   `}`
+
+--- EREDITARIETÀ MULTIPLA DI COMPORTAMENTI ---
+
+Una delle caratteristiche più potenti delle interfacce è che una classe può implementare **più interfacce contemporaneamente**. Questo è il modo in cui Java aggira il limite dell'ereditarietà singola delle classi, permettendo a una classe di "ereditare" comportamenti da più fonti.
+
+`public class Idrovolante extends Aereo implements Nuotante {`
+`    @Override`
+`    public void nuota() {`
+`        System.out.println("L'idrovolante galleggia e si muove sull'acqua.");`
+`    }`
+`}`
+
+In questo caso, `Idrovolante` ha sia i comportamenti di un `Aereo` (perché lo estende) sia quelli di un `Nuotante` (perché implementa l'interfaccia).
+
+--- INTERFACCE vs CLASSI ASTRATTE ---
+
+| Caratteristica          | Interfaccia                               | Classe Astratta                           |
+|-------------------------|-------------------------------------------|-------------------------------------------|
+| Ereditarietà Multipla   | **Sì** (una classe può implementare più interfacce) | **No** (una classe può estendere solo una classe astratta) |
+| Campi (Variabili)       | Solo costanti (`public static final`)     | Può avere campi di istanza (non `final`)  |
+| Costruttore             | **No**, non può avere un costruttore.     | **Sì**, può avere un costruttore.         |
+| Metodi                  | Astratti, `default`, `static`.            | Astratti e concreti (con corpo).          |
+| Scopo                   | Definire un **contratto di comportamenti** (cosa una classe *può fare*). | Condividere **codice comune** tra sottoclassi correlate (definire cosa una classe *è*). |
+
+**Quando usare cosa?**
+- Usa una **classe astratta** quando vuoi creare una gerarchia di classi strettamente correlate e vuoi condividere codice (campi e metodi concreti).
+- Usa un'**interfaccia** quando vuoi definire un comportamento che può essere condiviso da classi anche molto diverse tra loro.
+
+--- NOVITÀ NELLE INTERFACCE (DA JAVA 8 IN POI) ---
+
+Java 8 ha potenziato enormemente le interfacce introducendo due nuovi tipi di metodi:
+
+**1. Metodi `default`:**
+   Un metodo `default` è un metodo in un'interfaccia che ha un'implementazione predefinita.
+   - **Scopo:** Permette di aggiungere nuovi metodi a un'interfaccia **senza rompere la compatibilità** con le classi che già la implementano. Le classi esistenti ereditano semplicemente l'implementazione di default.
+   - Le classi che implementano l'interfaccia possono scegliere se usare l'implementazione di default o sovrascriverla (`@Override`) con una propria.
+
+   `public interface Volante {`
+   `    void decolla();`
+   `    default void plana() {`
+   `        System.out.println("L'oggetto sta planando.");`
+   `    }`
+   `}`
+
+**2. Metodi `static`:**
+   Un metodo `static` in un'interfaccia appartiene all'interfaccia stessa, non alle istanze delle classi che la implementano.
+   - **Scopo:** Utile per fornire metodi di utilità correlati all'interfaccia.
+   - Si chiamano direttamente sull'interfaccia: `NomeInterfaccia.metodoStatico()`.
+
+   `public interface Convertitore {`
+   `    static double migliaAKm(double miglia) {`
+   `        return miglia * 1.609;`
+   `    }`
+   `}`

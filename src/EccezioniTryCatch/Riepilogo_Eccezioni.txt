@@ -1,0 +1,84 @@
+RIEPILOGO SULLA GESTIONE DELLE ECCEZIONI IN JAVA
+
+--- COS'È UN'ECCEZIONE? ---
+
+Un'eccezione è un evento anomalo che si verifica durante l'esecuzione di un programma e che ne interrompe il normale flusso di istruzioni. In Java, le eccezioni sono oggetti che rappresentano questi errori.
+
+La gestione delle eccezioni è un meccanismo che permette di "catturare" questi errori e gestirli in modo controllato, evitando che il programma termini bruscamente (crash).
+
+--- LA GERARCHIA DELLE ECCEZIONI ---
+
+Tutte le eccezioni ereditano dalla classe `java.lang.Throwable`. La gerarchia si divide principalmente in due rami:
+
+1.  **`Error`**: Rappresenta problemi gravi e irrecuperabili che avvengono a livello di JVM (Java Virtual Machine), come `OutOfMemoryError` o `StackOverflowError`. Generalmente, un'applicazione non dovrebbe tentare di catturare o gestire questi errori.
+
+2.  **`Exception`**: Rappresenta errori che un'applicazione potrebbe voler catturare e gestire. Si suddivide ulteriormente in:
+
+    - **Checked Exceptions (Eccezioni Controllate):**
+      - Sono sottoclassi dirette di `Exception` (esclusa `RuntimeException`).
+      - Rappresentano condizioni di errore prevedibili e recuperabili (es. `IOException`, `FileNotFoundException`, `SQLException`).
+      - Il compilatore **obbliga** a gestirle. Devono essere catturate con un blocco `try-catch` o dichiarate nel metodo con la keyword `throws`.
+
+    - **Unchecked Exceptions (Eccezioni non Controllate):**
+      - Sono sottoclassi di `RuntimeException`.
+      - Rappresentano errori di programmazione (bug), come `NullPointerException`, `ArrayIndexOutOfBoundsException`, `ArithmeticException`.
+      - Il compilatore **non obbliga** a gestirle, anche se è possibile farlo. In genere, andrebbero evitate correggendo il codice, non catturandole.
+
+--- COSTRUTTI PER LA GESTIONE DELLE ECCEZIONI ---
+
+**1. Il Blocco `try-catch-finally`**
+
+- **`try`**: Contiene il "codice protetto", ovvero le istruzioni che potrebbero lanciare un'eccezione.
+- **`catch (TipoEccezione e)`**: Contiene il codice per gestire un'eccezione specifica. Se un'eccezione viene lanciata nel blocco `try`, la JVM cerca un blocco `catch` corrispondente. Si possono avere più blocchi `catch` per gestire diversi tipi di eccezioni (dal più specifico al più generico).
+- **`finally`**: Contiene codice che viene **eseguito sempre**, indipendentemente dal fatto che un'eccezione sia stata lanciata o meno. È il posto ideale per rilasciare risorse (es. chiudere file o connessioni a database).
+
+`try {`
+`    // Codice che potrebbe fallire`
+`} catch (FileNotFoundException e) {`
+`    // Gestisci l'errore di file non trovato`
+`} catch (IOException e) {`
+`    // Gestisci altri errori di I/O`
+`} catch (Exception e) {`
+`    // Gestisci qualsiasi altra eccezione (blocco generico)`
+`} finally {`
+`    // Questo codice viene eseguito sempre`
+`}`
+
+**2. La Keyword `throws`**
+Un metodo può "delegare" la gestione di una *checked exception* al metodo che lo chiama, dichiarandola nella sua firma con `throws`.
+
+`public void leggiFile() throws IOException {`
+`    // Codice che può lanciare IOException`
+`}`
+Chiunque chiami `leggiFile()` sarà ora obbligato a gestire `IOException`.
+
+**3. `try-with-resources` (da Java 7)**
+È una versione migliorata del `try` per la gestione di risorse che devono essere chiuse (come stream di file, connessioni, ecc.).
+
+`try (BufferedReader reader = new BufferedReader(new FileReader("file.txt"))) {`
+`    // Usa la risorsa 'reader'`
+`} catch (IOException e) {`
+`    // Gestisci l'eccezione`
+`}`
+// La risorsa `reader` viene chiusa automaticamente qui, rendendo il blocco `finally` non necessario per la chiusura.
+
+--- ECCEZIONI PERSONALIZZATE (CUSTOM EXCEPTIONS) ---
+
+È possibile creare i propri tipi di eccezione estendendo una delle classi di eccezione esistenti. Questo è utile per rappresentare errori specifici del dominio della propria applicazione.
+
+**- Creare un'eccezione personalizzata (checked):**
+  `public class SaldoInsufficienteException extends Exception {`
+  `    public SaldoInsufficienteException(String messaggio) {`
+  `        super(messaggio);`
+  `    }`
+  `}`
+
+**- Lanciare un'eccezione con `throw`:**
+  La keyword `throw` viene usata per lanciare esplicitamente un'istanza di un'eccezione.
+
+  `public void preleva(double importo) throws SaldoInsufficienteException {`
+  `    if (importo > this.saldo) {`
+  `        throw new SaldoInsufficienteException("Saldo non sufficiente per il prelievo.");`
+  `    }`
+  `    this.saldo -= importo;`
+  `}`

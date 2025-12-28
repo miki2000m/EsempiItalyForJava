@@ -1,0 +1,67 @@
+RIEPILOGO SULLE ANNOTAZIONI CUSTOM IN JAVA
+
+--- COSA SONO LE ANNOTAZIONI? ---
+
+Le annotazioni sono una forma di **metadati**, ovvero "dati che descrivono altri dati".
+In Java, sono etichette che si possono aggiungere a classi, metodi, campi e altri elementi del codice per fornire informazioni aggiuntive.
+
+Queste informazioni possono essere usate:
+1.  **Dal compilatore:** Per generare avvisi o errori (es. `@Override`).
+2.  **Da strumenti di build o di analisi statica:** Per generare codice, documentazione, ecc.
+3.  **A runtime:** Dal programma stesso, tramite un meccanismo chiamato **Reflection**, per alterare il comportamento del programma.
+
+--- COME SI CREA UN'ANNOTAZIONE CUSTOM? ---
+
+Per definire un'annotazione personalizzata, si usa la keyword `@interface`.
+
+`public @interface MiaAnnotazione { ... }`
+
+La parte più importante della definizione sono le **meta-annotazioni**, che configurano il comportamento della nostra annotazione.
+
+**1. `@Retention` (Policy di conservazione)**
+   Specifica "fino a quando" l'annotazione deve essere mantenuta.
+
+   - `RetentionPolicy.SOURCE`: L'annotazione esiste solo nel file sorgente (`.java`) e viene scartata dal compilatore. Utile per strumenti di analisi del codice.
+   - `RetentionPolicy.CLASS`: L'annotazione viene salvata nel file compilato (`.class`), ma non è accessibile a runtime. Questo è il comportamento di default.
+   - `RetentionPolicy.RUNTIME`: L'annotazione viene mantenuta nel file `.class` ed è accessibile a runtime tramite Reflection. **Questa è la policy più comune per le annotazioni custom che devono alterare il comportamento del programma.**
+
+**2. `@Target` (Bersaglio)**
+   Specifica a quali elementi del codice l'annotazione può essere applicata.
+
+   - `ElementType.TYPE`: Classi, interfacce, enum.
+   - `ElementType.METHOD`: Metodi.
+   - `ElementType.FIELD`: Campi (variabili d'istanza).
+   - `ElementType.CONSTRUCTOR`: Costruttori.
+   - `ElementType.PARAMETER`: Parametri di un metodo.
+   - ... e altri.
+
+   Si può specificare un singolo target (`@Target(ElementType.METHOD)`) o un array di target (`@Target({ElementType.METHOD, ElementType.TYPE})`).
+
+--- ELEMENTI DELLE ANNOTAZIONI ---
+
+Un'annotazione può avere degli "elementi" per passare dei valori. Si dichiarano come metodi all'interno dell' `@interface`.
+
+`@interface TestEseguibile {`
+`    String nomeTest();`
+`    int priorita() default 3; // 'default' rende l'elemento opzionale`
+`}`
+
+Quando si usa l'annotazione, si specificano i valori per i suoi elementi:
+
+`@TestEseguibile(nomeTest = "Test di Login", priorita = 1)`
+`public void mioMetodo() { ... }`
+
+--- COME SI USANO LE ANNOTAZIONI A RUNTIME? (REFLECTION) ---
+
+Il modo più potente per usare le annotazioni custom è processarle a runtime per creare framework o logiche dinamiche (es. un runner di test, un sistema di dependency injection).
+
+Questo processo si basa sulla **Reflection API** e segue questi passi:
+
+1.  **Ottenere l'oggetto `Class`:** Si parte dalla classe che si vuole ispezionare (es. `MiaClasse.class`).
+2.  **Ottenere l'elemento desiderato:** Si ottengono i metodi, i campi, ecc. (es. `miaClasse.getDeclaredMethods()`).
+3.  **Controllare la presenza dell'annotazione:** Si usa `isAnnotationPresent(MiaAnnotazione.class)`.
+4.  **Ottenere l'istanza dell'annotazione:** Si usa `getAnnotation(MiaAnnotazione.class)` per accedere ai valori dei suoi elementi.
+5.  **Agire di conseguenza:** Si esegue una logica basata sui metadati letti (es. eseguire un metodo, validare un campo, ecc.).
+
+IN SINTESI:
+Le annotazioni custom sono uno strumento avanzato per creare codice più flessibile, dichiarativo e potente, separando la logica di business dalla logica del "framework" che la gestisce.

@@ -1,0 +1,53 @@
+RIEPILOGO SULLA SERIALIZZAZIONE IN JAVA
+
+--- COS'È LA SERIALIZZAZIONE? ---
+
+La serializzazione è il processo di **conversione dello stato di un oggetto in un flusso di byte**.
+Questo flusso di byte può essere facilmente:
+1.  **Salvato su un file** (persistenza dell'oggetto).
+2.  **Inviato attraverso una rete** (es. tra un client e un server).
+3.  **Memorizzato in un database**.
+
+Il processo inverso, che **ricostruisce l'oggetto a partire dal flusso di byte**, è chiamato **deserializzazione**.
+
+In parole semplici, è un modo per "congelare" un oggetto per salvarlo o spedirlo, per poi "scongelarlo" più tardi.
+
+--- COME SI RENDE UNA CLASSE SERIALIZZABILE? ---
+
+Per rendere una classe serializzabile, basta seguire una regola fondamentale:
+
+**1. Implementare l'interfaccia `java.io.Serializable`**
+   Questa è una "interfaccia marcatore" (marker interface), il che significa che **non ha metodi da implementare**.
+   La sua unica funzione è "marcare" la classe, dicendo alla JVM (Java Virtual Machine) che gli oggetti di quel tipo possono essere serializzati.
+
+   `public class MiaClasse implements Serializable { ... }`
+
+--- CONCETTI CHIAVE DELLA SERIALIZZAZIONE ---
+
+**1. `serialVersionUID`**
+   - È un `long` statico e finale che agisce come un **numero di versione** per la classe.
+   - `private static final long serialVersionUID = 1L;`
+   - **A cosa serve?** Durante la deserializzazione, la JVM controlla se il `serialVersionUID` della classe nel classpath corrisponde a quello dell'oggetto serializzato. Se non corrispondono, viene lanciata un'`InvalidClassException`.
+   - **Best Practice:** È fortemente consigliato definirlo esplicitamente. Se non lo fai, Java ne genera uno automaticamente basato sulla struttura della classe (campi, metodi, ecc.). Questo è rischioso, perché anche una piccola modifica alla classe può cambiare il `serialVersionUID` generato e rompere la compatibilità con oggetti già serializzati.
+
+**2. La keyword `transient`**
+   - Se un campo di un oggetto non deve essere serializzato, può essere marcato con la keyword `transient`.
+   - `private transient String password;`
+   - **Perché usarla?**
+     - **Sicurezza:** Per non salvare dati sensibili, come password o token.
+     - **Non necessarietà:** Per campi il cui valore può essere calcolato o che non ha senso salvare (es. una connessione a un database).
+   - Quando un oggetto viene deserializzato, i campi `transient` vengono inizializzati al loro **valore di default** (`null` per gli oggetti, `0` per i tipi numerici, `false` per i booleani).
+
+**3. Le Classi Coinvolte (I/O)**
+   - Per scrivere un oggetto (serializzare):
+     - `FileOutputStream`: Per scrivere byte su un file.
+     - `ObjectOutputStream`: "Avvolge" un `FileOutputStream` e fornisce il metodo `writeObject(oggetto)`.
+
+   - Per leggere un oggetto (deserializzare):
+     - `FileInputStream`: Per leggere byte da un file.
+     - `ObjectInputStream`: "Avvolge" un `FileInputStream` e fornisce il metodo `readObject()`, che deve essere castato al tipo corretto.
+
+--- ATTENZIONE ALLA SICUREZZA ---
+
+La deserializzazione di dati non fidati è una nota vulnerabilità di sicurezza ("insecure deserialization"). Un malintenzionato potrebbe creare un flusso di byte malevolo che, una volta deserializzato, esegue codice dannoso.
+È fondamentale deserializzare solo dati provenienti da fonti sicure.

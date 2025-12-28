@@ -1,0 +1,84 @@
+RIEPILOGO SUL POLIMORFISMO IN JAVA
+
+Il polimorfismo, che in greco significa "avere molte forme", è uno dei pilastri fondamentali della Programmazione Orientata agli Oggetti (OOP), insieme a incapsulamento ed ereditarietà.
+
+**Concetto Fondamentale:**
+Il polimorfismo è la capacità di un oggetto di assumere **molte forme diverse**. In pratica, permette di trattare un oggetto di una sottoclasse come se fosse un oggetto della sua superclasse.
+
+Questo consente di scrivere codice più generico e flessibile, in cui si può interagire con oggetti di tipo diverso attraverso un'unica interfaccia comune (la superclasse o un'interfaccia).
+
+--- COME FUNZIONA IL POLIMORFISMO? ---
+
+Il polimorfismo in Java si basa su due concetti chiave:
+1.  **Ereditarietà o Implementazione di Interfacce:** Deve esistere una relazione "is-a" (è un). Un `Cane` *è un* `Animale`. Un `Aereo` *è un* `Veicolo`.
+2.  **Overriding (Sovrascrittura) dei Metodi:** Le sottoclassi forniscono la loro implementazione specifica per i metodi definiti nella superclasse o nell'interfaccia.
+
+**Esempio Pratico:**
+
+Immaginiamo di avere una superclasse `Animale` e due sottoclassi, `Cane` e `Gatto`.
+
+`public class Animale {`
+`    public void emettiSuono() {`
+`        System.out.println("L'animale emette un suono.");`
+`    }`
+`}`
+
+`public class Cane extends Animale {`
+`    @Override`
+`    public void emettiSuono() {`
+`        System.out.println("Il cane abbaia: Bau!");`
+`    }`
+`}`
+
+`public class Gatto extends Animale {`
+`    @Override`
+`    public void emettiSuono() {`
+`        System.out.println("Il gatto miagola: Miau!");`
+`    }`
+`}`
+
+Ora, grazie al polimorfismo, possiamo fare questo:
+
+`Animale mioAnimale1 = new Cane(); // Un Cane "è un" Animale`
+`Animale mioAnimale2 = new Gatto(); // Un Gatto "è un" Animale`
+
+`mioAnimale1.emettiSuono(); // Stampa "Il cane abbaia: Bau!"`
+`mioAnimale2.emettiSuono(); // Stampa "Il gatto miagola: Miau!"`
+
+**Cosa è successo?**
+- La variabile `mioAnimale1` è di tipo `Animale` (il **tipo statico** o tipo di riferimento).
+- L'oggetto a cui punta è di tipo `Cane` (il **tipo dinamico** o tipo di runtime).
+- Quando viene chiamato `emettiSuono()`, Java controlla il tipo *dinamico* dell'oggetto a runtime e invoca il metodo corretto, cioè quello sovrascritto nella classe `Cane`. Questo meccanismo è chiamato **Dynamic Method Dispatch** (o Late Binding).
+
+--- VANTAGGI DEL POLIMORFISMO ---
+
+1.  **Flessibilità e Estensibilità:**
+    Si può scrivere codice che opera su oggetti di una superclasse, e questo codice funzionerà automaticamente con qualsiasi nuova sottoclasse venga creata in futuro, senza bisogno di modifiche.
+
+    `public void faiParlare(Animale animale) {`
+    `    animale.emettiSuono();`
+    `}`
+
+    Questo metodo `faiParlare` accetta qualsiasi `Animale`. Se domani crei una classe `Mucca extends Animale`, puoi passarla a `faiParlare` senza cambiare una riga di codice.
+
+2.  **Codice più Pulito e Generico:**
+    Permette di gestire collezioni di oggetti eterogenei (ma correlati) in modo uniforme.
+
+    `Animale[] animali = { new Cane(), new Gatto(), new Mucca() };`
+
+    `for (Animale a : animali) {`
+    `    a.emettiSuono(); // Chiama il metodo corretto per ogni animale`
+    `}`
+
+    Senza polimorfismo, avresti bisogno di una serie di `if (a instanceof Cane)` per controllare il tipo di ogni oggetto e fare il cast, rendendo il codice molto più complesso e fragile.
+
+--- TIPI DI POLIMORFISMO ---
+
+- **Polimorfismo a Runtime (Dynamic Polymorphism):**
+  È quello che abbiamo visto finora, basato sull'override dei metodi. La decisione su quale metodo eseguire viene presa a runtime. È la forma più potente e comune di polimorfismo.
+
+- **Polimorfismo a Compile-time (Static Polymorphism):**
+  Si ottiene tramite l'**overloading** (sovraccarico) dei metodi. Il compilatore decide quale versione del metodo chiamare in base al numero e al tipo degli argomenti passati durante la compilazione. Non è considerato "vero" polimorfismo nel senso stretto della OOP, ma ne condivide il nome.
+
+IN SINTESI:
+Il polimorfismo è un concetto che permette di scrivere codice che non dipende dai tipi specifici degli oggetti, ma dalle loro interfacce comuni, promuovendo un design del software più astratto, flessibile e facile da estendere.

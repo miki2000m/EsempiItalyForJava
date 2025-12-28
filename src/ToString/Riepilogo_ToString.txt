@@ -1,0 +1,71 @@
+RIEPILOGO SUL METODO `toString()`
+
+--- COS'È IL METODO `toString()`? ---
+
+Il metodo `toString()` è un metodo fondamentale in Java, definito originariamente nella classe `java.lang.Object`. Poiché ogni classe in Java eredita (direttamente o indirettamente) da `Object`, ogni oggetto ha a disposizione questo metodo.
+
+Lo scopo di `toString()` è fornire una **rappresentazione testuale (una `String`) dell'oggetto**.
+
+--- IL COMPORTAMENTO DI DEFAULT ---
+
+Se non sovrascrivi (`override`) il metodo `toString()` in una tua classe, essa erediterà l'implementazione di `Object`.
+L'implementazione di default restituisce una stringa composta da:
+1.  Il nome completo della classe.
+2.  Il simbolo della chiocciola (`@`).
+3.  La rappresentazione esadecimale dell'**hash code** dell'oggetto.
+
+**Esempio (senza override):**
+`Persona p = new Persona("Mario", "Rossi");`
+`System.out.println(p); // Stampa qualcosa come: "ToString.Persona@1b6d3586"`
+
+Questa stringa di default è raramente utile, perché non dice nulla sullo **stato** dell'oggetto (cioè i valori dei suoi campi).
+
+--- PERCHÉ SOVRASCRIVERE `toString()`? ---
+
+È considerata una **buona pratica** sovrascrivere sempre il metodo `toString()` in tutte le proprie classi (specialmente quelle che rappresentano dati, come `Persona`, `Prodotto`, ecc.).
+
+**Vantaggi:**
+1.  **Debugging:** È estremamente utile durante il debug. Quando stampi un oggetto in console o lo ispezioni in un debugger, vedrai una rappresentazione chiara e leggibile del suo stato, invece dell'incomprensibile hash code.
+2.  **Logging:** Facilita la scrittura di log. `log.info("Elaborazione utente: " + utente);` produrrà un messaggio significativo.
+3.  **Integrazione con Altre API:** Molte classi standard di Java (come le collezioni o `System.out.println`) chiamano implicitamente `toString()` quando devono rappresentare un oggetto come testo.
+
+--- COME SOVRASCRIVERE `toString()` ---
+
+Per fornire una rappresentazione personalizzata, devi fare l'override del metodo nella tua classe.
+
+**Sintassi:**
+`@Override`
+`public String toString() {`
+`    // Costruisci e restituisci una stringa che descriva l'oggetto`
+`    return "Descrizione dell'oggetto";`
+`}`
+
+- **`@Override`**: Questa annotazione non è obbligatoria, ma è fortemente raccomandata. Dice al compilatore che stai intenzionalmente sovrascrivendo un metodo della superclasse. Se sbagli la firma del metodo (es. `tostring()` con la 't' minuscola), il compilatore ti darà un errore.
+
+**Esempio Pratico:**
+`public class Persona {`
+`    private String nome;`
+`    private String cognome;`
+
+`    // ... costruttore e altri metodi ...`
+
+`    @Override`
+`    public String toString() {`
+`        return "Persona[nome='" + this.nome + "', cognome='" + this.cognome + "']";`
+`    }`
+`}`
+
+Con questa implementazione:
+`Persona p = new Persona("Mario", "Rossi");`
+`System.out.println(p); // Stampa: "Persona[nome='Mario', cognome='Rossi']"`
+
+--- CHIAMATA IMPLICITA ---
+
+Non è quasi mai necessario chiamare `toString()` esplicitamente. Java lo fa per te in molte situazioni, ad esempio:
+- Quando un oggetto viene passato a `System.out.println()`.
+- Quando un oggetto viene concatenato a una stringa usando l'operatore `+`.
+
+`String messaggio = "L'utente è: " + p; // Java chiama p.toString() automaticamente`
+
+IN SINTESI:
+Sovrascrivere `toString()` è un piccolo sforzo che migliora enormemente la leggibilità, la manutenibilità e la facilità di debug del tuo codice. È una delle prime cose da fare quando si crea una nuova classe di dati.

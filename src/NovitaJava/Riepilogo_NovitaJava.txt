@@ -1,0 +1,78 @@
+RIEPILOGO SU ALCUNE NOVITÀ RECENTI DI JAVA (POST-17)
+
+Questo riepilogo copre alcune delle feature più significative introdotte dopo Java 17, con un focus su Java 21.
+
+--- COS'È UNA FEATURE IN "PREVIEW"? ---
+
+Prima di iniziare, è importante capire questo concetto. Una feature in "preview" è una funzionalità **completa e funzionante**, ma non ancora finalizzata. Viene rilasciata per permettere agli sviluppatori di provarla e dare feedback.
+
+Per usare una feature in preview, devi abilitarla esplicitamente sia in compilazione sia a runtime con il flag:
+`--enable-preview`
+
+---
+
+**1. RECORD PATTERNS (Java 21, Feature Finalizzata)**
+
+**- Problema che risolve:** Semplifica ulteriormente il controllo del tipo e l'estrazione dei dati dagli oggetti, in particolare dai `record`.
+
+**- Come funziona:** È un'estensione del "pattern matching for instanceof" (introdotto in Java 16). Invece di limitarsi a fare il cast a una variabile, permette di "de-costruire" un record direttamente nell' `if`.
+
+**- Esempio di evoluzione:**
+
+  // 1. Prima di Java 16 (verboso)
+  `if (obj instanceof Punto) {`
+  `    Punto p = (Punto) obj;`
+  `    System.out.println(p.x() + p.y());`
+  `}`
+
+  // 2. Con Pattern Matching (Java 16) (meglio)
+  `if (obj instanceof Punto p) {`
+  `    System.out.println(p.x() + p.y());`
+  `}`
+
+  // 3. Con Record Patterns (Java 21) (super conciso)
+  `if (obj instanceof Punto(int x, int y)) {`
+  `    // Le componenti `x` e `y` sono estratte e disponibili direttamente!`
+  `    System.out.println(x + y);`
+  `}`
+
+I Record Patterns possono essere usati anche negli `switch`, rendendoli ancora più potenti.
+
+---
+
+**2. STRING TEMPLATES (Java 21, Feature in Preview)**
+
+**- Problema che risolve:** La composizione di stringhe in Java è sempre stata scomoda.
+  - La concatenazione con `+` è inefficiente e poco leggibile.
+  - `StringBuilder` è verboso.
+  - `String.format()` non è type-safe e separa i valori dalla stringa.
+
+**- Come funziona:** Introduce un nuovo modo per creare stringhe con valori ed espressioni incorporate, usando un "template processor".
+
+**- Sintassi:**
+  `Processore."La mia stringa con una variabile \\{nomeVariabile}"`
+
+  - `STR` è il processore standard più comune.
+  - Le variabili o espressioni sono inserite con `\{...}`.
+
+**- Esempio:**
+
+  `String nome = "Luca";`
+  `int eta = 25;`
+
+  // Il nuovo modo con il processore STR
+  `String saluto = STR."Ciao, sono \\{nome} e tra un anno avrò \\{eta + 1} anni.";`
+
+  // Il risultato sarà: "Ciao, sono Luca e tra un anno avrò 26 anni."
+
+**- Vantaggi:**
+  - **Leggibilità:** I valori sono direttamente dentro la stringa.
+  - **Sicurezza:** A differenza di `String.format`, i template sono più sicuri contro injection attacks quando usati con processori specifici (come `FMT`).
+  - **Potenza:** Si possono usare espressioni complesse direttamente all'interno delle parentesi graffe.
+
+---
+
+Queste sono solo alcune delle tante novità. Altre feature importanti introdotte di recente includono:
+- **Virtual Threads (Java 21):** Un nuovo modello di concorrenza leggero per semplificare la scrittura di applicazioni ad alta concorrenza.
+- **Pattern Matching for switch (Java 21):** Permette di usare pattern complessi (inclusi i Record Patterns) nei `case` degli `switch`.
+- **Sequenced Collections (Java 21):** Introduce nuove interfacce per collezioni con un ordine di incontro definito (es. per ottenere il primo o l'ultimo elemento).

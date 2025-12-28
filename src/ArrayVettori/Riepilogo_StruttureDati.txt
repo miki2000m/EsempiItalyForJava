@@ -1,0 +1,97 @@
+RIEPILOGO SU ARRAY, COLLEZIONI E ALGORITMI DI RICERCA/ORDINAMENTO
+
+Questa sezione copre le strutture dati fondamentali in Java e gli algoritmi comuni per manipolarle.
+
+--- 1. ARRAY ---
+
+Un array è una struttura dati a **dimensione fissa** che memorizza una sequenza di elementi dello stesso tipo.
+
+- **Caratteristiche:**
+  - **Dimensione Fissa:** La dimensione di un array viene decisa al momento della creazione e non può più essere cambiata.
+  - **Accesso Rapido:** L'accesso a un elemento tramite il suo indice (es. `array[5]`) è estremamente veloce (tempo costante, O(1)).
+  - **Tipi:** Può contenere sia tipi primitivi (`int[]`) sia tipi riferimento (`String[]`).
+- **Array Multidimensionali:** Si possono creare array di array per rappresentare matrici o tabelle (es. `int[][] matrice`).
+- **Uso:** Ottimi quando la dimensione dei dati è nota a priori e l'accesso rapido agli elementi è prioritario.
+
+--- 2. L'INTERFACCIA `List` ---
+
+Una `List` è una collezione **ordinata** (mantiene l'ordine di inserimento) che ammette elementi duplicati. A differenza degli array, le liste hanno una **dimensione dinamica**.
+
+**Implementazioni Principali:**
+
+**A) `ArrayList`**
+- **Struttura Interna:** Usa un array dinamico. Quando l'array si riempie, ne viene creato uno nuovo più grande e gli elementi vengono copiati.
+- **Performance:**
+  - **Accesso (`get`):** Molto veloce (O(1)).
+  - **Aggiunta/Rimozione in fondo:** Veloce (O(1) in media).
+  - **Aggiunta/Rimozione al centro o all'inizio:** **Molto Lento** (O(n)), perché richiede di spostare tutti gli elementi successivi.
+- **Uso:** La scelta di default per una lista. Ideale quando si accede spesso agli elementi tramite indice e le modifiche avvengono principalmente in fondo.
+
+**B) `LinkedList`**
+- **Struttura Interna:** Usa una catena di nodi, dove ogni nodo contiene un elemento e i puntatori al nodo precedente e successivo.
+- **Performance:**
+  - **Accesso (`get`):** **Molto Lento** (O(n)), perché deve attraversare la lista dall'inizio o dalla fine per trovare l'elemento.
+  - **Aggiunta/Rimozione al centro o all'inizio/fine:** **Molto Veloce** (O(1)), perché richiede solo di aggiornare i puntatori dei nodi adiacenti.
+- **Uso:** Ideale quando si effettuano frequenti aggiunte e rimozioni all'inizio o al centro della lista. È anche l'implementazione preferita per `Stack` e `Queue`.
+
+--- 3. `Stack` (Pila) ---
+
+Lo `Stack` è una struttura dati che segue il principio **LIFO (Last-In, First-Out)**. L'ultimo elemento inserito è il primo a essere rimosso.
+
+- **Metafora:** Una pila di piatti.
+- **Operazioni Principali:**
+  - `push(E item)`: Aggiunge un elemento in cima alla pila.
+  - `pop()`: Rimuove e restituisce l'elemento in cima alla pila.
+  - `peek()`: Restituisce l'elemento in cima senza rimuoverlo.
+- **Classe in Java:** La classe `java.util.Stack` è l'implementazione storica, ma oggi è considerata obsoleta. La pratica moderna è usare un'interfaccia `Deque` (come `LinkedList`) per simulare uno stack: `Deque<String> stack = new LinkedList<>();`.
+
+--- 4. `Queue` (Coda) ---
+
+La `Queue` è una struttura dati che segue il principio **FIFO (First-In, First-Out)**. Il primo elemento inserito è il primo a essere rimosso.
+
+- **Metafora:** Una fila alla cassa.
+- **Operazioni Principali:**
+  - `offer(E item)`: Aggiunge un elemento in fondo alla coda.
+  - `poll()`: Rimuove e restituisce l'elemento in testa alla coda.
+  - `peek()`: Restituisce l'elemento in testa senza rimuoverlo.
+- **Implementazioni in Java:**
+  - `LinkedList`: Una `LinkedList` può essere usata come una coda standard.
+  - `PriorityQueue`: Una coda speciale dove gli elementi non vengono processati in ordine di arrivo, ma in base alla loro **priorità** (ordine naturale o definito da un `Comparator`). Gli elementi con "priorità" più alta (di solito i più piccoli) vengono rimossi per primi.
+
+--- 5. ALGORITMI DI RICERCA ---
+
+**A) Ricerca Lineare (Linear Search)**
+- **Come funziona:** Scorre la collezione un elemento alla volta dall'inizio alla fine, finché non trova l'elemento cercato.
+- **Performance:** Lenta (O(n)).
+- **Requisiti:** Nessuno. Funziona su qualsiasi collezione, anche non ordinata.
+
+**B) Ricerca Binaria (Binary Search)**
+- **Come funziona:** "Dimezza" ripetutamente il campo di ricerca. Confronta l'elemento centrale dell'intervallo con il valore cercato e decide se continuare la ricerca nella metà inferiore o superiore.
+- **Performance:** Molto veloce (O(log n)).
+- **Requisiti:** **L'array o la lista devono essere ordinati!**
+
+**C) Ricerca per Interpolazione (Interpolation Search)**
+- **Come funziona:** Una versione migliorata della ricerca binaria. Invece di controllare sempre l'elemento centrale, **stima** la posizione probabile dell'elemento basandosi sulla distribuzione dei valori.
+- **Performance:** Ancora più veloce della ricerca binaria (O(log log n)) in media, ma solo se i dati sono **distribuiti uniformemente**. Nel caso peggiore, degenera a O(n).
+- **Requisiti:** Dati ordinati e distribuiti uniformemente.
+
+--- 6. ALGORITMI DI ORDINAMENTO ---
+
+**Bubble Sort**
+- **Come funziona:** Scorre ripetutamente l'array, confrontando ogni coppia di elementi adiacenti e scambiandoli se sono nell'ordine sbagliato. Ad ogni passata, l'elemento più grande "galleggia" verso la sua posizione finale in fondo all'array.
+- **Performance:** Molto lento (O(n²)). È uno degli algoritmi più inefficienti.
+- **Uso:** Principalmente didattico, per introdurre i concetti di ordinamento. Non va usato in produzione.
+
+`void bubbleSort(int[] arr) {`
+`    int n = arr.length;`
+`    for (int i = 0; i < n - 1; i++) {`
+`        for (int j = 0; j < n - i - 1; j++) {`
+`            if (arr[j] > arr[j + 1]) {`
+`                // scambia arr[j] e arr[j+1]`
+`                int temp = arr[j];`
+`                arr[j] = arr[j + 1];`
+`                arr[j + 1] = temp;`
+`            }`
+`        }`
+`    }`
+`}`

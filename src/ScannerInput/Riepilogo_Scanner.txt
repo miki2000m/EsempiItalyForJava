@@ -1,0 +1,61 @@
+RIEPILOGO SULLA CLASSE `java.util.Scanner`
+
+--- COS'È LA CLASSE `Scanner`? ---
+
+La classe `Scanner` è lo strumento standard in Java per **leggere l'input** da diverse fonti, la più comune delle quali è l'input da console (tastiera). Permette di "parsare" (analizzare e convertire) l'input in tipi di dato primitivi (`int`, `double`, ecc.) e stringhe.
+
+--- COME SI USA? ---
+
+**1. Creazione di un'istanza:**
+   Per leggere dalla console, si crea un'istanza di `Scanner` passandogli `System.in` (lo stream di input standard) come argomento.
+
+   `Scanner scanner = new Scanner(System.in);`
+
+**2. Lettura dell'Input:**
+   `Scanner` fornisce diversi metodi `next...()` per leggere tipi di dato specifici.
+
+   - `nextLine()`: Legge l'intera riga di testo, fino a quando non incontra il carattere "a capo" (generato dalla pressione del tasto Invio). **Consuma** anche il carattere "a capo".
+
+   - `next()`: Legge la prossima "parola" (token) delimitata da uno spazio bianco (spazio, tab, a capo). **Non consuma** il carattere "a capo" che segue.
+
+   - `nextInt()`, `nextDouble()`, `nextBoolean()`, ecc.: Leggono il prossimo token e tentano di convertirlo nel tipo primitivo corrispondente. Anche questi metodi **non consumano** il carattere "a capo" successivo.
+
+**3. Chiusura dello `Scanner`:**
+   Una volta terminato l'utilizzo, è una buona pratica chiudere lo `Scanner` per rilasciare le risorse di sistema associate.
+
+   `scanner.close();`
+
+   Se si usa un `try-with-resources`, la chiusura è automatica:
+   `try (Scanner scanner = new Scanner(System.in)) { ... }`
+
+--- IL PROBLEMA DEL "DANGLING NEWLINE" (A CAPO RESIDUO) ---
+
+Questo è l'errore più comune quando si usa `Scanner`. Si verifica quando si mescolano chiamate a `nextInt()` (o `nextDouble()`, ecc.) con chiamate a `nextLine()`.
+
+**Scenario del Problema:**
+1.  Chiami `scanner.nextInt()` per leggere un numero.
+2.  Digiti `42` e premi **Invio**.
+3.  `nextInt()` legge e consuma solo "42", ma lascia il carattere "a capo" (`\n`) nel buffer di input.
+4.  Subito dopo, chiami `scanner.nextLine()` per leggere una stringa.
+5.  `nextLine()` trova immediatamente il carattere "a capo" residuo nel buffer, lo consuma e restituisce una stringa vuota, senza darti la possibilità di inserire nuovo testo.
+
+**Soluzione:**
+Dopo ogni chiamata a `nextInt()`, `nextDouble()`, ecc., se la chiamata successiva è un `nextLine()`, devi "pulire" il buffer consumando il carattere "a capo" residuo.
+
+`System.out.print("Inserisci un numero: ");`
+`int numero = scanner.nextInt();`
+
+`scanner.nextLine(); // Consuma il '\n' rimasto nel buffer`
+
+`System.out.print("Inserisci una frase: ");`
+`String frase = scanner.nextLine(); // Ora funziona correttamente`
+
+--- INPUT NON BLOCCANTE (TIMED INPUT) ---
+
+Lo `Scanner` è, per sua natura, un meccanismo **bloccante**. Quando chiami un metodo `next...()`, il programma si ferma e attende indefinitamente che l'utente inserisca un input.
+
+Implementare un input con un timeout (es. "premi un tasto entro 5 secondi") non è possibile con il solo `Scanner`. Richiede approcci più complessi, come:
+- **Multithreading:** Si avvia un thread separato che si mette in attesa dell'input (`scanner.nextLine()`), mentre il thread principale attende per un tempo limitato. Se il tempo scade, il thread principale prosegue e può interrompere il thread di input. Questo è l'approccio mostrato nell'esempio `MainScannerSenzaInvio.java`.
+- **Librerie Esterne:** Librerie come JLine o Lanterna forniscono funzionalità avanzate per la gestione della console, inclusa la lettura di singoli caratteri senza attendere l'Invio e la gestione di input non bloccante.
+
+Per la maggior parte delle applicazioni console semplici, l'uso bloccante standard di `Scanner` è sufficiente. La gestione di input non bloccante è un problema avanzato.

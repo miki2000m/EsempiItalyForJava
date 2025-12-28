@@ -1,0 +1,62 @@
+RIEPILOGO SULLA CLASSE `java.lang.Math`
+
+--- COS'È LA CLASSE `Math`? ---
+
+La classe `java.lang.Math` è una classe di utilità fornita da Java che contiene metodi e costanti per eseguire operazioni matematiche e numeriche.
+È una classe `final`, il che significa che non può essere estesa (non puoi creare una sottoclasse di `Math`).
+Tutti i suoi membri (metodi e costanti) sono `static`, quindi non è necessario creare un'istanza della classe per usarli. Si invoca tutto direttamente tramite `Math.nomeMetodo()`.
+
+--- METODI MATEMATICI FONDAMENTALI ---
+
+*   `Math.abs(x)`: Restituisce il **valore assoluto** di un numero (lo rende positivo). Funziona con `int`, `long`, `float`, `double`.
+*   `Math.max(a, b)`: Restituisce il **più grande** tra due numeri.
+*   `Math.min(a, b)`: Restituisce il **più piccolo** tra due numeri.
+*   `Math.sqrt(x)`: Calcola la **radice quadrata** di `x`. Restituisce un `double`.
+*   `Math.cbrt(x)`: Calcola la **radice cubica** di `x`. Restituisce un `double`.
+*   `Math.pow(base, esponente)`: Calcola la **potenza**, elevando `base` all'`esponente`. Restituisce un `double`.
+*   `Math.hypot(x, y)`: Calcola l'ipotenusa di un triangolo rettangolo con cateti `x` e `y`. Equivale a `Math.sqrt(x*x + y*y)`.
+
+--- METODI DI ARROTONDAMENTO ---
+
+Questi metodi sono cruciali per gestire i numeri decimali.
+
+*   `Math.round(x)`: Esegue l'**arrotondamento matematico standard**. Se la parte decimale è `.5` o superiore, arrotonda all'intero successivo (per eccesso); altrimenti, arrotonda all'intero precedente (per difetto). Restituisce un `long` o un `int`.
+*   `Math.ceil(x)` ("ceiling" - soffitto): Arrotonda **sempre per eccesso** al numero intero più vicino. Restituisce un `double`.
+    *Esempio: `Math.ceil(4.01)` restituisce `5.0`.*
+*   `Math.floor(x)` ("floor" - pavimento): Arrotonda **sempre per difetto** al numero intero più vicino. Restituisce un `double`.
+    *Esempio: `Math.floor(4.99)` restituisce `4.0`.*
+
+--- NUMERI CASUALI ---
+
+*   `Math.random()`: Genera un numero `double` casuale compreso nell'intervallo `[0.0, 1.0)` (cioè 0.0 incluso, 1.0 escluso).
+*   **Generare un intero in un range:** Per ottenere un numero intero casuale tra `min` e `max` (inclusi), la formula comune è:
+    `int randomNum = (int)(Math.random() * (max - min + 1)) + min;`
+
+--- COSTANTI MATEMATICHE ---
+
+La classe `Math` fornisce anche due costanti `double` molto importanti:
+
+*   `Math.PI`: Il valore di Pi Greco (π), circa `3.14159...`.
+*   `Math.E`: Il valore del numero di Nepero (o Eulero), la base dei logaritmi naturali, circa `2.71828...`.
+
+--- FUNZIONI TRIGONOMETRICHE ---
+
+Tutte le funzioni trigonometriche in Java lavorano con angoli espressi in **radianti**, non in gradi.
+
+*   `Math.sin(angoloInRadianti)`: Calcola il seno.
+*   `Math.cos(angoloInRadianti)`: Calcola il coseno.
+*   `Math.tan(angoloInRadianti)`: Calcola la tangente.
+
+Per convertire tra gradi e radianti, si usano due metodi di utilità:
+*   `Math.toRadians(gradi)`: Converte un angolo da gradi a radianti.
+*   `Math.toDegrees(radianti)`: Converte un angolo da radianti a gradi.
+
+--- FUNZIONI LOGARITMICHE ED ESPONENZIALI ---
+
+*   `Math.log(x)`: Calcola il **logaritmo naturale** (in base `e`) di `x`.
+*   `Math.log10(x)`: Calcola il **logaritmo in base 10** di `x`.
+*   `Math.exp(x)`: Calcola `e` elevato alla potenza di `x` (e^x).
+
+--- ALTRI METODI UTILI ---
+
+*   `Math.signum(x)`: Restituisce il **segno** di un numero: `-1.0` se negativo, `0.0` se zero, `1.0` se positivo.

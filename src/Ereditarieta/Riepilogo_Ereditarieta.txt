@@ -1,0 +1,82 @@
+RIEPILOGO SULL'EREDITARIETÀ IN JAVA
+
+L'ereditarietà è uno dei pilastri fondamentali della Programmazione Orientata agli Oggetti (OOP). È il meccanismo attraverso cui una classe (chiamata **sottoclasse** o classe figlia) può **ereditare campi e metodi** da un'altra classe (chiamata **superclasse** o classe madre).
+
+**Scopo Principale:**
+- **Riuso del Codice:** Evita la duplicazione di codice definendo campi e metodi comuni in una superclasse, che possono poi essere riutilizzati da più sottoclassi.
+- **Creare Gerarchie:** Permette di modellare relazioni "is-a" (è un). Ad esempio, uno `Studente` *è una* `Persona`. Un `Leone` *è un* `Animale`.
+
+--- COME SI IMPLEMENTA L'EREDITARIETÀ ---
+
+**1. La Keyword `extends`**
+   Per far ereditare una classe da un'altra, si usa la keyword `extends`.
+
+   `// Superclasse (o classe madre)`
+   `public class Veicolo {`
+   `    String marca;`
+   `    public void avvia() {`
+   `        System.out.println("Il veicolo si avvia.");`
+   `    }`
+   `}`
+
+   `// Sottoclasse (o classe figlia)`
+   `public class Automobile extends Veicolo {`
+   `    int numeroPorte;`
+   `}`
+
+   In questo caso, la classe `Automobile` eredita il campo `marca` e il metodo `avvia()` dalla classe `Veicolo`. Un oggetto `Automobile` avrà quindi sia `marca` e `numeroPorte` sia il metodo `avvia()`.
+
+**2. La Keyword `super`**
+   La keyword `super` è un riferimento alla superclasse immediata. Ha due usi principali:
+
+   **A) Chiamare il costruttore della superclasse:**
+   Il costruttore di una sottoclasse **deve** chiamare il costruttore della sua superclasse. Se non lo si fa esplicitamente, Java inserisce una chiamata a `super()` (il costruttore senza argomenti) come prima istruzione. Se la superclasse non ha un costruttore senza argomenti, si otterrà un errore di compilazione.
+
+   `public class Studente extends Persona {`
+   `    public Studente(String nome, String cognome) {`
+   `        // Chiama esplicitamente il costruttore di Persona(String, String)`
+   `        super(nome, cognome);`
+   `    }`
+   `}`
+   La chiamata a `super(...)` deve essere **la prima istruzione** nel costruttore della sottoclasse.
+
+   **B) Chiamare un metodo della superclasse:**
+   Si può usare `super.nomeMetodo()` per invocare un metodo della superclasse, specialmente se è stato sovrascritto nella sottoclasse.
+
+--- OVERRIDING (SOVRASCRITTURA) DEI METODI ---
+
+L'overriding si verifica quando una sottoclasse fornisce una **propria implementazione specifica** per un metodo che è già definito nella sua superclasse.
+
+**Regole per l'Overriding:**
+- Il nome del metodo, il numero e il tipo dei parametri devono essere identici.
+- Il tipo di ritorno deve essere lo stesso o un "sottotipo covariante".
+- Il livello di accesso del metodo sovrascritto non può essere più restrittivo di quello della superclasse (es. non puoi sovrascrivere un metodo `public` con uno `private`).
+
+**L'annotazione `@Override`:**
+- Indica l'intenzione di sovrascrivere un metodo.
+- È fortemente raccomandata perché fa sì che il compilatore controlli che le regole dell'override siano rispettate, prevenendo errori comuni.
+
+`public class Veicolo {`
+`    public void avvia() {`
+`        System.out.println("Il veicolo si avvia.");`
+`    }`
+`}`
+
+`public class AutomobileElettrica extends Veicolo {`
+`    @Override`
+`    public void avvia() {`
+`        // Chiama opzionalmente il metodo della superclasse`
+`        super.avvia();`
+`        // Aggiunge un comportamento specifico`
+`        System.out.println("In silenzio, perché è elettrica.");`
+`    }`
+`}`
+
+--- LA CLASSE `java.lang.Object` ---
+
+In Java, se una classe non estende esplicitamente un'altra classe, estende implicitamente `java.lang.Object`. Questo significa che `Object` è la superclasse ultima di ogni classe in Java.
+Di conseguenza, ogni oggetto eredita i metodi di `Object`, come `toString()`, `equals()`, `hashCode()`, `getClass()`, ecc. Questo è il motivo per cui possiamo fare l'override di `toString()` in qualsiasi classe.
+
+--- EREDITARIETÀ SINGOLA ---
+
+Java supporta solo l'**ereditarietà singola** per le classi. Una classe può estendere **una sola** superclasse. Per ereditare comportamenti da più fonti, si usano le **interfacce** (una classe può implementare più interfacce).

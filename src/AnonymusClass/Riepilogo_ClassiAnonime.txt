@@ -1,0 +1,87 @@
+RIEPILOGO SULLE CLASSI ANONIME (ANONYMOUS INNER CLASSES)
+
+--- COSA SONO LE CLASSI ANONIME? ---
+
+Una classe anonima è una classe interna (inner class) che **non ha un nome**. Viene dichiarata e istanziata in un'unica espressione.
+È una scorciatoia per creare una sottoclasse "usa e getta" di una classe esistente o un'implementazione di un'interfaccia, direttamente nel punto del codice in cui serve.
+
+**Scopo Principale:**
+Vengono usate per creare un'implementazione specifica e concisa di un comportamento, senza la necessità di creare un nuovo file `.java` separato per una classe che verrebbe usata una sola volta.
+
+--- SINTASSI ---
+
+La sintassi per creare una classe anonima si basa su quella di un'istanza, ma con l'aggiunta di un blocco di codice tra parentesi graffe.
+
+`new NomeSuperclasse_o_Interfaccia() {`
+`    // Corpo della classe anonima`
+`    // Qui si possono:`
+`    // - Sovrascrivere metodi (override)`
+`    // - Aggiungere nuovi campi e metodi (ma sono accessibili solo dall'interno della classe anonima)`
+`};`
+
+**Esempio con una Classe:**
+Immaginiamo di avere una classe `Saluto`.
+`class Saluto {`
+`    public void esegui() {`
+`        System.out.println("Ciao!");`
+`    }`
+`}`
+
+Possiamo creare una classe anonima che ne sovrascrive il comportamento:
+`Saluto salutoPersonalizzato = new Saluto() {`
+`    @Override`
+`    public void esegui() {`
+`        System.out.println("Buongiorno!");`
+`    }`
+`};`
+`salutoPersonalizzato.esegui(); // Stampa "Buongiorno!"`
+
+**Esempio con un'Interfaccia:**
+`interface Cliccabile {`
+`    void onClick();`
+`}`
+
+`Cliccabile gestoreClick = new Cliccabile() {`
+`    @Override`
+`    public void onClick() {`
+`        System.out.println("Pulsante cliccato!");`
+`    }`
+`};`
+`gestoreClick.onClick(); // Stampa "Pulsante cliccato!"`
+
+--- CASI D'USO COMUNI ---
+
+Prima di Java 8, le classi anonime erano estremamente comuni per:
+- **Gestori di Eventi (Event Listeners):** Nelle interfacce grafiche (Swing, AWT, Android) per definire l'azione da compiere quando un utente clicca un pulsante.
+- **Thread:** Per creare un'istanza di `Runnable`.
+  `new Thread(new Runnable() { ... }).start();`
+- **Task Pianificati:** Per creare un'istanza di `TimerTask`.
+
+--- CLASSI ANONIME vs ESPRESSIONI LAMBDA ---
+
+Con l'introduzione delle **espressioni lambda** in Java 8, l'uso delle classi anonime è diminuito drasticamente, ma non è scomparso.
+
+**Relazione:**
+Un'espressione lambda è essenzialmente una forma molto più compatta di una classe anonima che implementa un'**interfaccia funzionale** (un'interfaccia con un solo metodo astratto).
+
+**Esempio di Sostituzione:**
+
+  // Con Classe Anonima
+  `Runnable r1 = new Runnable() {`
+  `    @Override`
+  `    public void run() {`
+  `        System.out.println("Eseguito con classe anonima");`
+  `    }`
+  `};`
+
+  // Con Espressione Lambda (più conciso e leggibile)
+  `Runnable r2 = () -> System.out.println("Eseguito con lambda");`
+
+**Quando usare ancora le Classi Anonime?**
+Le classi anonime sono ancora necessarie quando:
+1.  Si deve implementare un'interfaccia con **più di un metodo astratto**.
+2.  Si deve estendere una **classe astratta** o una **classe concreta** e fare l'override dei suoi metodi.
+3.  Si ha bisogno di mantenere uno **stato interno** tramite campi di istanza all'interno dell'implementazione. Una lambda, per sua natura, è "stateless" (anche se può accedere a variabili `final` o "effectively final" del suo scope esterno).
+
+IN SINTESI:
+Le classi anonime sono uno strumento potente per creare implementazioni "al volo". Sebbene le espressioni lambda le abbiano sostituite per l'implementazione di interfacce funzionali, rimangono indispensabili per tutti gli altri casi in cui è necessaria una sottoclasse o un'implementazione di interfaccia concisa e monouso.

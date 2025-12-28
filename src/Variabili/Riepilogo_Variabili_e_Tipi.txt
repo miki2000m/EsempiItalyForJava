@@ -1,0 +1,76 @@
+RIEPILOGO SUI TIPI DI DATO IN JAVA
+
+In Java, i tipi di dato si dividono in due categorie principali: **Tipi Primitivi** e **Tipi Riferimento (Reference Types)**.
+
+--- 1. TIPI PRIMITIVI (PRIMITIVE TYPES) ---
+
+I tipi primitivi sono i mattoni fondamentali del linguaggio. Memorizzano direttamente il valore del dato e non sono oggetti.
+
+Esistono 8 tipi primitivi in Java:
+
+**- Tipi Numerici Interi:**
+  - `byte`: 8 bit. Valori da -128 a 127. Utile per risparmiare memoria in grandi array.
+  - `short`: 16 bit. Valori da -32,768 a 32,767.
+  - `int`: 32 bit. Il tipo intero più usato. Valori da -2^31 a 2^31-1.
+  - `long`: 64 bit. Per numeri interi molto grandi. I valori letterali `long` devono finire con una `L` (es. `long n = 12345678901L;`).
+
+**- Tipi Numerici a Virgola Mobile (Floating-Point):**
+  - `float`: 32 bit. Precisione singola. I valori letterali `float` devono finire con una `f` (es. `float f = 3.14f;`).
+  - `double`: 64 bit. Precisione doppia. È il tipo di default per i valori decimali.
+
+**- Tipo Carattere:**
+  - `char`: 16 bit. Rappresenta un singolo carattere Unicode. I valori letterali `char` si scrivono tra apici singoli (es. `char c = 'A';`).
+
+**- Tipo Booleano:**
+  - `boolean`: Rappresenta un valore logico. Può essere solo `true` o `false`.
+
+**Caratteristiche dei Tipi Primitivi:**
+- Memorizzano il valore direttamente nella variabile.
+- Sono più veloci e occupano meno memoria rispetto ai loro equivalenti oggetto.
+- Non sono oggetti, quindi non hanno metodi (es. non puoi fare `int.toString()`).
+- Hanno un valore di default (es. `0` per i tipi numerici, `false` per `boolean`) se sono campi di una classe, ma non se sono variabili locali (che devono essere inizializzate).
+
+--- 2. TIPI RIFERIMENTO (REFERENCE TYPES) ---
+
+Un tipo riferimento non memorizza direttamente il valore, ma un **riferimento (o indirizzo di memoria)** all'oggetto che contiene i dati.
+
+**Esempi:**
+- Tutte le classi che crei (`Persona`, `Prodotto`, ecc.).
+- Tutte le classi fornite da Java (`String`, `ArrayList`, `Scanner`, ecc.).
+- Gli Array (`int[]`, `String[]`, ecc.).
+
+**Caratteristiche dei Tipi Riferimento:**
+- Sono tutti sottoclassi di `java.lang.Object`.
+- Una variabile di tipo riferimento può avere il valore `null`, che significa che non punta a nessun oggetto.
+- Hanno metodi che possono essere invocati su di essi.
+- Sono generalmente più lenti e consumano più memoria dei tipi primitivi.
+
+--- 3. WRAPPER CLASSES (CLASSI INVOLUCRO) ---
+
+Per ogni tipo primitivo, Java fornisce una corrispondente **classe "involucro" (wrapper)** che lo rappresenta come un oggetto.
+
+| Primitivo | Wrapper     |
+|-----------|-------------|
+| `boolean` | `Boolean`   |
+| `char`    | `Character` |
+| `byte`    | `Byte`      |
+| `short`   | `Short`     |
+| `int`     | `Integer`   |
+| `long`    | `Long`      |
+| `float`   | `Float`     |
+| `double`  | `Double`    |
+
+**Perché esistono le Wrapper Classes?**
+- Per permettere ai tipi primitivi di essere usati in contesti che richiedono oggetti, come le **collezioni generiche** (es. `ArrayList<Integer>`, non `ArrayList<int>`).
+- Forniscono metodi di utilità per la conversione e la manipolazione dei valori (es. `Integer.parseInt("123")`).
+- Possono avere valore `null`, a differenza dei primitivi.
+
+**Autoboxing e Unboxing:**
+Java esegue automaticamente la conversione tra tipi primitivi e le loro wrapper classes.
+- **Autoboxing:** Conversione automatica da primitivo a wrapper.
+  `Integer numeroOggetto = 100; // Il compilatore converte `int` in `Integer`
+- **Unboxing:** Conversione automatica da wrapper a primitivo.
+  `int numeroPrimitivo = numeroOggetto; // Il compilatore estrae l' `int` da `Integer`
+
+Questo meccanismo rende il codice molto più pulito e leggibile, evitando conversioni manuali.
+Tuttavia, bisogna fare attenzione al `NullPointerException` durante l'unboxing: se un oggetto wrapper è `null` e si tenta di assegnarlo a un primitivo, verrà lanciata un'eccezione.

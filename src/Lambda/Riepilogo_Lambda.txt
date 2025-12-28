@@ -1,0 +1,73 @@
+RIEPILOGO SULLE ESPRESSIONI LAMBDA E LE INTERFACCE FUNZIONALI
+
+--- COSA SONO LE ESPRESSIONI LAMBDA? ---
+
+Un'espressione lambda (o semplicemente "lambda") è un modo **compatto e anonimo** per rappresentare una funzione. Introdotta in Java 8, ha rivoluzionato il modo di scrivere codice, specialmente quando si lavora con collezioni (Stream API) e eventi.
+
+Il suo scopo principale è permettere di **passare un blocco di codice (un comportamento) come se fosse un parametro** di un metodo.
+
+--- SINTASSI DI UNA LAMBDA ---
+
+La sintassi di una lambda è composta da tre parti:
+
+`(argomenti) -> { corpo }`
+
+1.  **Argomenti**: Una lista di parametri di input, simile a quella di un metodo.
+    - `()`: Se non ci sono argomenti.
+    - `(x)` o `x`: Se c'è un solo argomento (le parentesi sono opzionali).
+    - `(x, y)`: Se ci sono più argomenti.
+    - Il tipo degli argomenti (`(String x, int y)`) è quasi sempre opzionale, perché Java può inferirlo dal contesto.
+
+2.  **Operatore Freccia `->`**: Separa gli argomenti dal corpo della funzione.
+
+3.  **Corpo**: Il blocco di codice che viene eseguito.
+    - `{ System.out.println("Ciao"); }`: Se il corpo contiene una o più istruzioni, si usano le parentesi graffe. Se la funzione deve restituire un valore, si usa la keyword `return`.
+    - `x * x`: Se il corpo contiene una singola espressione, le parentesi graffe e la keyword `return` sono implicite. Il risultato dell'espressione viene automaticamente restituito.
+
+--- INTERFACCE FUNZIONALI: IL "TIPO" DI UNA LAMBDA ---
+
+Una lambda non è un oggetto a sé stante; è un'implementazione di un'**interfaccia funzionale**.
+
+Un'interfaccia funzionale è un'interfaccia che contiene **UN SOLO METODO ASTRATTO**.
+
+Esempio:
+`@FunctionalInterface`
+`interface Calcolatore {`
+`    int calcola(int a, int b);`
+`}`
+
+La lambda `(x, y) -> x + y` è un'implementazione valida di questa interfaccia, perché la sua firma `(int, int) -> int` corrisponde a quella del metodo `calcola`.
+
+`Calcolatore somma = (x, y) -> x + y;`
+`int risultato = somma.calcola(5, 3); // risultato = 8`
+
+**L'annotazione `@FunctionalInterface`**
+- È opzionale ma fortemente raccomandata.
+- Fa in modo che il compilatore controlli che l'interfaccia abbia effettivamente un solo metodo astratto. Se ne aggiungi un secondo per errore, il compilatore ti avviserà.
+- Non conta i metodi `default` e `static`, che possono essere presenti in un'interfaccia funzionale.
+
+Java fornisce già molte interfacce funzionali predefinite nel package `java.util.function`, come:
+- `Predicate<T>`: `(T) -> boolean` (testa una condizione).
+- `Function<T, R>`: `(T) -> R` (trasforma un valore).
+- `Consumer<T>`: `(T) -> void` (consuma un valore, non restituisce nulla).
+- `Supplier<T>`: `() -> T` (fornisce un valore).
+- `Runnable`: `() -> void` (esegue un'azione).
+
+--- PERCHÉ USARE LE LAMBDA? ---
+
+1.  **Codice più Conciso:** Riducono drasticamente il "boilerplate" delle classi anonime.
+
+    // Prima di Java 8 (classe anonima)
+    `new Thread(new Runnable() {`
+    `    public void run() {`
+    `        System.out.println("Ciao");`
+    `    }`
+    `}).start();`
+
+    // Con Lambda
+    `new Thread(() -> System.out.println("Ciao")).start();`
+
+2.  **Programmazione Funzionale:** Sono il pilastro della Stream API, permettendo di scrivere codice dichiarativo e più leggibile per l'elaborazione di collezioni.
+    `lista.stream().filter(s -> s.startsWith("A")).forEach(System.out::println);`
+
+3.  **Passare Comportamenti:** Permettono di trattare il codice come un dato, passandolo a metodi che possono eseguirlo in momenti diversi (es. gestione di eventi, task asincroni).

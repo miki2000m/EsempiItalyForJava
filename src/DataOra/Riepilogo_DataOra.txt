@@ -1,0 +1,81 @@
+RIEPILOGO SULL'API `java.time` (Date-Time API)
+
+Introdotta in Java 8, l'API `java.time` è il modo moderno e corretto per gestire date, orari e fusi orari in Java. Sostituisce le vecchie e problematiche classi `java.util.Date` e `java.util.Calendar`.
+
+**Principi Chiave:**
+- **Immutabilità:** Come per le stringhe, tutti gli oggetti di `java.time` sono immutabili. Ogni modifica (es. aggiungere un giorno) restituisce un nuovo oggetto.
+- **Separazione dei Concetti:** Esistono classi diverse per concetti diversi (date, orari, date con orari, durate, periodi, fusi orari).
+- **Chiarezza:** I nomi dei metodi sono chiari e intuitivi (es. `plusDays()`, `minusHours()`).
+
+--- CLASSI PRINCIPALI (per l'orologio umano) ---
+
+Queste classi rappresentano date e orari come li vediamo noi, senza concetto di fuso orario.
+
+*   **`LocalDate`**: Rappresenta una **data** (anno, mese, giorno).
+    - `LocalDate.now()`: La data di oggi.
+    - `LocalDate.of(2023, 12, 25)`: Una data specifica.
+    - `data.getYear()`, `data.getMonth()`, `data.getDayOfMonth()`: Per ottenere le singole parti.
+    - `data.plusDays(10)`, `data.minusMonths(2)`: Per effettuare calcoli.
+
+*   **`LocalTime`**: Rappresenta un **orario** (ora, minuti, secondi, nanosecondi).
+    - `LocalTime.now()`: L'orario attuale.
+    - `LocalTime.of(18, 30, 0)`: Un orario specifico.
+    - `orario.getHour()`, `orario.getMinute()`: Per ottenere le singole parti.
+
+*   **`LocalDateTime`**: Rappresenta la combinazione di una **data e un orario**.
+    - `LocalDateTime.now()`: Data e ora attuali.
+    - `LocalDateTime.of(2023, 12, 25, 13, 0)`: Una data e ora specifiche.
+
+--- FORMATTAZIONE E PARSING ---
+
+La classe `DateTimeFormatter` viene usata per convertire gli oggetti `java.time` in stringhe e viceversa.
+
+*   **Formattare (da Oggetto a Stringa):**
+    `LocalDateTime now = LocalDateTime.now();`
+    `DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");`
+    `String testoFormattato = now.format(formatter); // Es: "25/12/2023 13:45:30"`
+
+*   **Parsare (da Stringa a Oggetto):**
+    `String testo = "25/12/2023";`
+    `DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");`
+    `LocalDate data = LocalDate.parse(testo, formatter);`
+
+**Pattern Comuni:**
+- `yyyy`: Anno a 4 cifre
+- `MM`: Mese a 2 cifre (01-12)
+- `dd`: Giorno del mese a 2 cifre
+- `HH`: Ora del giorno a 2 cifre (00-23)
+- `mm`: Minuti a 2 cifre
+- `ss`: Secondi a 2 cifre
+
+--- DURATE E PERIODI (per misurare il tempo) ---
+
+*   **`Period`**: Misura una quantità di tempo in termini di **anni, mesi e giorni**. È basato sul calendario.
+    - `Period.between(LocalDate start, LocalDate end)`: Calcola il periodo tra due date.
+    - `Period p = Period.ofYears(2).plusMonths(3);`
+    - Utile per calcolare l'età di una persona o la differenza tra due compleanni.
+
+*   **`Duration`**: Misura una quantità di tempo in termini di **giorni (standard di 24 ore), ore, minuti, secondi e nanosecondi**. È basato sul tempo della macchina.
+    - `Duration.between(LocalTime start, LocalTime end)`: Calcola la durata tra due orari.
+    - `Duration d = Duration.ofHours(3).plusMinutes(30);`
+    - Utile per misurare il tempo di esecuzione di un'operazione o la differenza tra due istanti precisi.
+
+**Differenza chiave:** `Period` è per "date umane", `Duration` è per "tempo macchina".
+
+--- GESTIONE DEI FUSI ORARI ---
+
+Quando si lavora con applicazioni globali, è fondamentale gestire i fusi orari.
+
+*   **`ZoneId`**: Rappresenta un identificatore di fuso orario (es. "Europe/Rome", "America/New_York").
+    - `ZoneId.systemDefault()`: Il fuso orario del sistema su cui gira la JVM.
+    - `ZoneId.of("Europe/Rome")`: Un fuso orario specifico.
+
+*   **`ZonedDateTime`**: Rappresenta una data e un'ora con un fuso orario specifico. È l'equivalente di `LocalDateTime` ma "consapevole" del fuso orario.
+    - `ZonedDateTime.now()`: Data, ora e fuso orario attuali del sistema.
+    - `ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Tokyo"))`: Crea uno ZonedDateTime per un fuso specifico.
+
+--- CLASSI PER IL TEMPO MACCHINA ---
+
+*   **`Instant`**: Rappresenta un singolo, specifico punto sulla linea del tempo universale (timeline UTC), misurato come numero di nanosecondi a partire dall'epoca UNIX (1 gennaio 1970). È ideale per registrare timestamp di eventi in modo non ambiguo.
+    - `Instant.now()`: L'istante attuale in UTC.
+    - È la classe da preferire per salvare timestamp in un database.

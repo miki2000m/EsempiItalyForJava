@@ -1,0 +1,67 @@
+RIEPILOGO SULLA LOCALIZZAZIONE (i18n) IN JAVA
+
+La localizzazione (in inglese "internationalization", abbreviato in "i18n") è il processo di adattamento di un'applicazione per supportare diverse lingue e regioni. L'obiettivo è creare un'unica applicazione che possa presentare testi, date, numeri e valute nel formato corretto per utenti di diverse parti del mondo.
+
+Java fornisce un robusto framework per la localizzazione basato su tre componenti principali.
+
+--- 1. `Locale` ---
+
+Un `java.util.Locale` è un oggetto che rappresenta una specifica regione geografica, politica o culturale. **Non è un'impostazione globale**, ma un identificatore che si passa ai metodi di formattazione per specificare *quali* convenzioni usare.
+
+**Come si crea un `Locale`:**
+- `new Locale("it", "IT")`: Lingua italiana, Paese Italia.
+- `new Locale("en", "US")`: Lingua inglese, Paese Stati Uniti.
+- `Locale.getDefault()`: Restituisce il `Locale` predefinito della JVM, che di solito è ereditato dal sistema operativo.
+- `Locale.ITALY`, `Locale.US`, `Locale.JAPAN`: Costanti predefinite per i `Locale` più comuni.
+
+--- 2. `ResourceBundle` ---
+
+Un `java.util.ResourceBundle` è il meccanismo standard per gestire la **traduzione dei testi**. Permette di separare le stringhe di testo dal codice sorgente dell'applicazione.
+
+**Come funziona:**
+1.  Si creano dei file di proprietà (`.properties`) per ogni lingua supportata. Questi file contengono coppie chiave-valore.
+    - `messaggi_it.properties` -> `saluto = Ciao`
+    - `messaggi_en.properties` -> `saluto = Hello`
+
+2.  I file devono seguire una convenzione di nomenclatura: `nomeBase_lingua_PAESE.properties`. Java è abbastanza intelligente da trovare il file più specifico. Se cerca `messaggi_it_IT` e non lo trova, proverà con `messaggi_it`, e poi con il file di default `messaggi`.
+
+3.  Nel codice, si carica il `ResourceBundle` corretto in base al `Locale` desiderato:
+    `Locale locale = new Locale("it");`
+    `ResourceBundle messaggi = ResourceBundle.getBundle("percorso.nomeBase", locale);`
+
+4.  Si recupera la stringa tradotta usando la sua chiave:
+    `String saluto = messaggi.getString("saluto");`
+
+Questo approccio è estremamente flessibile: per aggiungere una nuova lingua, basta aggiungere un nuovo file `.properties`, senza modificare una sola riga di codice Java.
+
+--- 3. FORMATTATORI SPECIFICI PER `Locale` ---
+
+Per formattare date, orari, numeri e valute, Java fornisce classi che possono essere configurate con un `Locale`.
+
+**A) `NumberFormat` (per numeri e valute)**
+- `NumberFormat.getNumberInstance(locale)`: Crea un formattatore di numeri generico.
+- `NumberFormat.getCurrencyInstance(locale)`: Crea un formattatore di valute (aggiunge il simbolo corretto, es. €, $, ¥).
+- `NumberFormat.getPercentInstance(locale)`: Crea un formattatore di percentuali.
+
+*Esempio:*
+`double numero = 1234.56;`
+`NumberFormat.getNumberInstance(Locale.ITALY).format(numero); // "1.234,56"`
+`NumberFormat.getNumberInstance(Locale.US).format(numero);    // "1,234.56"`
+
+**B) `DateTimeFormatter` (per date e orari)**
+- `DateTimeFormatter.ofLocalizedDate(style)`
+- `DateTimeFormatter.ofLocalizedTime(style)`
+- `DateTimeFormatter.ofLocalizedDateTime(style)`
+
+Questi metodi creano un formattatore che usa uno stile predefinito (`FormatStyle.SHORT`, `MEDIUM`, `LONG`, `FULL`) specifico per un `Locale`.
+
+*Esempio:*
+`LocalDateTime adesso = LocalDateTime.now();`
+`var dtf = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.ITALY);`
+`adesso.format(dtf); // "sabato 24 febbraio 2024"`
+
+`var dtf_US = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.US);`
+`adesso.format(dtf_US); // "Saturday, February 24, 2024"`
+
+IN SINTESI:
+La localizzazione in Java si basa sull'uso combinato di `Locale` per identificare la regione, `ResourceBundle` per tradurre i testi e formattatori specifici come `NumberFormat` e `DateTimeFormatter` per presentare i dati secondo le convenzioni locali.

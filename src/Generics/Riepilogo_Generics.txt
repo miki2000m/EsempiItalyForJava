@@ -1,0 +1,90 @@
+RIEPILOGO SUI GENERICS IN JAVA
+
+--- COSA SONO I GENERICS? ---
+
+I Generics, introdotti in Java 5, sono un meccanismo che permette di creare classi, interfacce e metodi che possono operare su **tipi di dato specificati al momento della loro dichiarazione**. In pratica, consentono di scrivere codice "parametrizzato" rispetto al tipo.
+
+**Il Problema che Risolvono:**
+Prima dei generics, per scrivere codice generico si usava la classe `Object`. Questo approccio aveva due grossi svantaggi:
+1.  **Mancanza di Type Safety (Sicurezza del Tipo):** Potevi inserire qualsiasi tipo di oggetto in una collezione, rischiando di trovare un tipo inaspettato durante l'elaborazione.
+2.  **Necessità di Cast Espliciti:** Quando recuperavi un oggetto, dovevi fare un cast esplicito al tipo corretto, rendendo il codice verboso e a rischio di `ClassCastException` a runtime.
+
+I Generics risolvono entrambi i problemi, spostando il controllo del tipo dalla fase di runtime alla fase di **compilazione**.
+
+--- SINTASSI E CONVENZIONI ---
+
+I generics si dichiarano usando le parentesi angolari (`<>`).
+
+**1. Classi e Interfacce Generiche:**
+   `public class Box<T> { ... }`
+   `public interface List<E> { ... }`
+
+   Quando si crea un'istanza, si specifica il tipo concreto:
+   `Box<String> stringBox = new Box<>();`
+   `List<Integer> numberList = new ArrayList<>();`
+
+**2. Parametri di Tipo (Type Parameters):**
+   La lettera all'interno delle parentesi angolari è un "parametro di tipo". Per convenzione, si usano singole lettere maiuscole:
+   - `T`: Type (un tipo generico)
+   - `E`: Element (usato nelle collezioni)
+   - `K`: Key (usato nelle mappe)
+   - `V`: Value (usato nelle mappe)
+   - `N`: Number (per tipi numerici)
+   - `S`, `U`, ecc. per altri tipi.
+
+Una classe può avere più parametri di tipo:
+`public interface Map<K, V> { ... }`
+
+**3. Metodi Generici:**
+   Un metodo può avere i propri parametri di tipo, indipendenti da quelli della classe. Il parametro di tipo si dichiara prima del tipo di ritorno.
+   `public <T> void stampaArray(T[] array) { ... }`
+
+--- BOUNDED TYPE PARAMETERS (PARAMETRI DI TIPO LIMITATI) ---
+
+A volte si vuole limitare i tipi che possono essere usati come argomento per un parametro di tipo. Questo si fa con la keyword `extends`.
+
+`public class Box<T extends Number> { ... }`
+
+In questo esempio, `Box` può essere istanziato solo con tipi che sono sottoclassi di `Number` (come `Integer`, `Double`, `Float`, ecc.).
+`Box<Integer> intBox = new Box<>(); // CORRETTO`
+`Box<String> stringBox = new Box<>(); // ERRORE DI COMPILAZIONE`
+
+Questo permette di chiamare metodi del tipo "limite" (`Number` in questo caso) sugli oggetti di tipo `T` in modo sicuro.
+
+--- WILDCARDS (CARATTERI JOLLY) ---
+
+I wildcards sono usati per creare codice più flessibile quando si lavora con metodi che accettano classi generiche come parametri. Il wildcard è rappresentato dal punto interrogativo (`?`).
+
+**1. Upper Bounded Wildcard (`? extends Tipo`):**
+   - **Significato:** "Un tipo sconosciuto che è `Tipo` o una sua sottoclasse".
+   - **Uso:** Si usa quando si deve **leggere** da una struttura dati generica (Producer).
+   - **Esempio:**
+     `public void stampaLista(List<? extends Number> lista) {`
+     `    for (Number n : lista) { // Posso leggere perché so che ogni elemento è almeno un Number`
+     `        System.out.println(n);`
+     `    }`
+     `    // lista.add(10); // ERRORE DI COMPILAZIONE: non posso aggiungere, non so il tipo esatto.`
+     `}`
+     Questo metodo può accettare una `List<Integer>`, una `List<Double>`, ecc.
+
+**2. Lower Bounded Wildcard (`? super Tipo`):**
+   - **Significato:** "Un tipo sconosciuto che è `Tipo` o una sua superclasse".
+   - **Uso:** Si usa quando si deve **scrivere** in una struttura dati generica (Consumer).
+   - **Esempio:**
+     `public void aggiungiNumeri(List<? super Integer> lista) {`
+     `    lista.add(10); // CORRETTO: posso aggiungere un Integer, perché la lista contiene Integer o una sua superclasse (es. Number, Object).`
+     `    // Integer i = lista.get(0); // ERRORE DI COMPILAZIONE: non so se l'elemento è un Integer o un Object.`
+     `}`
+     Questo metodo può accettare una `List<Integer>`, una `List<Number>`, o una `List<Object>`.
+
+**3. Unbounded Wildcard (`?`):**
+   - **Significato:** "Un tipo sconosciuto qualsiasi".
+   - **Uso:** Quando il tipo di dato non è importante, ad esempio se si usano solo metodi della classe `Object`.
+   - `public void stampaDimensioni(List<?> lista) {`
+   `    System.out.println(lista.size()); // .size() non dipende dal tipo E`
+   `}`
+
+**Motto da ricordare (PECS):**
+**P**roducer **E**xtends, **C**onsumer **S**uper.
+- Se la struttura dati **produce** valori (li leggi), usa `extends`.
+- Se la struttura dati **consuma** valori (ci scrivi), usa `super`.

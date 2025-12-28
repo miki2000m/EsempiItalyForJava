@@ -1,0 +1,110 @@
+RIEPILOGO SUL CONTROLLO DEL FLUSSO IN JAVA
+
+Le istruzioni di controllo del flusso sono costrutti che permettono di alterare l'esecuzione sequenziale di un programma, eseguendo blocchi di codice in base a determinate condizioni o ripetendoli più volte.
+
+--- 1. ISTRUZIONI CONDIZIONALI ---
+
+**A) `if-else`**
+È il costrutto di base per l'esecuzione condizionale.
+
+`if (condizione) {`
+`    // Blocco di codice eseguito se la condizione è true`
+`} else if (altraCondizione) {`
+`    // Blocco eseguito se la prima condizione è false e questa è true`
+`} else {`
+`    // Blocco eseguito se tutte le condizioni precedenti sono false`
+`}`
+
+**B) Operatore Ternario (`? :`)**
+È una forma compatta di `if-else` usata per assegnare un valore a una variabile in base a una condizione.
+
+`variabile = (condizione) ? valore_se_true : valore_se_false;`
+
+*Esempio:*
+`String status = (punteggio >= 60) ? "Promosso" : "Bocciato";`
+
+**C) `switch`**
+L'istruzione `switch` permette di scegliere tra più blocchi di codice da eseguire in base al valore di una variabile.
+
+**- Switch Tradizionale (Statement):**
+  - Richiede l'uso di `break` per evitare il "fall-through" (l'esecuzione dei `case` successivi).
+  - Può essere verboso.
+
+  `switch (giorno) {`
+  `    case 1:`
+  `        System.out.println("Lunedì");`
+  `        break;`
+  `    case 7:`
+  `        System.out.println("Domenica");`
+  `        break;`
+  `    default:`
+  `        System.out.println("Giorno non valido");`
+  `}`
+
+**- Switch Moderno (Expression - da Java 14+):**
+  - È un'espressione, quindi **restituisce un valore**.
+  - Usa la sintassi a freccia (`->`) che non richiede `break`.
+  - È più conciso e sicuro (il compilatore può controllare che tutti i casi siano coperti).
+
+  `String nomeGiorno = switch (giorno) {`
+  `    case 1 -> "Lunedì";`
+  `    case 7 -> "Domenica";`
+  `    default -> "Giorno non valido";`
+  `};`
+
+--- 2. CICLI (LOOPS) ---
+
+I cicli vengono usati per eseguire un blocco di codice ripetutamente.
+
+**A) Ciclo `for` (tradizionale)**
+Ideale quando si conosce in anticipo il numero di iterazioni.
+
+`for (inizializzazione; condizione; aggiornamento) {`
+`    // Corpo del ciclo`
+`}`
+
+*Esempio:*
+`for (int i = 0; i < 5; i++) {`
+`    System.out.println(i); // Stampa da 0 a 4`
+`}`
+
+**B) Ciclo `while`**
+Esegue il corpo del ciclo finché la condizione rimane `true`. La condizione viene controllata **prima** di ogni iterazione.
+
+`while (condizione) {`
+`    // Corpo del ciclo`
+`}`
+
+**C) Ciclo `do-while`**
+Simile al `while`, ma la condizione viene controllata **dopo** ogni iterazione. Questo garantisce che il corpo del ciclo venga eseguito **almeno una volta**.
+
+`do {`
+`    // Corpo del ciclo`
+`} while (condizione);`
+
+**D) Ciclo `for-each` (Enhanced For-Loop)**
+È una sintassi semplificata per iterare su tutti gli elementi di un **array** o di una **collezione** (qualsiasi classe che implementi `Iterable`).
+
+`for (Tipo elemento : collezione) {`
+`    // Usa l'elemento`
+`}`
+
+*Esempio:*
+`List<String> nomi = List.of("Anna", "Marco");`
+`for (String nome : nomi) {`
+`    System.out.println(nome);`
+`}`
+È più leggibile e meno propenso a errori rispetto a un ciclo `for` tradizionale con indici, ma non dà accesso all'indice dell'elemento.
+
+**E) Metodo `forEach()` delle Collezioni**
+Le collezioni (da Java 8) hanno un metodo `forEach` che accetta un'espressione lambda per eseguire un'azione su ogni elemento.
+
+`nomi.forEach(nome -> System.out.println(nome));`
+
+O, in modo ancora più conciso, usando una "method reference":
+`nomi.forEach(System.out::println);`
+
+--- 3. ISTRUZIONI DI SALTO (`break` e `continue`) ---
+
+- **`break`**: Interrompe immediatamente l'esecuzione del ciclo (`for`, `while`, `do-while`) o dello `switch` in cui si trova.
+- **`continue`**: Salta l'iterazione corrente del ciclo e passa direttamente all'iterazione successiva.

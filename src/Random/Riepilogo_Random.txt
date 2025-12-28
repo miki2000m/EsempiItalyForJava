@@ -1,0 +1,70 @@
+RIEPILOGO SULLA GENERAZIONE DI NUMERI CASUALI IN JAVA
+
+In Java, ci sono principalmente due modi per generare numeri casuali: il metodo `Math.random()` e la classe `java.util.Random`.
+
+--- 1. IL METODO `Math.random()` ---
+
+`Math.random()` è il modo più semplice e veloce per generare un numero casuale.
+
+- **Cosa fa:** Restituisce un `double` casuale nell'intervallo `[0.0, 1.0)` (cioè 0.0 incluso, 1.0 escluso).
+- **Caratteristiche:**
+  - È un metodo `static`, quindi si chiama direttamente (`Math.random()`).
+  - Dietro le quinte, utilizza un'unica istanza globale della classe `Random`, quindi è thread-safe ma potrebbe avere problemi di contesa in applicazioni altamente concorrenti.
+- **Uso Tipico:** Generare un numero intero in un range.
+
+  **Formula per generare un intero tra `min` e `max` (inclusi):**
+  `int randomNum = (int)(Math.random() * (max - min + 1)) + min;`
+
+  *Esempio per un dado a 6 facce (da 1 a 6):*
+  `int dado = (int)(Math.random() * 6) + 1;`
+
+--- 2. LA CLASSE `java.util.Random` ---
+
+La classe `Random` offre molta più flessibilità e controllo rispetto a `Math.random()`. Per usarla, devi prima creare un'istanza.
+
+`Random random = new Random();`
+
+**- Metodi Principali:**
+
+  - `nextInt()`: Restituisce un `int` casuale su tutto il range possibile dei numeri interi (da `Integer.MIN_VALUE` a `Integer.MAX_VALUE`).
+
+  - `nextInt(int bound)`: **Il metodo più usato.** Restituisce un `int` casuale nell'intervallo `[0, bound)` (cioè da 0 incluso a `bound` escluso).
+    *Esempio per un numero da 0 a 9:*
+    `int num = random.nextInt(10);`
+
+    *Esempio per un numero da 1 a 10:*
+    `int num = random.nextInt(10) + 1;`
+
+  - `nextDouble()`: Restituisce un `double` casuale nell'intervallo `[0.0, 1.0)`. Funziona in modo simile a `Math.random()`.
+
+  - `nextBoolean()`: Restituisce `true` o `false` con una probabilità del 50%.
+
+  - `nextFloat()`, `nextLong()`, `nextBytes(byte[] bytes)`: Metodi simili per altri tipi di dato.
+
+**- Il "Seme" (Seed) del Generatore:**
+
+  Quando crei un'istanza di `Random`, puoi passare un "seme" (un numero `long`) al costruttore:
+  `Random randomConSeme = new Random(12345L);`
+
+  - **A cosa serve?** Un generatore di numeri casuali con lo stesso seme produrrà **sempre la stessa sequenza di numeri "casuali"**.
+  - Questo è estremamente utile per il testing e il debugging, perché permette di avere risultati riproducibili.
+  - Se non specifichi un seme (`new Random()`), Java ne usa uno basato sull'ora corrente, garantendo sequenze diverse a ogni esecuzione del programma.
+
+--- `Math.random()` vs `java.util.Random`: QUALE USARE? ---
+
+- **Usa `Math.random()`** per esigenze semplici e veloci, quando ti serve un solo numero casuale e non hai bisogno di riproducibilità.
+
+- **Usa la classe `Random`** quando:
+  - Hai bisogno di generare numeri di tipi diversi (int, long, boolean, ecc.).
+  - Vuoi un maggiore controllo (es. usare un seme per la riproducibilità).
+  - Stai sviluppando un'applicazione complessa e vuoi gestire le istanze del generatore in modo separato.
+
+--- ALTERNATIVA MODERNA: `ThreadLocalRandom` ---
+
+In applicazioni con un'elevata concorrenza (molti thread che generano numeri casuali contemporaneamente), la classe `Random` può diventare un collo di bottiglia.
+Per questi scenari, l'alternativa migliore è `java.util.concurrent.ThreadLocalRandom`.
+
+- **Come si usa:** Non si crea un'istanza con `new`, ma si ottiene quella del thread corrente:
+  `int num = ThreadLocalRandom.current().nextInt(1, 11); // da 1 a 10`
+- **Vantaggi:** Offre performance migliori in ambienti multi-threaded perché ogni thread ha il suo generatore, eliminando la contesa.
+- **Svantaggi:** Non puoi specificare un seme, quindi non è adatto per risultati riproducibili.

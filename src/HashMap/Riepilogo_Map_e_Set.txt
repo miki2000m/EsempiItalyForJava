@@ -1,0 +1,73 @@
+RIEPILOGO SULLE INTERFACCE `Map` E `Set` E LE LORO IMPLEMENTAZIONI
+
+Le collezioni sono un pilastro del Java Collections Framework. `Map` e `Set` sono due delle interfacce più importanti.
+
+--- L'INTERFACCIA `Set<E>` ---
+
+Un `Set` è una collezione che **non ammette elementi duplicati**. Rappresenta il concetto matematico di "insieme".
+
+**Caratteristiche Principali:**
+- **Niente Duplicati:** Se provi ad aggiungere un elemento già presente, l'operazione viene semplicemente ignorata.
+- **Nessun Indice:** A differenza delle `List`, gli elementi in un `Set` non hanno una posizione o un indice numerico.
+
+**Metodi Fondamentali:**
+- `add(E elemento)`: Aggiunge un elemento. Restituisce `false` se l'elemento è già presente.
+- `contains(Object o)`: Restituisce `true` se l'elemento è presente nel set.
+- `remove(Object o)`: Rimuove l'elemento specificato.
+- `size()`: Restituisce il numero di elementi.
+- `isEmpty()`: Controlla se il set è vuoto.
+
+**Implementazioni Comuni di `Set`:**
+
+1.  **`HashSet<E>`**:
+    - **Ordine:** Non garantisce alcun ordine di iterazione. L'ordine può cambiare nel tempo.
+    - **Performance:** Offre le performance migliori (tempo costante O(1) in media) per `add`, `remove` e `contains`.
+    - **Uso:** La scelta di default quando non ti interessa l'ordine degli elementi.
+    - **Come funziona:** Usa internamente una `HashMap` per memorizzare gli elementi.
+
+2.  **`LinkedHashSet<E>`**:
+    - **Ordine:** Mantiene l'**ordine di inserimento**. Quando iteri su un `LinkedHashSet`, gli elementi appaiono nello stesso ordine in cui li hai aggiunti.
+    - **Performance:** Leggermente più lento di `HashSet` a causa della gestione della lista concatenata che mantiene l'ordine, ma comunque molto performante.
+    - **Uso:** Quando hai bisogno di un set senza duplicati ma vuoi mantenere l'ordine di inserimento.
+
+3.  **`TreeSet<E>`**:
+    - **Ordine:** Mantiene gli elementi in **ordine naturale** (es. alfabetico per le stringhe, numerico per i numeri) o secondo un `Comparator` fornito al momento della creazione.
+    - **Performance:** Più lento di `HashSet` (tempo logaritmico O(log n)) perché deve mantenere l'ordinamento a ogni inserimento/rimozione.
+    - **Uso:** Quando hai bisogno di un set che sia costantemente ordinato.
+
+--- L'INTERFACCIA `Map<K, V>` ---
+
+Una `Map` è una collezione che memorizza coppie **chiave-valore** (`key-value`). Ogni chiave è unica e mappa a un singolo valore.
+
+**Caratteristiche Principali:**
+- **Chiavi Uniche:** Non possono esistere chiavi duplicate. Se inserisci una coppia con una chiave già esistente, il vecchio valore viene sovrascritto.
+- **Accesso tramite Chiave:** I valori vengono recuperati tramite la loro chiave, non tramite un indice numerico.
+
+**Metodi Fondamentali:**
+- `put(K chiave, V valore)`: Inserisce o aggiorna una coppia chiave-valore.
+- `get(Object chiave)`: Restituisce il valore associato alla chiave, o `null` se la chiave non esiste.
+- `remove(Object chiave)`: Rimuove la coppia chiave-valore.
+- `containsKey(Object chiave)`: Restituisce `true` se la mappa contiene la chiave specificata.
+- `keySet()`: Restituisce un `Set` contenente tutte le chiavi della mappa.
+- `values()`: Restituisce una `Collection` contenente tutti i valori.
+- `entrySet()`: Restituisce un `Set` di oggetti `Map.Entry<K, V>`, utile per iterare su chiavi e valori contemporaneamente.
+
+**Implementazioni Comuni di `Map`:**
+
+1.  **`HashMap<K, V>`**:
+    - **Ordine:** Non garantisce alcun ordine.
+    - **Performance:** Offre le performance migliori (O(1) in media).
+    - **Uso:** La scelta di default per una mappa generica.
+
+2.  **`LinkedHashMap<K, V>`**:
+    - **Ordine:** Mantiene l'**ordine di inserimento**.
+    - **Performance:** Quasi veloce come `HashMap`.
+    - **Uso:** Quando l'ordine di inserimento è importante (es. per creare una cache LRU).
+
+3.  **`TreeMap<K, V>`**:
+    - **Ordine:** Mantiene le chiavi in **ordine naturale** o secondo un `Comparator`.
+    - **Performance:** Più lenta (O(log n)).
+    - **Uso:** Quando hai bisogno di una mappa le cui chiavi siano sempre ordinate.
+
+**Relazione tra `Set` e `Map`**
+Un `HashSet` è essenzialmente un "wrapper" attorno a una `HashMap`. Quando aggiungi un elemento a un `HashSet`, in realtà stai aggiungendo una chiave a una `HashMap` interna, con un valore fittizio (un oggetto `PRESENT` condiviso). Questo spiega perché le loro caratteristiche di performance e ordinamento sono identiche.

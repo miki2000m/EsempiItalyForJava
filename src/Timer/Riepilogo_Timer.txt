@@ -1,0 +1,82 @@
+RIEPILOGO SU `java.util.Timer` e `java.util.TimerTask`
+
+--- COSA SONO `Timer` E `TimerTask`? ---
+
+`Timer` e `TimerTask` sono due classi del package `java.util` usate per pianificare l'esecuzione di codice (task) in un momento futuro, una sola volta o a intervalli regolari.
+
+1.  **`Timer`**: È il "pianificatore". Un oggetto `Timer` gestisce un thread in background che attende il momento giusto per eseguire i compiti che gli vengono assegnati.
+
+2.  **`TimerTask`**: È il "compito da eseguire". È una classe astratta che implementa l'interfaccia `Runnable`. Per definire cosa deve fare il compito, si crea una sottoclasse di `TimerTask` e si fa l'override del suo metodo `run()`.
+
+In parole semplici: crei un `TimerTask` per definire **COSA** fare, e usi un `Timer` per decidere **QUANDO** farlo.
+
+--- COME SI USANO INSIEME? ---
+
+Il processo si articola in 3 passaggi:
+
+1.  **Creare un'istanza di `Timer`**:
+    `Timer timer = new Timer();`
+
+2.  **Creare un'istanza di `TimerTask`**: Qui si definisce la logica da eseguire nel metodo `run()`.
+    `TimerTask task = new TimerTask() {`
+    `    @Override`
+    `    public void run() {`
+    `        // Il tuo codice da eseguire va qui`
+    `        System.out.println("Il task è in esecuzione!");`
+    `    }`
+    `};`
+
+3.  **Pianificare il task con il `Timer`**: Si usa uno dei metodi `schedule()` del `Timer`.
+    - **Esecuzione singola dopo un ritardo:**
+      `timer.schedule(task, delay);`
+      * `delay`: il tempo in millisecondi da attendere prima di eseguire il task.
+
+    - **Esecuzione ripetuta dopo un ritardo iniziale:**
+      `timer.schedule(task, delay, period);`
+      * `delay`: il ritardo iniziale in millisecondi.
+      * `period`: l'intervallo in millisecondi tra le esecuzioni successive.
+
+    - **Esecuzione ripetuta a un'ora specifica:**
+      `timer.schedule(task, firstTime, period);`
+      * `firstTime`: un oggetto `Date` che rappresenta il momento esatto della prima esecuzione.
+
+--- ESEMPIO COMPLETO E CONCISO ---
+
+È comune definire il `TimerTask` direttamente all'interno della chiamata a `schedule()` come una classe anonima, per rendere il codice più compatto:
+
+`Timer timer = new Timer();`
+`long delay = 1000L;  // 1 secondo di ritardo iniziale`
+`long period = 5000L; // si ripete ogni 5 secondi`
+
+`timer.schedule(new TimerTask() {`
+`    @Override`
+`    public void run() {`
+`        System.out.println("Task eseguito!");`
+`    }`
+`}, delay, period);`
+
+--- COME FERMARE UN `Timer` ---
+
+Un `Timer` esegue un thread in background. Se non viene fermato, l'applicazione potrebbe non terminare. Per fermarlo:
+
+*   `timer.cancel()`: Termina il thread del timer e annulla tutti i task pianificati che non sono ancora stati eseguiti.
+*   `task.cancel()`: Annulla un singolo task, impedendo esecuzioni future di *quel* task.
+
+--- LIMITAZIONI E ALTERNATIVE MODERNE ---
+
+`Timer` e `TimerTask` sono stati i primi strumenti di scheduling in Java, ma oggi sono considerati **obsoleti** per applicazioni complesse a causa di alcune limitazioni:
+
+1.  **Un solo Thread:** Un `Timer` usa un singolo thread per eseguire tutti i suoi task. Se un task è molto lungo, ritarda l'inizio di tutti gli altri.
+2.  **Gestione delle Eccezioni:** Se un `TimerTask` lancia un'eccezione non gestita, il thread del `Timer` si interrompe e nessun altro task verrà più eseguito.
+3.  **Accuratezza del Tempo:** `Timer` si basa sull'orologio di sistema, quindi se l'orologio viene modificato, la pianificazione può essere imprecisa.
+
+**Alternativa Moderna: `ScheduledExecutorService`**
+
+Per tutte le nuove applicazioni, è fortemente raccomandato usare il `ScheduledExecutorService` (dal package `java.util.concurrent`). È più flessibile, robusto e potente.
+
+*   Usa un pool di thread, quindi i task non si bloccano a vicenda.
+*   Gestisce meglio le eccezioni (un task che fallisce non blocca gli altri).
+*   Offre un controllo molto più granulare sulla pianificazione.
+
+IN SINTESI:
+`Timer` e `TimerTask` sono utili per compiti semplici e veloci in applicazioni non critiche. Per tutto il resto, specialmente in ambienti multi-threaded, `ScheduledExecutorService` è la scelta migliore e più moderna.

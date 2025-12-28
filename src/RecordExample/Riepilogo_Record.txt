@@ -1,0 +1,69 @@
+RIEPILOGO SUI RECORD
+
+--- COSA SONO I RECORD? ---
+
+I `record`, introdotti come feature standard in Java 16, sono un tipo speciale di classe progettata per un unico scopo: agire come **contenitori trasparenti e immutabili per dati**.
+Sono una risposta al problema del "boilerplate code" (codice ripetitivo) che si doveva scrivere per creare semplici classi di dati (POJO - Plain Old Java Object).
+
+**Il Problema che Risolvono:**
+Prima dei record, per creare una classe `Persona` con nome e cognome, dovevi scrivere manualmente:
+- Campi privati (`private String nome;`).
+- Un costruttore.
+- Metodi getter per ogni campo.
+- Un'implementazione corretta di `equals()`, `hashCode()` e `toString()`.
+
+Con i record, tutto questo viene generato automaticamente dal compilatore.
+
+--- SINTASSI E COSA VIENE GENERATO ---
+
+La dichiarazione di un record è estremamente concisa:
+
+`public record Persona(String nome, int eta) {}`
+
+Questa singola riga di codice dice al compilatore di generare una classe `final` chiamata `Persona` con le seguenti caratteristiche:
+
+1.  **Campi `private final`:** Per ogni componente dichiarato nell'intestazione ( `nome` e `eta`), viene creato un campo privato e finale. Questo garantisce l'**immutabilità**: una volta creato un record, il suo stato non può essere modificato.
+
+2.  **Costruttore Canonico:** Un costruttore pubblico che accetta tutti i componenti come argomenti per inizializzare i campi (`public Persona(String nome, int eta)`).
+
+3.  **Metodi "Accessor" Pubblici:** Per ogni componente, viene generato un metodo di accesso pubblico con lo stesso nome e tipo del componente (es. `public String nome()` e `public int eta()`). Nota: non usano il prefisso `get`.
+
+4.  **Metodo `equals()`:** Un'implementazione che confronta due istanze di record in base al valore di tutti i loro componenti. Due record sono uguali se tutti i loro campi sono uguali.
+
+5.  **Metodo `hashCode()`:** Un'implementazione coerente con `equals()`, che calcola l'hash code basandosi su tutti i componenti.
+
+6.  **Metodo `toString()`:** Un'implementazione che restituisce una rappresentazione leggibile del record, mostrando il nome della classe e il valore di ogni componente (es. `Persona[nome=Mario, eta=30]`).
+
+--- CARATTERISTICHE E LIMITAZIONI ---
+
+- **Immutabilità:** I record sono immutabili per design.
+- **`final`:** Una classe record è implicitamente `final`, quindi non può essere estesa.
+- **Superclasse:** Un record estende sempre implicitamente `java.lang.Record` e non può estendere nessun'altra classe.
+- **Interfacce:** Un record **può** implementare una o più interfacce.
+
+--- COSTRUTTORI AGGIUNTIVI E METODI ---
+
+Anche se i record sono concisi, possono essere personalizzati:
+
+**1. Costruttore Compatto (Compact Constructor):**
+   È una forma speciale di costruttore, senza parentesi, usata principalmente per la **validazione** dei dati. Viene eseguito *prima* del costruttore canonico.
+
+   `public record Persona(String nome, int eta) {`
+   `    public Persona { // Costruttore compatto`
+   `        if (eta < 0) {`
+   `            throw new IllegalArgumentException("L'età non può essere negativa.");`
+   `        }`
+   `    }`
+   `}`
+
+**2. Metodi Statici e di Istanza:**
+   È possibile aggiungere metodi statici e di istanza a un record come in una normale classe, per definire comportamenti aggiuntivi.
+
+   `public record Rettangolo(double lunghezza, double larghezza) {`
+   `    public double area() { // Metodo di istanza`
+   `        return lunghezza * larghezza;`
+   `    }`
+   `}`
+
+IN SINTESI:
+Usa un `record` ogni volta che hai bisogno di modellare un semplice aggregato di dati immutabili (un "data carrier"). Sono perfetti per DTO (Data Transfer Objects), per restituire valori multipli da un metodo, o come chiavi in una `Map`. Hanno reso il codice Java molto più leggibile e meno verboso.

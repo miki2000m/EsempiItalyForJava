@@ -1,0 +1,77 @@
+RIEPILOGO SUL MULTITHREADING IN JAVA
+
+--- COS'È UN THREAD? ---
+
+Un thread è la più piccola unità di esecuzione in un programma. Ogni programma Java ha almeno un thread, chiamato **"main thread"**. Il **multithreading** è la capacità di eseguire più thread (cioè più sequenze di istruzioni) **contemporaneamente**, migliorando le performance e la reattività delle applicazioni.
+
+--- 1. APPROCCIO CLASSICO: GESTIONE MANUALE DEI THREAD ---
+
+**Come si crea un Thread:**
+1.  **Implementare `Runnable` (Raccomandato):** Si crea una classe che implementa l'interfaccia `Runnable` e si inserisce il codice nel suo metodo `run()`. È l'approccio più flessibile.
+    `Thread t = new Thread(new MioTask());`
+2.  **Estendere `Thread`:** Si crea una sottoclasse di `Thread` e si fa l'override del metodo `run()`. Meno flessibile a causa dell'ereditarietà singola.
+
+**Metodi Fondamentali di `Thread`:**
+- `start()`: **Avvia** l'esecuzione del thread in un nuovo contesto. **Non chiamare mai `run()` direttamente**.
+- `sleep(long millis)`: Mette in pausa il thread **corrente**.
+- `join()`: Fa in modo che il thread corrente **attenda la fine** di un altro thread.
+- `setDaemon(boolean on)`: Imposta un thread come **"demone"**. I thread demoni sono thread di background che non impediscono la terminazione della JVM.
+
+--- 2. APPROCCIO MODERNO: `ExecutorService` (FRAMEWORK EXECUTOR) ---
+
+Creare thread manualmente (`new Thread()`) è costoso. Per applicazioni complesse, è molto più efficiente usare il framework `ExecutorService` (dal package `java.util.concurrent`), che gestisce un **pool di thread riutilizzabili**.
+
+**Come funziona:**
+1.  Si crea un `ExecutorService` usando la classe factory `Executors`.
+    - `Executors.newFixedThreadPool(int n)`: Crea un pool con un numero fisso di thread.
+    - `Executors.newCachedThreadPool()`: Crea un pool che cresce e si restringe dinamicamente.
+2.  Si sottomettono i task (compiti) all'executor.
+3.  L'executor assegna i task ai thread liberi nel pool.
+4.  Alla fine, si chiude l'executor con `shutdown()` (che completa i task in corso) o `shutdownNow()` (che tenta di interromperli).
+
+`try (ExecutorService executor = Executors.newFixedThreadPool(2)) {`
+`    executor.submit(() -> System.out.println("Task in esecuzione"));`
+`} // executor.shutdown() viene chiamato automaticamente`
+
+**Vantaggi:** Migliore gestione delle risorse, controllo sul numero di thread, gestione semplificata del ciclo di vita dei task.
+
+--- 3. TASK CHE RESTITUISCONO RISULTATI: `Callable` E `Future` ---
+
+- **`Callable<V>`**: È un'interfaccia funzionale simile a `Runnable`, ma il suo metodo `call()` può **restituire un valore** di tipo `V` e lanciare eccezioni.
+- **`Future<V>`**: È un oggetto che rappresenta il **risultato futuro** di un'operazione asincrona. Quando sottometti un `Callable` a un `ExecutorService`, ottieni un `Future`.
+
+**Come si usa:**
+1.  Crea un `Callable` che restituisca un valore.
+2.  Sottomettilo a un `ExecutorService` con `submit(callable)` per ottenere un `Future`.
+3.  Quando hai bisogno del risultato, chiama il metodo `future.get()`. Questo metodo è **bloccante**: attende che il calcolo sia terminato e poi restituisce il risultato.
+
+`Callable<Integer> task = () -> { /* ... calcolo ... */ return 123; };`
+`Future<Integer> risultatoFuturo = executor.submit(task);`
+`Integer risultato = risultatoFuturo.get(); // Attende e ottiene il risultato`
+
+--- 4. VIRTUAL THREADS (DA JAVA 21) ---
+
+I Virtual Threads sono una delle novità più importanti di Java 21. Sono una soluzione al problema dei "Platform Threads" (i thread tradizionali), che sono pesanti e limitati in numero.
+
+- **Platform Threads:** Sono un wrapper sottile attorno a un thread del sistema operativo. Sono una risorsa finita e costosa.
+- **Virtual Threads:** Sono **thread estremamente leggeri** gestiti interamente dalla JVM. Non sono legati 1-a-1 a un thread del sistema operativo.
+
+**Vantaggi dei Virtual Threads:**
+- **Scalabilità Massiva:** Puoi crearne milioni senza problemi di memoria.
+- **Ideali per Task I/O-bound:** Sono perfetti per task che passano la maggior parte del tempo in attesa (es. chiamate a un database, API di rete, lettura di file). Quando un virtual thread si blocca in attesa di I/O, la JVM lo "smonta" dal thread del sistema operativo, che può essere usato per eseguire un altro virtual thread.
+
+**Come si usano:**
+Il modo più semplice è usare un `ExecutorService` apposito:
+
+`try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {`
+`    executor.submit(() -> {`
+`        System.out.println("Eseguito su un Virtual Thread!");`
+`        Thread.sleep(1000);`
+`    });`
+`}`
+
+Questo crea un nuovo virtual thread per ogni task sottomesso, un approccio che sarebbe insostenibile con i platform threads ma che è efficiente e incoraggiato con i virtual threads.
+
+**Quando usare cosa?**
+- Usa i **Platform Threads** (es. `newFixedThreadPool`) per task **CPU-bound** (calcoli intensivi), dove il numero di thread dovrebbe essere vicino al numero di core della CPU.
+- Usa i **Virtual Threads** per task **I/O-bound** o per un numero molto elevato di task concorrenti.

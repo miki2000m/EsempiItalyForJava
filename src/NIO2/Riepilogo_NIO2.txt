@@ -1,0 +1,65 @@
+RIEPILOGO CONCETTI E COMANDI - LIBRERIA JAVA.NIO.FILE (NIO.2)
+
+Questo file contiene un riassunto dei concetti teorici e dei comandi principali discussi nel file guida interattivo. NIO.2 è l'API moderna e raccomandata per tutte le operazioni su file e directory in Java.
+
+--- CONCETTI TEORICI FONDAMENTALI ---
+
+*   **`Path`**: L'"indirizzo" di un file o di una directory. È un oggetto immutabile che rappresenta la posizione, non il file stesso. Sostituisce la vecchia classe `java.io.File`.
+*   **`Paths`**: Una classe "factory" con metodi statici per creare oggetti `Path` (es. `Paths.get(...)`).
+*   **`Files`**: Una classe di utilità con metodi `static` per eseguire quasi ogni tipo di operazione su oggetti `Path` (creare, cancellare, copiare, leggere, scrivere, ecc.).
+*   **Charset (es. UTF-8)**: Un "dizionario" che converte i caratteri di testo in numeri che il computer può salvare. `UTF-8` è lo standard universale che garantisce la leggibilità dei file su sistemi diversi.
+*   **Stream vs. "Tutto in memoria"**: Leggere un file "tutto in memoria" (es. `Files.readAllLines()`) è semplice per file piccoli, ma inefficiente per file grandi. Usare uno "stream" (es. `Files.lines()` o `Files.newBufferedReader()`) processa i dati a pezzi, usando pochissima memoria ed è l'approccio professionale per file di qualsiasi dimensione.
+
+--- RIEPILOGO COMANDI PER SEZIONE ---
+
+**1. `Path` e `Paths`**
+*   `Paths.get(base, ...parts)`: Crea un oggetto `Path`.
+*   `path.getFileName()`: Estrae il nome del file/directory finale.
+*   `path.getParent()`: Restituisce il `Path` della directory genitore.
+*   `path.getRoot()`: Restituisce la radice del percorso (es. `/` o `C:\`).
+*   `path.resolve(other)`: Combina un `Path` con un altro per creare un percorso figlio.
+*   `path.normalize()`: Semplifica un percorso, risolvendo `.` (directory corrente) e `..` (directory genitore).
+
+**2. Operazioni di Base su File/Directory**
+*   `Files.createFile(path)`: Crea un nuovo file vuoto.
+*   `Files.createDirectory(path)`: Crea una nuova directory (fallisce se i genitori non esistono).
+*   `Files.createDirectories(path)`: Crea una directory e tutte le cartelle genitore necessarie.
+*   `Files.exists(path)`: Controlla se un file o una directory esiste.
+*   `Files.delete(path)`: Cancella un file o una directory (che deve essere vuota).
+*   `Files.deleteIfExists(path)`: Cancella un file/dir, ma non lancia un'eccezione se non esiste.
+
+**3. Scrittura e Lettura**
+*   `Files.write(path, righe)`: Scrive una collezione di stringhe su un file (sovrascrive).
+*   `Files.readAllLines(path)`: Legge tutte le righe di un file in una `List<String>`.
+*   `Files.newBufferedWriter(path, ...)`: Ottiene uno stream per scrivere testo in modo efficiente (con buffer).
+*   `Files.newBufferedReader(path, ...)`: Ottiene uno stream per leggere testo in modo efficiente (con buffer).
+
+**4. Attributi dei File (Metadati)**
+*   `Files.size(path)`: Restituisce la dimensione del file in byte.
+*   `Files.getLastModifiedTime(path)`: Restituisce la data e l'ora dell'ultima modifica.
+*   `Files.readAttributes(path, Type.class)`: Legge un blocco di attributi in modo efficiente.
+
+**5. Copia e Spostamento**
+*   `Files.copy(source, target, options)`: Copia un file. `StandardCopyOption.REPLACE_EXISTING` sovrascrive se la destinazione esiste.
+*   `Files.move(source, target, options)`: Sposta (o rinomina) un file.
+
+**6. Integrazione con Stream API**
+*   `Files.list(path)`: Restituisce uno `Stream<Path>` del contenuto di una directory (NON ricorsivo).
+*   `Files.lines(path)`: Restituisce uno `Stream<String>` delle righe di un file di testo.
+*   `Files.walk(path)`: Restituisce uno `Stream<Path>` attraversando un albero di directory (ricorsivo).
+
+**7. `FileVisitor`**
+*   `Files.walkFileTree(start, visitor)`: Attraversa un albero di file ed esegue le azioni definite nel `visitor`.
+*   Metodi del Visitor (da sovrascrivere estendendo `SimpleFileVisitor`):
+    *   `preVisitDirectory()`: Eseguito PRIMA di entrare in una directory.
+    *   `visitFile()`: Eseguito per OGNI file.
+    *   `postVisitDirectory()`: Eseguito DOPO aver visitato tutto il contenuto di una directory.
+    *   `visitFileFailed()`: Eseguito se la visita a un file fallisce.
+
+**8. `WatchService`**
+*   `FileSystems.getDefault().newWatchService()`: Crea un nuovo servizio di monitoraggio.
+*   `path.register(service, ...events)`: Registra una directory per monitorare eventi (`ENTRY_CREATE`, `ENTRY_DELETE`, `ENTRY_MODIFY`).
+*   `watchService.take()`: Attende (bloccante) che si verifichi un evento.
+*   `watchKey.pollEvents()`: Restituisce la lista degli eventi ricevuti.
+*   `watchKey.reset()`: FONDAMENTALE: Resetta la chiave per ricevere nuovi eventi.
+*   `watchService.close()`: Chiude il servizio di monitoraggio.

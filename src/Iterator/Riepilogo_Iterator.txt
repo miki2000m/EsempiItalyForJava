@@ -1,0 +1,77 @@
+RIEPILOGO SULL'INTERFACCIA `Iterator`
+
+--- COS'È UN `Iterator`? ---
+
+Un `Iterator` è un oggetto che permette di **attraversare (iterare) una collezione** e, opzionalmente, di rimuovere elementi da essa in modo sicuro. È un design pattern universale per accedere agli elementi di una collezione uno per uno, senza esporre la sua struttura interna.
+
+Tutte le classi principali del Java Collections Framework (come `ArrayList`, `LinkedList`, `HashSet`, `HashMap`, ecc.) forniscono un metodo `iterator()` che restituisce un iteratore per quella specifica collezione.
+
+--- PERCHÉ USARE UN `Iterator`? ---
+
+1.  **Astrazione:** Fornisce un modo uniforme per scorrere qualsiasi tipo di collezione, che sia una `List`, un `Set`, ecc. Non devi preoccuparti di come la collezione è implementata internamente (es. se usa un array o una lista concatenata).
+
+2.  **Rimozione Sicura:** Questo è il motivo principale per usare un iteratore esplicitamente. Permette di rimuovere elementi da una collezione **mentre la si sta scorrendo**, senza causare una `ConcurrentModificationException`.
+
+--- METODI FONDAMENTALI DI `Iterator` ---
+
+L'interfaccia `Iterator` ha tre metodi principali:
+
+*   `boolean hasNext()`: Restituisce `true` se ci sono ancora elementi da visitare nell'iterazione.
+
+*   `E next()`: Restituisce il **prossimo** elemento nella collezione e avanza il "cursore" dell'iteratore. Se non ci sono più elementi, lancia una `NoSuchElementException`.
+
+*   `void remove()`: Rimuove dalla collezione l'**ultimo elemento restituito da `next()`**. Questo metodo può essere chiamato solo una volta per ogni chiamata a `next()`. Se provi a chiamarlo senza aver prima chiamato `next()`, o se lo chiami più volte di seguito, lancia un'`IllegalStateException`.
+
+--- IL CICLO `while` CON `Iterator`: IL PATTERN STANDARD ---
+
+Il modo corretto e più comune per usare un iteratore è con un ciclo `while`:
+
+`ArrayList<String> lista = new ArrayList<>();`
+`// ... aggiungi elementi alla lista ...`
+
+`Iterator<String> it = lista.iterator(); // 1. Ottieni l'iteratore`
+
+`while (it.hasNext()) { // 2. Controlla se ci sono altri elementi`
+`    String elemento = it.next(); // 3. Ottieni l'elemento e avanza`
+
+`    // Fai qualcosa con l'elemento`
+`    System.out.println(elemento);`
+
+`    if (elemento.equals("elementoDaRimuovere")) {`
+`        it.remove(); // 4. Rimuovi l'elemento in modo sicuro`
+`    }`
+`}`
+
+--- IL PROBLEMA DELLA MODIFICA CONCORRENTE (`ConcurrentModificationException`) ---
+
+Se provi a modificare una collezione (aggiungendo o rimuovendo elementi) usando i metodi della collezione stessa (es. `lista.remove()`) mentre la stai scorrendo con un ciclo for-each o un iteratore, Java lancerà una `ConcurrentModificationException`.
+
+**Esempio SBAGLIATO (lancia un'eccezione):**
+`for (String elemento : lista) {`
+`    if (elemento.equals("daRimuovere")) {`
+`        lista.remove(elemento); // ERRORE! Modifica diretta durante l'iterazione.`
+`    }`
+`}`
+
+Questo accade perché l'iteratore (usato implicitamente anche dal ciclo for-each) si accorge che la collezione è stata modificata "alle sue spalle" e va in uno stato non valido. Questo comportamento è chiamato **fail-fast**.
+
+La soluzione è usare il metodo `it.remove()` dell'iteratore, che notifica all'iteratore stesso la modifica, mantenendo lo stato consistente.
+
+--- `Iterator` E IL CICLO FOR-EACH ---
+
+Il ciclo "enhanced for-loop" (o for-each) è solo zucchero sintattico (syntactic sugar) per un ciclo `while` con un iteratore.
+
+Il codice:
+`for (String elemento : lista) {`
+`    System.out.println(elemento);`
+`}`
+
+Viene tradotto dal compilatore in qualcosa di molto simile a:
+`Iterator<String> it = lista.iterator();`
+`while (it.hasNext()) {`
+`    String elemento = it.next();`
+`    System.out.println(elemento);`
+`}`
+
+Questo spiega perché non puoi usare `lista.remove()` all'interno di un ciclo for-each: stai violando la regola della modifica concorrente dell'iteratore nascosto.
+Usa il ciclo for-each per la lettura semplice, usa un `Iterator` esplicito quando devi rimuovere elementi durante l'iterazione.
