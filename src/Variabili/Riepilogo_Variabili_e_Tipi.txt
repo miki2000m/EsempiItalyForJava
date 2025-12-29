@@ -9,41 +9,36 @@ I tipi primitivi sono i mattoni fondamentali del linguaggio. Memorizzano diretta
 Esistono 8 tipi primitivi in Java:
 
 **- Tipi Numerici Interi:**
-  - `byte`: 8 bit. Valori da -128 a 127. Utile per risparmiare memoria in grandi array.
+  - `byte`: 8 bit. Valori da -128 a 127.
   - `short`: 16 bit. Valori da -32,768 a 32,767.
-  - `int`: 32 bit. Il tipo intero più usato. Valori da -2^31 a 2^31-1.
-  - `long`: 64 bit. Per numeri interi molto grandi. I valori letterali `long` devono finire con una `L` (es. `long n = 12345678901L;`).
+  - `int`: 32 bit. Il tipo intero più usato.
+  - `long`: 64 bit. Per numeri interi molto grandi (richiede il suffisso `L`).
 
 **- Tipi Numerici a Virgola Mobile (Floating-Point):**
-  - `float`: 32 bit. Precisione singola. I valori letterali `float` devono finire con una `f` (es. `float f = 3.14f;`).
+  - `float`: 32 bit. Precisione singola (richiede il suffisso `f`).
   - `double`: 64 bit. Precisione doppia. È il tipo di default per i valori decimali.
 
 **- Tipo Carattere:**
-  - `char`: 16 bit. Rappresenta un singolo carattere Unicode. I valori letterali `char` si scrivono tra apici singoli (es. `char c = 'A';`).
+  - `char`: 16 bit. Rappresenta un singolo carattere Unicode (es. `'A'`).
 
 **- Tipo Booleano:**
   - `boolean`: Rappresenta un valore logico. Può essere solo `true` o `false`.
 
 **Caratteristiche dei Tipi Primitivi:**
-- Memorizzano il valore direttamente nella variabile.
-- Sono più veloci e occupano meno memoria rispetto ai loro equivalenti oggetto.
-- Non sono oggetti, quindi non hanno metodi (es. non puoi fare `int.toString()`).
-- Hanno un valore di default (es. `0` per i tipi numerici, `false` per `boolean`) se sono campi di una classe, ma non se sono variabili locali (che devono essere inizializzate).
+- Sono veloci e occupano poca memoria.
+- Non sono oggetti, quindi non hanno metodi e non possono essere `null`.
 
 --- 2. TIPI RIFERIMENTO (REFERENCE TYPES) ---
 
 Un tipo riferimento non memorizza direttamente il valore, ma un **riferimento (o indirizzo di memoria)** all'oggetto che contiene i dati.
 
 **Esempi:**
-- Tutte le classi che crei (`Persona`, `Prodotto`, ecc.).
-- Tutte le classi fornite da Java (`String`, `ArrayList`, `Scanner`, ecc.).
+- Tutte le classi (`String`, `ArrayList`, `Scanner`, e quelle create da te).
 - Gli Array (`int[]`, `String[]`, ecc.).
 
 **Caratteristiche dei Tipi Riferimento:**
-- Sono tutti sottoclassi di `java.lang.Object`.
-- Una variabile di tipo riferimento può avere il valore `null`, che significa che non punta a nessun oggetto.
+- Una variabile di tipo riferimento può avere il valore `null`.
 - Hanno metodi che possono essere invocati su di essi.
-- Sono generalmente più lenti e consumano più memoria dei tipi primitivi.
 
 --- 3. WRAPPER CLASSES (CLASSI INVOLUCRO) ---
 
@@ -53,24 +48,44 @@ Per ogni tipo primitivo, Java fornisce una corrispondente **classe "involucro" (
 |-----------|-------------|
 | `boolean` | `Boolean`   |
 | `char`    | `Character` |
-| `byte`    | `Byte`      |
-| `short`   | `Short`     |
 | `int`     | `Integer`   |
-| `long`    | `Long`      |
-| `float`   | `Float`     |
 | `double`  | `Double`    |
+| ... e così via ... |
 
-**Perché esistono le Wrapper Classes?**
-- Per permettere ai tipi primitivi di essere usati in contesti che richiedono oggetti, come le **collezioni generiche** (es. `ArrayList<Integer>`, non `ArrayList<int>`).
-- Forniscono metodi di utilità per la conversione e la manipolazione dei valori (es. `Integer.parseInt("123")`).
-- Possono avere valore `null`, a differenza dei primitivi.
+**Perché esistono?**
+- Per usare i tipi primitivi in contesti che richiedono oggetti, come le **collezioni generiche** (es. `ArrayList<Integer>`).
+- Forniscono metodi di utilità (es. `Integer.parseInt("123")`).
 
 **Autoboxing e Unboxing:**
 Java esegue automaticamente la conversione tra tipi primitivi e le loro wrapper classes.
-- **Autoboxing:** Conversione automatica da primitivo a wrapper.
-  `Integer numeroOggetto = 100; // Il compilatore converte `int` in `Integer`
-- **Unboxing:** Conversione automatica da wrapper a primitivo.
-  `int numeroPrimitivo = numeroOggetto; // Il compilatore estrae l' `int` da `Integer`
+- **Autoboxing:** da primitivo a wrapper (`Integer i = 100;`).
+- **Unboxing:** da wrapper a primitivo (`int n = i;`).
 
-Questo meccanismo rende il codice molto più pulito e leggibile, evitando conversioni manuali.
-Tuttavia, bisogna fare attenzione al `NullPointerException` durante l'unboxing: se un oggetto wrapper è `null` e si tenta di assegnarlo a un primitivo, verrà lanciata un'eccezione.
+--- 4. `var` - LOCAL VARIABLE TYPE INFERENCE (DA JAVA 10) ---
+
+La keyword `var` è una scorciatoia sintattica per dichiarare le **variabili locali**. Permette al compilatore di **inferire (capire) il tipo** della variabile dal valore con cui viene inizializzata.
+
+**NON è un tipo dinamico.** Il tipo della variabile viene fissato al momento della compilazione e non può più cambiare.
+
+**Esempio:**
+`// Dichiarazione tradizionale`
+`String testo = "Ciao";`
+`HashMap<String, Integer> mappa = new HashMap<>();`
+
+`// Con var (più conciso)`
+`var testoConVar = "Ciao"; // Il compilatore capisce che è una String`
+`var mappaConVar = new HashMap<String, Integer>(); // Il compilatore capisce che è una HashMap<String, Integer>`
+
+**Vantaggi:**
+- **Leggibilità:** Riduce il codice ripetitivo ("boilerplate"), specialmente con tipi generici complessi, rendendo il codice più pulito.
+- **Manutenibilità:** Se il tipo di un'espressione cambia (es. un metodo che prima restituiva `ArrayList` ora restituisce `List`), il codice che usa `var` potrebbe non aver bisogno di modifiche.
+
+**Regole e Limitazioni Fondamentali:**
+1.  **Solo per Variabili Locali:** `var` può essere usato solo per variabili all'interno di metodi, costruttori o blocchi di inizializzazione. Non può essere usato per campi di una classe, parametri di metodi o tipi di ritorno.
+2.  **Inizializzazione Obbligatoria:** Una variabile dichiarata con `var` deve essere inizializzata sulla stessa riga, altrimenti il compilatore non può inferire il tipo.
+    `var nome; // ERRORE!`
+3.  **No a `null`:** Non si può inizializzare una variabile `var` con `null`, perché il tipo sarebbe ambiguo.
+    `var x = null; // ERRORE!`
+4.  **No con Espressioni Lambda:** Non si può usare `var` per dichiarare una lambda senza specificare esplicitamente l'interfaccia funzionale, perché il compilatore non saprebbe a quale interfaccia assegnarla.
+    `var fn = () -> {}; // ERRORE!`
+    `Runnable fn = () -> {}; // CORRETTO`
