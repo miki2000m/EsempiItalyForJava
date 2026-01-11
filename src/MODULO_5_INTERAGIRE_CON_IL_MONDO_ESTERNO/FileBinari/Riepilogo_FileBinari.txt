@@ -1,0 +1,60 @@
+RIEPILOGO SULL'I/O BINARIO (BINARY I/O) IN JAVA
+
+--- FILE DI TESTO vs FILE BINARI ---
+
+- **File di Testo (.txt, .csv, .java, ecc.):**
+  - Contengono caratteri leggibili dall'uomo.
+  - Usano un "charset" (come UTF-8) per mappare i caratteri a sequenze di byte.
+  - Sono facili da ispezionare con un editor di testo.
+  - Sono meno efficienti in termini di spazio e velocità.
+
+- **File Binari (.bin, .dat, .jpg, .wav, ecc.):**
+  - Contengono dati grezzi (una sequenza di byte, `0` e `1`).
+  - Non sono direttamente leggibili dall'uomo.
+  - Memorizzano i dati in un formato compatto e preciso, identico a come vengono rappresentati in memoria dalla JVM.
+  - Sono molto più veloci ed efficienti per salvare dati strutturati o non testuali.
+
+L'I/O binario è la scelta ideale quando si devono salvare dati primitivi (`int`, `double`, ecc.) o lo stato di oggetti (`Serializzazione`) in modo rapido e con piena precisione, senza la conversione a testo.
+
+--- STREAM PER L'I/O BINARIO ---
+
+L'I/O binario in Java si basa su due classi astratte principali: `InputStream` (per leggere) e `OutputStream` (per scrivere). Le implementazioni più comuni sono:
+
+- **`FileInputStream` / `FileOutputStream`**:
+  - Sono gli stream di base che si connettono direttamente a un file su disco per leggere o scrivere byte grezzi.
+
+Tuttavia, raramente si usano da soli. Per aggiungere funzionalità, si "decorano" (avvolgono) con altre classi di stream.
+
+--- LE CLASSI "DECORATOR" FONDAMENTALI ---
+
+**1. `DataInputStream` / `DataOutputStream`**
+   - **Scopo:** Leggere e scrivere **tipi di dato primitivi Java** e `String` in un formato binario standard e indipendente dalla piattaforma.
+   - **Metodi `DataOutputStream`:** `writeInt(int)`, `writeDouble(double)`, `writeBoolean(boolean)`, `writeUTF(String)`, ecc.
+   - **Metodi `DataInputStream`:** `readInt()`, `readDouble(double)`, `readBoolean(boolean)`, `readUTF(String)`, ecc.
+
+   **REGOLA FONDAMENTALE:** I dati devono essere letti **nello stesso identico ordine e con lo stesso tipo** con cui sono stati scritti. Se scrivi un `int` e poi un `double`, devi leggere prima un `int` e poi un `double`. Altrimenti, i dati verranno interpretati in modo errato o verrà lanciata un'eccezione (`EOFException`).
+
+**2. `BufferedInputStream` / `BufferedOutputStream`**
+   - **Scopo:** Migliorare drasticamente le performance dell'I/O.
+   - **Come funzionano:** Invece di accedere al disco per ogni singolo byte o dato primitivo (operazione molto lenta), questi stream usano un'area di memoria interna chiamata **buffer**. I dati vengono letti/scritti dal disco a grossi "blocchi" e accumulati nel buffer. Le operazioni di lettura/scrittura del programma interagiscono con il buffer veloce in memoria, riducendo al minimo gli accessi lenti al disco.
+   - **Best Practice:** È quasi sempre una buona idea avvolgere uno stream di file (`FileInputStream`/`FileOutputStream`) in uno stream bufferizzato.
+
+--- ESEMPIO DI COMPOSIZIONE (PATTERN DECORATOR) ---
+
+La potenza di questo sistema sta nella possibilità di combinare gli stream per ottenere le funzionalità desiderate.
+
+**Per la scrittura:**
+`try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("file.bin")))) {`
+`    out.writeInt(123);`
+`}`
+
+- `FileOutputStream` si connette al file.
+- `BufferedOutputStream` aggiunge il buffering per l'efficienza.
+- `DataOutputStream` aggiunge i metodi per scrivere i tipi primitivi.
+
+**Per la lettura:**
+`try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("file.bin")))) {`
+`    int numero = in.readInt();`
+`}`
+
+La logica è la stessa, ma per l'input. Il `try-with-resources` garantisce che tutti gli stream vengano chiusi correttamente nell'ordine giusto.

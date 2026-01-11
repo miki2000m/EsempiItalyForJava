@@ -16,23 +16,23 @@ MODULO 1: LE BASI FONDAMENTALI DEL LINGUAGGIO
 Obiettivo: Scrivere i primi, semplici programmi.
 
 1.  **Variabili e Tipi di Dato:**
-    *   PACKAGE: `Variabili`
+    *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/Variabili`
     *   Impara la differenza tra tipi primitivi (int, double) e tipi riferimento (String), e a cosa servono le classi Wrapper. Scopri la keyword `var`.
 
 2.  **Controllo del Flusso:**
-    *   PACKAGE: `Switch_If_for`
+    *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/Switch_If_for`
     *   Impara a controllare il tuo programma con `if/else`, `switch` e i vari tipi di cicli (`for`, `while`).
 
 3.  **Metodi:**
-    *   PACKAGE: `Methods`
+    *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/Methods`
     *   Impara a organizzare il codice in blocchi riutilizzabili (i metodi) e a usare i `varargs`.
 
 4.  **Array:**
-    *   PACKAGE: `ArrayVettori` (studia solo la sottocartella `Array`)
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/ArrayVettori` (studia solo la sottocartella `Array`)
     *   Impara a usare la struttura dati più fondamentale di Java: gli array (sia 1D che 2D) e le `ArrayList`.
 
 5.  **Input dell'Utente:**
-    *   PACKAGE: `ScannerInput`
+    *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/ScannerInput`
     *   Impara a rendere i tuoi programmi interattivi leggendo l'input dalla tastiera.
 
 ==================================================
@@ -41,24 +41,24 @@ MODULO 2: IL CUORE DELLA PROGRAMMAZIONE A OGGETTI (OOP)
 Obiettivo: Capire come modellare il mondo reale usando gli oggetti.
 
 1.  **Classi e Oggetti (Introduzione):**
-    *   PACKAGE: `ToString`
+    *   PACKAGE: `MODULO_2_OOP/ToString`
     *   Un'introduzione semplice a come si definisce una classe e si crea un oggetto.
 
 2.  **Ereditarietà:**
-    *   PACKAGE: `Ereditarieta`
+    *   PACKAGE: `MODULO_2_OOP/Ereditarieta`
     *   Impara come una classe "figlia" può ereditare campi e metodi da una classe "madre".
 
 3.  **Polimorfismo:**
-    *   PACKAGE: `Polimorfismo`
+    *   PACKAGE: `MODULO_2_OOP/Polimorfismo`
     *   Scopri come oggetti di tipo diverso possono essere trattati in modo uniforme. È un concetto potentissimo.
 
 4.  **Classi Astratte e Interfacce:**
-    *   PACKAGE: `ClassiAstratte`
-    *   PACKAGE: `Interfacce`
+    *   PACKAGE: `MODULO_2_OOP/ClassiAstratte`
+    *   PACKAGE: `MODULO_2_OOP/Interfacce`
     *   Impara a definire "contratti" e "modelli" per le tue classi. Studiali uno dopo l'altro, capendo le differenze.
 
 5.  **Concetti OOP Avanzati:**
-    *   PACKAGE: `ConcettiAvanzatiOOP`
+    *   PACKAGE: `MODULO_2_OOP/ConcettiAvanzatiOOP`
     *   Approfondisci `Comparable` vs `Comparator`, l'immutabilità e il ciclo di vita degli oggetti.
 
 ==================================================
@@ -67,26 +67,26 @@ MODULO 3: LE API FONDAMENTALI DI JAVA
 Obiettivo: Padroneggiare gli strumenti che Java ti mette a disposizione.
 
 1.  **Stringhe:**
-    *   PACKAGE: `String`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/String`
     *   Approfondisci la manipolazione del testo.
 
 2.  **Date e Orari:**
-    *   PACKAGE: `DataOra`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/DataOra`
     *   Impara a usare la moderna e potente API `java.time`.
 
 3.  **Collezioni:**
-    *   PACKAGE: `ArrayVettori` (studia `MainStack`, `MainLinkList`, `Queue`)
-    *   PACKAGE: `HashMap` (contiene `Map` e `Set`)
-    *   PACKAGE: `Iterator`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/ArrayVettori` (studia `MainStack`, `MainLinkList`, `Queue`)
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/HashMap` (contiene `Map` e `Set`)
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/Iterator`
     *   Impara a usare le strutture dati più comuni: `List`, `Set`, `Map`, `Stack`, `Queue`.
 
 4.  **Generics:**
-    *   PACKAGE: `Generics`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/Generics`
     *   Impara cosa significa `<T>` e perché è fondamentale per la sicurezza delle collezioni.
 
 5.  **Utilità Matematiche:**
-    *   PACKAGE: `Math`
-    *   PACKAGE: `Random`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/Math`
+    *   PACKAGE: `MODULO_3_API_FONDAMENTALI/Random`
     *   Scopri le funzioni matematiche e di generazione casuale pronte all'uso.
 
 ==================================================
@@ -95,19 +95,19 @@ MODULO 4: PROGRAMMAZIONE FUNZIONALE E MODERNA
 Obiettivo: Imparare il nuovo paradigma di programmazione introdotto in Java 8.
 
 1.  **Classi Anonime:**
-    *   PACKAGE: `AnonymusClass`
+    *   PACKAGE: `MODULO_4_PROGRAMMAZIONE_FUNZIONALE_E_MODERNA/AnonymusClass`
     *   Il "vecchio" modo di creare oggetti al volo. È utile per capire da dove vengono le lambda.
 
 2.  **Espressioni Lambda:**
-    *   PACKAGE: `Lambda`
+    *   PACKAGE: `MODULO_4_PROGRAMMAZIONE_FUNZIONALE_E_MODERNA/Lambda`
     *   Impara la sintassi `->` che ha rivoluzionato il modo di scrivere codice in Java.
 
 3.  **Stream API:**
-    *   PACKAGE: `StreamAPI`
+    *   PACKAGE: `MODULO_4_PROGRAMMAZIONE_FUNZIONALE_E_MODERNA/StreamAPI`
     *   Impara a processare collezioni di dati in modo dichiarativo ed elegante. Questo è un argomento ENORME e fondamentale.
 
 4.  **Optional:**
-    *   PACKAGE: `OptionalExample`
+    *   PACKAGE: `MODULO_4_PROGRAMMAZIONE_FUNZIONALE_E_MODERNA/OptionalExample`
     *   Impara il modo corretto e moderno per gestire l'assenza di un valore ed evitare i `NullPointerException`.
 
 ==================================================
@@ -116,21 +116,21 @@ MODULO 5: INTERAGIRE CON IL MONDO ESTERNO (I/O)
 Obiettivo: Imparare a leggere e scrivere dati e a gestire gli errori.
 
 1.  **Gestione delle Eccezioni:**
-    *   PACKAGE: `EccezioniTryCatch`
-    *   PACKAGE: `EccezioniAvanzate`
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/EccezioniTryCatch`
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/EccezioniAvanzate`
     *   Impara a gestire gli errori in modo robusto con `try-catch-finally` e `try-with-resources`.
 
 2.  **I/O su File (Testo e Binario):**
-    *   PACKAGE: `CreateReadFile` (I/O classico)
-    *   PACKAGE: `FileBinari` (I/O binario)
-    *   PACKAGE: `NIO2` (I/O moderno, il più importante da padroneggiare)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/CreateReadFile` (I/O classico)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/FileBinari` (I/O binario)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NIO2` (I/O moderno, il più importante da padroneggiare)
 
 3.  **Localizzazione:**
-    *   PACKAGE: `Localizzazione`
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Localizzazione`
     *   Impara ad adattare la tua applicazione a diverse lingue e regioni.
 
 4.  **Esempio Pratico di I/O:**
-    *   PACKAGE: `AudioPlayer`
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/AudioPlayer`
     *   Rivedi questo esempio per vedere un'applicazione concreta delle API di I/O.
 
 ==================================================
@@ -139,23 +139,23 @@ MODULO 6: ARGOMENTI AVANZATI E DA CERTIFICAZIONE
 Obiettivo: Consolidare la conoscenza con gli argomenti più moderni e specifici.
 
 1.  **Threading e Concorrenza:**
-    *   PACKAGE: `Threading`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/Threading`
     *   Parti dalle basi (`Thread`, `Runnable`) e arriva ai concetti moderni (`ExecutorService`, `Virtual Threads`).
 
 2.  **Tipi di Dato Speciali:**
-    *   PACKAGE: `Enum`
-    *   PACKAGE: `RecordExample`
-    *   PACKAGE: `SealedExample`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/Enum`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/RecordExample`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/SealedExample`
     *   Studia questi moderni costrutti del linguaggio.
 
 3.  **Novità Recenti e "Chicche":**
-    *   PACKAGE: `NovitaJava`
-    *   PACKAGE: `ChiccheJava`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/NovitaJava`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ChiccheJava`
     *   Rivedi le ultime feature del linguaggio e le scorciatoie che ti semplificano la vita.
 
 4.  **Metaprogrammazione e Struttura:**
-    *   PACKAGE: `AnnotazioniCustom`
-    *   PACKAGE: `ModuliJPMS` (studia i file `.txt` per capire la teoria)
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/AnnotazioniCustom`
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ModuliJPMS` (studia i file `.txt` per capire la teoria)
 
 ==================================================
 FASE FINALE: PREPARAZIONE ALL'ESAME

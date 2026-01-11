@@ -1,0 +1,76 @@
+RIEPILOGO SUGLI OPTIONAL IN JAVA - LA GUIDA SEMPLICE
+
+--- COS'È UN OPTIONAL? LA METAFORA DELLA SCATOLA ---
+*
+Gli optional sono dei gestori di NullPointerException
+Ci sono molto utili quando cominciamo a sviluppare con DB e con Spring
+*
+
+Pensa a un `Optional` come a una "scatola" (un contenitore). Questa scatola può contenere un valore (es. una Stringa, un numero) oppure può essere vuota.
+
+Il suo scopo principale è uno solo: ELIMINARE I `NullPointerException`.
+
+Invece di usare `null` per indicare che un valore non c'è, usiamo una scatola vuota (`Optional.empty()`).
+Il vantaggio è che Java ti "costringe" a pensare a cosa fare se la scatola è vuota prima di provare ad aprirla, rendendo il codice molto più sicuro e chiaro.
+
+--- PERCHÉ USARLO? I VANTAGGI ---
+
+1.  **Sicurezza (Type Safety)**: Il più grande vantaggio. Il sistema ti obbliga a gestire il caso in cui il valore non esista.
+2.  **Chiarezza del Codice**: Quando un metodo restituisce `Optional<String>`, chi lo usa sa IMMEDIATAMENTE che quel valore potrebbe non esserci. Non ci sono sorprese. Un metodo che restituisce solo `String` non dà questa informazione.
+
+--- GUIDA AI COMANDI PRINCIPALI ---
+
+**1. Creare un Optional (Mettere qualcosa nella scatola)**
+
+*   `Optional.of(valore)`
+    -> Mette un valore nella scatola. Usalo solo quando sei SICURO al 100% che il valore non sia `null`, altrimenti lancia un'eccezione.
+
+*   `Optional.empty()`
+    -> Crea una scatola volutamente vuota. È il nuovo `null`.
+
+*   `Optional.ofNullable(valore)`
+    -> Il modo più sicuro e comune. Se il `valore` esiste, lo mette nella scatola. Se il `valore` è `null`, restituisce una scatola vuota.
+
+--------------------------------------------------------------------------------
+
+**2. Controllare il Contenuto (Guardare dentro la scatola)**
+
+*   `optional.isPresent()` / `optional.isEmpty()`
+    -> Il modo base per controllare: `isPresent()` restituisce `true` se la scatola è piena, `isEmpty()` restituisce `true` se la scatola è vuota.
+
+*   `optional.ifPresent(lambda)`
+    -> "Se c'è un valore, fai qualcosa con esso." È un modo elegante per fare un'azione solo se il valore esiste.
+
+*   `optional.ifPresentOrElse(lambdaSePresente, lambdaSeAssente)`
+    -> La versione completa: "Se c'è un valore, fai una cosa. Altrimenti, fanne un'altra". Sostituisce un intero blocco `if/else`.
+
+--------------------------------------------------------------------------------
+
+**3. Estrarre il Valore (Tirare fuori il contenuto in sicurezza)**
+
+*   `optional.get()` -> **DA EVITARE!**
+    -> Cerca di prendere il valore forzatamente. Se la scatola è vuota, lancia un'eccezione (`NoSuchElementException`). Usarlo vanifica lo scopo dell'Optional. È il nuovo `NullPointerException`.
+
+*   `optional.orElse(valoreDefault)`
+    -> Il modo più comune: "Prendi il valore nella scatola. Se è vuota, usa questo `valoreDefault`".
+
+*   `optional.orElseGet(supplier)`
+    -> Simile a `orElse`, ma il valore di default viene calcolato solo se serve.
+    -> Utile se creare il default è un'operazione "costosa" (es. una chiamata a un database).
+
+*   `optional.orElseThrow()`
+    -> "Prendi il valore. Se la scatola è vuota, lancia un'eccezione". Si usa quando il valore è assolutamente necessario per far continuare il programma.
+
+--------------------------------------------------------------------------------
+
+**4. Trasformare il Valore (Lavorare sul contenuto senza estrarlo)**
+
+Questi metodi sono molto potenti perché ti permettono di modificare il valore DENTRO la scatola, senza mai doverlo estrarre.
+
+*   `optional.map(lambda)`
+    -> Se la scatola non è vuota, applica una funzione al valore contenuto e restituisce una nuova scatola con il risultato. Se la scatola è vuota, restituisce semplicemente un'altra scatola vuota.
+    *Esempio: trasformare una stringa in maiuscolo all'interno dell'Optional.*
+
+*   `optional.filter(predicato)`
+    -> Se la scatola contiene un valore che soddisfa una certa condizione, la restituisce così com'è. Altrimenti, restituisce una scatola vuota.
+    *Esempio: tieni il valore solo se è un numero maggiore di 10.*

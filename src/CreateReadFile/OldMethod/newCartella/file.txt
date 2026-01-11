@@ -1,4 +1,0 @@
-Prima riga di questo file.txt
-Seconda riga di questo file.txt usando prima write(System.lineSeparator());)
-Terza riga di questo file.txt tramite .append()
-Io sono la terza riga
