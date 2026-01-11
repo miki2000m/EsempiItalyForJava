@@ -1,0 +1,69 @@
+RIEPILOGO SULLE "CHICCHE" DI JAVA MODERNO
+
+Questo file riassume alcune delle funzionalità e delle API più comode introdotte nelle versioni recenti di Java (principalmente da Java 9 a Java 11), progettate per ridurre il codice "boilerplate" e rendere la programmazione quotidiana più piacevole e leggibile.
+
+--- 1. FACTORY METHODS PER COLLEZIONI IMMUTABILI (DA JAVA 9) ---
+
+**- Problema:** Prima di Java 9, per creare una piccola lista di elementi, bisognava creare un'istanza e aggiungere gli elementi uno per uno, oppure usare `Arrays.asList()`, che però creava una lista a dimensione fissa, non veramente immutabile.
+
+**- Soluzione:** Metodi statici `of()` sulle interfacce delle collezioni.
+
+- `List.of(e1, e2, ...)`
+- `Set.of(e1, e2, ...)`
+- `Map.of(k1, v1, k2, v2, ...)`
+
+**- Caratteristiche Fondamentali:**
+  - **Immutabilità:** Le collezioni create con `of()` sono **veramente immutabili**. Qualsiasi tentativo di aggiungere, rimuovere o modificare elementi lancerà un'`UnsupportedOperationException`.
+  - **Concisezza:** Permettono di creare e inizializzare una collezione in una sola riga.
+  - **Sicurezza e Restrittività:**
+    - **Nessun `null`:** Nessuno di questi metodi accetta elementi `null`.
+    - **Nessun Duplicato (per `Set` e `Map`):** A differenza di un `HashSet` che ignora silenziosamente i duplicati, `Set.of()` e `Map.of()` lanciano un'`IllegalArgumentException` se si tenta di creare la collezione con chiavi o elementi duplicati. Questo comportamento "fail-fast" aiuta a individuare errori di programmazione.
+
+--- 2. NUOVI METODI UTILI DELLA CLASSE `String` (DA JAVA 11) ---
+
+**- `isBlank()`**:
+  - Restituisce `true` se la stringa è vuota (`""`) o se contiene **solo spazi bianchi** (spazi, tab, a capo).
+  - È più utile di `isEmpty()`, che restituisce `true` solo per `""`.
+
+**- `lines()`**:
+  - Restituisce uno `Stream<String>` dove ogni elemento è una riga della stringa originale, separata dai caratteri di a-capo.
+  - È un modo estremamente comodo e funzionale per processare un testo multiriga.
+
+**- `strip()`, `stripLeading()`, `stripTrailing()`**:
+  - Funzionano in modo simile a `trim()`, ma sono più moderni e "Unicode-aware" (riconoscono una gamma più ampia di caratteri di spaziatura definiti da Unicode).
+  - `strip()`: Rimuove gli spazi bianchi da entrambi i lati.
+  - `stripLeading()`: Rimuove gli spazi bianchi solo dall'inizio.
+  - `stripTrailing()`: Rimuove gli spazi bianchi solo dalla fine.
+
+**- `repeat(int count)`**:
+  - Restituisce una nuova stringa che consiste nella stringa originale concatenata a se stessa per `count` volte.
+
+--- 3. I/O SU FILE SEMPLIFICATO (DA JAVA 11) ---
+
+**- Problema:** Leggere o scrivere un semplice file di testo richiedeva diverse righe di codice per gestire stream, buffer e `try-with-resources`.
+
+**- Soluzione:** Nuovi metodi statici nella classe `java.nio.file.Files`.
+
+- **`Files.writeString(Path path, CharSequence csq)`**:
+  - Scrive un'intera stringa su un file in una sola riga di codice. Sovrascrive il file se esiste.
+
+- **`Files.readString(Path path)`**:
+  - Legge l'intero contenuto di un file di testo e lo restituisce come un'unica `String`.
+
+**- Uso:** Sono perfetti per file di testo di piccole e medie dimensioni. Per file molto grandi, l'approccio a stream (`Files.lines()` o `newBufferedReader()`) rimane più efficiente in termini di memoria.
+
+--- 4. MIGLIORAMENTI ALLA CLASSE `Optional` (DA JAVA 9) ---
+
+**- `ifPresentOrElse(Consumer action, Runnable emptyAction)`**:
+  - Esegue il `Consumer` (un'azione sul valore) se l'`Optional` è pieno, altrimenti esegue il `Runnable` (un'azione senza argomenti) se è vuoto.
+  - Sostituisce elegantemente un blocco `if/else`.
+
+**- `or(Supplier<? extends Optional<? extends T>> supplier)`**:
+  - Se l'`Optional` è pieno, lo restituisce. Se è vuoto, esegue il `Supplier` per ottenere un altro `Optional` da restituire.
+  - È un modo funzionale per fornire un valore di fallback che è a sua volta un `Optional`.
+
+**- `stream()`**:
+  - Converte un `Optional<T>` in uno `Stream<T>`.
+  - Se l'`Optional` è pieno, lo stream conterrà un solo elemento.
+  - Se l'`Optional` è vuoto, lo stream sarà vuoto.
+  - È estremamente utile per integrare un valore opzionale all'interno di una pipeline di stream senza interromperla con controlli `if`.

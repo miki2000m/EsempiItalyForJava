@@ -1,0 +1,65 @@
+RIEPILOGO SULLA GESTIONE AVANZATA DELLE ECCEZIONI
+
+Questo file approfondisce due argomenti avanzati ma fondamentali per la gestione robusta delle risorse e degli errori in Java, entrambi importanti per l'esame di certificazione.
+
+--- 1. `try-with-resources` E L'INTERFACCIA `AutoCloseable` ---
+
+**- Problema:** Prima di Java 7, per assicurarsi che una risorsa (come uno stream di file o una connessione a un database) venisse sempre chiusa, era necessario usare un blocco `finally`, rendendo il codice verboso e soggetto a errori.
+
+`Risorsa r = null;`
+`try {`
+`    r = new Risorsa();`
+`    r.usa();`
+`} finally {`
+`    if (r != null) {`
+`        r.close();`
+`    }`
+`}`
+
+**- Soluzione (da Java 7):** Il costrutto `try-with-resources`.
+
+**- Come funziona:**
+  1. Si dichiara e inizializza la risorsa all'interno delle parentesi del `try`.
+  2. La risorsa deve essere di un tipo che implementa l'interfaccia `java.lang.AutoCloseable`.
+  3. Il metodo `close()` della risorsa viene **chiamato automaticamente** alla fine del blocco `try`, sia che esso termini normalmente, sia che lanci un'eccezione.
+
+`try (Risorsa r = new Risorsa()) {`
+`    r.usa();`
+`} // r.close() viene chiamato automaticamente qui.`
+
+**- L'interfaccia `AutoCloseable`:**
+  - È un'interfaccia funzionale con un solo metodo: `void close() throws Exception;`.
+  - Qualsiasi classe che gestisce una risorsa che deve essere chiusa (file, connessioni di rete, ecc.) dovrebbe implementare questa interfaccia per poter essere usata con `try-with-resources`.
+  - È possibile dichiarare più risorse nello stesso `try`, separate da un punto e virgola; verranno chiuse in ordine inverso rispetto alla loro dichiarazione.
+
+`try (Risorsa1 r1 = new Risorsa1(); Risorsa2 r2 = new Risorsa2()) { ... }`
+// Verrà chiamato prima `r2.close()` e poi `r1.close()`.
+
+--- 2. ECCEZIONI SOPPRESSE (SUPPRESSED EXCEPTIONS) ---
+
+**- Scenario:** Cosa succede se un'eccezione viene lanciata all'interno del blocco `try` e, successivamente, un'altra eccezione viene lanciata durante la chiusura automatica della risorsa nel metodo `close()`?
+
+**- Comportamento:**
+  - L'eccezione lanciata dal blocco `try` è considerata l'**eccezione principale** e viene propagata al blocco `catch`.
+  - L'eccezione lanciata dal metodo `close()` **non viene persa**. Viene "soppressa" e **allegata** all'eccezione principale.
+
+Questo meccanismo è fondamentale perché impedisce che un errore avvenuto durante la fase di pulizia (la chiusura) nasconda l'errore originale che ha causato il problema (nel blocco `try`).
+
+**- Come si gestiscono:**
+  L'eccezione principale catturata nel blocco `catch` può essere ispezionata per vedere se ha delle eccezioni soppresse.
+
+`catch (Exception e) {`
+`    System.err.println("Eccezione principale: " + e.getMessage());`
+
+`    // getSuppressed() restituisce un array di Throwable`
+`    for (Throwable soppressa : e.getSuppressed()) {`
+`        System.err.println("  Eccezione soppressa: " + soppressa.getMessage());`
+`    }`
+`}`
+
+**- Confronto con il blocco `finally`:**
+  In un blocco `try-catch-finally` tradizionale, se sia il `try` che il `finally` lanciano un'eccezione, l'eccezione del `try` viene **persa** e solo quella del `finally` viene propagata. Questo è un altro motivo per cui `try-with-resources` è considerato superiore e più sicuro.
+
+IN SINTESI:
+- `try-with-resources` è il modo moderno, sicuro e conciso per gestire risorse che richiedono una chiusura.
+- Le eccezioni soppresse sono un meccanismo robusto che assicura che nessuna informazione di errore venga persa quando si verificano problemi multipli sia nell'uso che nella pulizia di una risorsa.

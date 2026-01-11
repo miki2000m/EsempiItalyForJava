@@ -1,0 +1,60 @@
+RIEPILOGO SUI CONCETTI AVANZATI DI OOP
+
+Questo file approfondisce tre concetti della programmazione orientata agli oggetti che sono fondamentali per scrivere codice robusto e spesso testati negli esami di certificazione.
+
+--- 1. ORDINAMENTO DI OGGETTI: `Comparable` vs `Comparator` ---
+
+Entrambe sono interfacce usate per definire un criterio di ordinamento per gli oggetti, ma hanno scopi diversi.
+
+**A) `Comparable<T>`**
+- **Scopo:** Definire l'**ordine naturale** di una classe. È l'ordinamento "di default".
+- **Come si usa:** La classe stessa deve implementare l'interfaccia `Comparable<T>` e fornire un'implementazione per il suo unico metodo, `int compareTo(T altro)`.
+- **`compareTo(T altro)` deve restituire:**
+  - Un numero **negativo** se l'oggetto corrente (`this`) viene "prima" di `altro`.
+  - **Zero** se i due oggetti sono "uguali" ai fini dell'ordinamento.
+  - Un numero **positivo** se l'oggetto corrente (`this`) viene "dopo" di `altro`.
+- **Esempio:** Una classe `Persona` può implementare `Comparable` per ordinarsi naturalmente per cognome e nome.
+
+**B) `Comparator<T>`**
+- **Scopo:** Definire un **ordinamento alternativo** o esterno a una classe. È utile quando una classe non implementa `Comparable` o quando si vogliono avere più criteri di ordinamento.
+- **Come si usa:** Si crea una classe separata che implementa l'interfaccia `Comparator<T>` e si fornisce un'implementazione per il suo metodo `int compare(T o1, T o2)`.
+- **`compare(T o1, T o2)` deve restituire:**
+  - Un numero **negativo** se `o1` viene prima di `o2`.
+  - **Zero** se sono uguali.
+  - Un numero **positivo** se `o1` viene dopo di `o2`.
+- **Esempio:** Per la classe `Persona`, si può creare un `Comparator` per ordinarla per età, un altro per ordinarla per città, ecc.
+
+**In Sintesi:**
+- `Comparable`: L'oggetto *sa come ordinare se stesso* (ordinamento interno).
+- `Comparator`: Qualcun altro *sa come ordinare l'oggetto* (ordinamento esterno).
+
+--- 2. OGGETTI IMMUTABILI (IMMUTABILITY) ---
+
+Un oggetto è **immutabile** se il suo stato interno non può essere modificato dopo la sua creazione. `String`, `Integer` e i `record` sono esempi di classi immutabili in Java.
+
+**Vantaggi:**
+- **Thread-Safety:** Sono intrinsecamente sicuri da usare in ambienti multi-threaded senza bisogno di `synchronized`.
+- **Prevedibilità:** Il loro stato è garantito, rendendo il codice più facile da capire e debuggare.
+- **Caching:** Possono essere messi in cache in modo sicuro (es. come chiavi di una `HashMap`).
+
+**Come Creare una Classe Immutabile (Le 5 Regole):**
+1.  **Dichiara la classe `final`:** Per impedire che venga estesa e che i suoi metodi vengano sovrascritti.
+2.  **Rendi tutti i campi `private` e `final`:** Per impedire l'accesso diretto e la riassegnazione.
+3.  **Non fornire metodi "setter"**: Non ci devono essere metodi che modificano lo stato dei campi.
+4.  **Fai "Copie Difensive" dei campi mutabili nel costruttore:** Se un campo è di un tipo mutabile (es. `Date`, `ArrayList`), il costruttore non deve salvare il riferimento all'oggetto originale, ma deve creare e salvare una **copia**. Questo impedisce che l'oggetto interno venga modificato dall'esterno dopo la creazione.
+5.  **Restituisci "Copie Difensive" dai getter per i campi mutabili:** Allo stesso modo, i getter per i campi mutabili non devono restituire un riferimento all'oggetto interno, ma una sua **copia**. Questo impedisce che l'oggetto interno venga modificato tramite il riferimento ottenuto dal getter.
+
+--- 3. CICLO DI VITA DELL'OGGETTO E GARBAGE COLLECTION (GC) ---
+
+**Ciclo di Vita:**
+1.  **Creazione:** Un oggetto viene creato con la keyword `new`. La JVM alloca memoria per esso nell'heap.
+2.  **In Uso (Raggiungibile):** Finché esiste almeno un riferimento "attivo" che punta all'oggetto, esso è considerato "in uso" o "raggiungibile".
+3.  **Inutilizzato (Irraggiungibile):** Un oggetto diventa "irraggiungibile" quando non ci sono più riferimenti attivi che puntano ad esso. Questo può accadere se:
+    - La variabile che lo referenzia viene impostata a `null`.
+    - La variabile esce dal suo scope (es. una variabile locale alla fine di un metodo).
+    - La variabile viene riassegnata per puntare a un altro oggetto.
+
+**Garbage Collection (GC):**
+- Il Garbage Collector è un processo automatico della JVM che periodicamente cerca gli oggetti irraggiungibili nell'heap.
+- Quando trova un oggetto irraggiungibile, lo elimina e **libera la memoria** che occupava.
+- **Importante:** Non si ha alcun controllo su **quando** il GC verrà eseguito. Si può solo suggerire alla JVM di eseguirlo con `System.gc()`, ma non c'è garanzia che lo faccia. Il programmatore Java non deve (e non può) gestire la memoria manualmente come in C++. Il suo compito è assicurarsi che i riferimenti agli oggetti non più necessari vengano eliminati per renderli eleggibili alla GC.
