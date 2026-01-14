@@ -1,0 +1,58 @@
+RIEPILOGO DETTAGLIATO SUI TIPI DI DATO PRIMITIVI
+
+I tipi primitivi sono i mattoni fondamentali del linguaggio Java. Non sono oggetti, ma memorizzano direttamente il valore nella memoria allocata per la variabile. Questa guida esplora in dettaglio le loro caratteristiche.
+
+--- TABELLA COMPLETA DEI TIPI PRIMITIVI ---
+
+| Tipo      | Peso in Memoria | Range di Valori                                         | Valore di Default | Note Chiave per l'Esame                                                 |
+|-----------|-----------------|---------------------------------------------------------|-------------------|-------------------------------------------------------------------------|
+| **`byte`**    | 8 bit (1 byte)  | da -128 a 127                                           | `0`               | Utile per risparmiare memoria. L'overflow "gira" (es. `127 + 1` diventa `-128`). |
+| **`short`**   | 16 bit (2 byte) | da -32,768 a 32,767                                     | `0`               | Simile a `byte`, ma con un range più ampio. Raramente usato.            |
+| **`int`**     | 32 bit (4 byte) | da -2,147,483,648 a 2,147,483,647 (circa ±2 miliardi)    | `0`               | **Tipo intero di default**. Qualsiasi numero intero letterale è un `int`. |
+| **`long`**    | 64 bit (8 byte) | da -9x10^18 a 9x10^18 circa                              | `0L`              | Per numeri interi molto grandi. Richiede il suffisso `L` (es. `100L`).    |
+|-----------|-----------------|---------------------------------------------------------|-------------------|-------------------------------------------------------------------------|
+| **`float`**   | 32 bit (4 byte) | circa ±3.4 x 10^38 (6-7 cifre decimali di precisione)   | `0.0f`            | Precisione singola. Richiede il suffisso `f` (es. `3.14f`).             |
+| **`double`**  | 64 bit (8 byte) | circa ±1.8 x 10^308 (~15 cifre decimali di precisione)  | `0.0`             | **Tipo decimale di default**. Offre maggiore precisione di `float`.       |
+|-----------|-----------------|---------------------------------------------------------|-------------------|-------------------------------------------------------------------------|
+| **`char`**    | 16 bit (2 byte) | da 0 a 65,535 (caratteri Unicode)                       | `'\u0000'`        | Rappresenta un carattere. È anche un tipo numerico intero senza segno.  |
+| **`boolean`** | ~1 bit*         | `true` o `false`                                        | `false`           | Non è convertibile in `int` (0 o 1) come in altri linguaggi.          |
+
+--- CONCETTI CHIAVE E CASI LIMITE DA ESAME ---
+
+**1. Valori di Default**
+   - I valori di default si applicano **solo ai campi di istanza e di classe (statici)**.
+   - Le **variabili locali** (all'interno di un metodo) **NON hanno un valore di default** e devono essere inizializzate esplicitamente prima dell'uso, altrimenti il codice non compila.
+
+**2. Promozione e Casting**
+   - **Promozione Automatica:** Quando si esegue un'operazione tra tipi numerici diversi, Java promuove automaticamente il tipo più "piccolo" a quello più "grande" per evitare perdita di dati. Ad esempio, in `int + long`, l'`int` viene promosso a `long` prima della somma.
+   - **Casting Esplicito:** Per convertire un tipo più grande in uno più piccolo (es. da `double` a `int`), è necessario un cast esplicito. Questo può causare una **perdita di informazioni** (la parte decimale viene troncata, non arrotondata).
+     `double d = 9.9;`
+     `int i = (int) d; // i ora vale 9`
+
+**3. Divisione tra Interi**
+   - La divisione tra due tipi interi (`byte`, `short`, `int`, `long`) produce sempre un risultato **intero**, **troncando** qualsiasi resto decimale.
+     `int risultato = 5 / 2; // risultato è 2, non 2.5`
+
+**4. Overflow e Underflow**
+   - I tipi primitivi numerici non lanciano eccezioni in caso di overflow (superamento del valore massimo) o underflow (superamento del valore minimo). Invece, "girano" (wrap around).
+     `byte b = 127;`
+     `b++; // b ora vale -128`
+   - Questo comportamento è un classico argomento da domanda d'esame.
+
+**5. Precisione dei Floating-Point (`float`, `double`)**
+   - I tipi a virgola mobile non possono rappresentare tutti i numeri decimali in modo perfetto nel sistema binario. Questo porta a piccoli errori di arrotondamento.
+   - **MAI usare `==` per confrontare due `float` o `double`**. Invece, si controlla se la loro differenza assoluta è inferiore a una piccola tolleranza (epsilon).
+   - Per calcoli finanziari o dove la precisione è critica, si usa la classe `java.math.BigDecimal`, non `double` o `float`.
+
+**6. Il Tipo `char`**
+   - Un `char` è un tipo numerico intero senza segno a 16 bit. Puoi eseguire operazioni aritmetiche su di esso.
+     `char c = 'A';`
+     `c++; // c ora è 'B'`
+     `int valore = c; // valore è 66`
+
+**7. Il Tipo `boolean`**
+   - Un `boolean` può essere solo `true` o `false`.
+   - In Java, a differenza di altri linguaggi, non c'è conversione implicita tra `boolean` e tipi numerici (es. 1 e 0). Le condizioni in `if`, `while`, ecc. devono essere espressioni booleane.
+     `if (1) { ... } // ERRORE DI COMPILAZIONE`
+
+*Nota sul peso del `boolean`: Sebbene un `boolean` rappresenti un solo bit di informazione, la JVM tipicamente alloca più memoria (spesso 1 byte o più) per motivi di allineamento e efficienza di accesso.

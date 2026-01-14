@@ -1,0 +1,70 @@
+RIEPILOGO DETTAGLIATO SULLA CLASSE `java.util.Collections`
+
+La classe `java.util.Collections` (con la 's' finale) è una classe di utilità (`utility class`) che consiste esclusivamente di metodi `static` per operare su o restituire collezioni. Fornisce algoritmi polimorfici che operano su collezioni, "wrapper" che restituiscono una nuova collezione con una proprietà specificata, e altri metodi di utilità.
+
+**ATTENZIONE:** Non confondere `java.util.Collections` (la classe di utilità) con `java.util.Collection` (l'interfaccia radice della gerarchia delle collezioni).
+
+--- 1. ALGORITMI POLIMORFICI ---
+
+Questi metodi eseguono operazioni comuni su una `List` o una `Collection`.
+
+- **`sort(List<T> list)`**:
+  - **Scopo:** Ordinare una lista "in-place" (modifica la lista originale).
+  - **Logica:** Ordina gli elementi secondo il loro **ordine naturale** (la classe degli elementi deve implementare `Comparable`).
+
+- **`sort(List<T> list, Comparator<? super T> c)`**:
+  - **Scopo:** Ordinare una lista usando un criterio di ordinamento personalizzato.
+  - **Logica:** Usa il `Comparator` fornito per confrontare e ordinare gli elementi.
+
+- **`shuffle(List<?> list)`**:
+  - **Scopo:** Mescolare gli elementi di una lista in ordine casuale.
+
+- **`reverse(List<?> list)`**:
+  - **Scopo:** Invertire l'ordine degli elementi in una lista.
+
+- **`binarySearch(List<? extends Comparable> list, T key)`**:
+  - **Scopo:** Eseguire una ricerca binaria su una lista.
+  - **REQUISITO FONDAMENTALE:** La lista **DEVE ESSERE ORDINATA** prima di chiamare questo metodo.
+  - **Valori di Ritorno:** Come `Arrays.binarySearch`, restituisce l'indice se l'elemento è trovato, o `(-(punto di inserimento) - 1)` se non è trovato.
+
+- **`fill(List<? super T> list, T obj)`**:
+  - **Scopo:** Sostituire tutti gli elementi di una lista con un oggetto specificato.
+
+- **`replaceAll(List<T> list, T oldVal, T newVal)`**:
+  - **Scopo:** Sostituire tutte le occorrenze di un valore con un altro.
+
+- **`max(Collection<? extends T> coll)` / `min(Collection<? extends T> coll)`**:
+  - **Scopo:** Trovare l'elemento massimo o minimo in una collezione, basandosi sull'ordine naturale. Esistono versioni che accettano un `Comparator`.
+
+--- 2. WRAPPER DI COLLEZIONI ---
+
+Questi metodi "avvolgono" una collezione esistente per fornirle nuove proprietà. Restituiscono una **vista** sulla collezione originale, non una copia.
+
+- **Wrapper di Immutabilità:**
+  - `unmodifiableList(List<? extends T> list)`
+  - `unmodifiableSet(Set<? extends T> s)`
+  - `unmodifiableMap(Map<? extends K, ? extends V> m)`
+  - **Scopo:** Restituire una vista **immutabile** (read-only) della collezione originale.
+  - **Comportamento:** Qualsiasi tentativo di modificare la collezione tramite la vista (es. `add()`, `remove()`) lancerà una `UnsupportedOperationException`.
+  - **ATTENZIONE:** La vista è immutabile, ma la collezione originale **non lo è**. Se modifichi la collezione originale, la modifica sarà visibile anche attraverso la vista immutabile.
+
+- **Wrapper di Sincronizzazione (Thread-Safety):**
+  - `synchronizedList(List<T> list)`
+  - `synchronizedSet(Set<T> s)`
+  - `synchronizedMap(Map<K,V> m)`
+  - **Scopo:** Restituire una versione **thread-safe** della collezione.
+  - **Logica:** Ogni metodo della collezione restituita è avvolto in un blocco `synchronized`, garantendo che solo un thread alla volta possa accedere alla collezione.
+  - **Nota:** Questo approccio alla concorrenza è considerato in parte obsoleto. Per applicazioni ad alta concorrenza, le classi del package `java.util.concurrent` (come `CopyOnWriteArrayList` o `ConcurrentHashMap`) offrono spesso performance e scalabilità migliori.
+
+- **Wrapper di Controllo del Tipo (Checked Wrappers):**
+  - `checkedList(List<E> list, Class<E> type)`
+  - **Scopo:** Restituire una vista della lista che controlla dinamicamente (a runtime) il tipo degli elementi che vengono aggiunti.
+  - **Logica:** Se si tenta di aggiungere un elemento di un tipo non corretto, viene lanciata immediatamente una `ClassCastException`. È utile durante il debug per individuare problemi di "heap pollution" con i generics.
+
+--- 3. COLLEZIONI VUOTE E SINGLETON ---
+
+- **`emptyList()`, `emptySet()`, `emptyMap()`**:
+  - Restituiscono una collezione **immutabile e vuota**. Utile per evitare di restituire `null` da un metodo che dovrebbe restituire una collezione.
+
+- **`singletonList(T o)`, `singleton(T o)`, `singletonMap(K key, V value)`**:
+  - Restituiscono una collezione **immutabile** che contiene un **singolo elemento specificato**.

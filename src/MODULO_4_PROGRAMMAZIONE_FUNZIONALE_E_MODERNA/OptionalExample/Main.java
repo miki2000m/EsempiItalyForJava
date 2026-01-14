@@ -125,8 +125,8 @@ public class Main {
         // "Dammi il valore, ma se non c'è, lancia un'eccezione".
         // Si usa quando il valore è obbligatorio per il proseguimento del programma.
         try {
-            String nomeTrovato = utenteTrovato.orElseThrow();
-            System.out.println("C) `orElseThrow()`: Se l'utente 1 esiste, ottengo -> " + nomeTrovato);
+            String nomeEsistente = utenteTrovato.orElseThrow();
+            System.out.println("C) `orElseThrow()`: Se l'utente 1 esiste, ottengo -> " + nomeEsistente);
             utenteNonTrovato.orElseThrow(() -> new IllegalStateException("L'utente deve esistere!"));
         } catch (Exception e) {
             System.out.println("   `orElseThrow()`: Se l'utente 2 non esiste, viene lanciata un'eccezione -> " + e.getClass().getSimpleName() + "\n");
@@ -139,8 +139,8 @@ public class Main {
 
         // `map()` -> Trasforma il valore DENTRO la scatola.
         // Se la scatola è vuota, non fa nulla e restituisce una scatola vuota.
-        Optional<Integer> lunghezzaNome = utenteOptional.map(nome -> nome.trim()); // Rimuove spazi
-        Optional<Integer> lunghezzaNome = utentePulito.map(nome -> nome.length()); // Prende la lunghezza
+        Optional<String> utentePulito = utenteOptional.map(String::trim); // Rimuove spazi
+        Optional<Integer> lunghezzaNome = utentePulito.map(String::length); // Prende la lunghezza
 
         System.out.println("A) `map()`: Trasformo '  Mario Rossi  ' in lunghezza -> " + lunghezzaNome.orElse(0));
 

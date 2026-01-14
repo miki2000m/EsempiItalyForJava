@@ -1,0 +1,62 @@
+RIEPILOGO SULLE INFORMAZIONI DI RETE (IP, MAC, INTERFACCE)
+
+Questo file approfondisce i concetti di basso livello legati agli indirizzi di rete e a come accedervi tramite Java.
+**NOTA:** Questo è un argomento avanzato e NON è richiesto per l'esame di certificazione OCP.
+
+--- INDIRIZZO IP vs INDIRIZZO MAC: I DUE LIVELLI DI INDIRIZZAMENTO ---
+
+Per capire come funzionano le informazioni di rete, è fondamentale distinguere tra due tipi di indirizzi che operano a livelli diversi del modello di rete OSI:
+
+**1. Indirizzo MAC (Media Access Control)**
+- **Livello:** 2 (Data Link Layer).
+- **Cos'è:** È un indirizzo **fisico**, unico al mondo, "bruciato" dal produttore sulla scheda di rete (NIC). È un identificatore hardware.
+- **Formato:** 48 bit, solitamente rappresentato in esadecimale (es. `00-1A-2B-3C-4D-5E`).
+- **Scopo:** Viene usato per la comunicazione **all'interno della stessa rete locale (LAN)**. Quando il tuo computer vuole parlare con il router di casa, usa l'indirizzo MAC per trovarlo.
+- **Visibilità:** L'indirizzo MAC **non è visibile al di fuori della rete locale**. Quando un pacchetto di dati attraversa un router per andare su Internet, l'indirizzo MAC del mittente originale viene perso e sostituito da quello del router.
+
+**2. Indirizzo IP (Internet Protocol)**
+- **Livello:** 3 (Network Layer).
+- **Cos'è:** È un indirizzo **logico** che viene assegnato (staticamente o dinamicamente tramite DHCP) a un dispositivo su una rete. Identifica la posizione del dispositivo nella rete.
+- **Formato:** 32 bit (IPv4, es. `192.168.1.10`) o 128 bit (IPv6).
+- **Scopo:** Viene usato per l'**instradamento (routing) dei pacchetti su reti diverse**, inclusa Internet. È l'indirizzo che permette a computer di diverse parti del mondo di trovarsi.
+- **Visibilità:** L'indirizzo IP del mittente e del destinatario viaggia con il pacchetto di dati attraverso Internet.
+
+**Analogia:**
+- **Indirizzo IP:** L'indirizzo postale su una lettera (es. "Via Roma 1, Milano, Italia"). Permette al servizio postale di far arrivare la lettera nella città e nella via giusta.
+- **Indirizzo MAC:** Il nome sul campanello di un palazzo. Una volta che il postino è arrivato in "Via Roma 1", usa il nome sul campanello per trovare l'appartamento esatto.
+
+--- API JAVA PER LE INFORMAZIONI DI RETE ---
+
+**1. `java.net.NetworkInterface`**
+- **Scopo:** Rappresenta una **scheda di rete** (fisica come Ethernet/Wi-Fi, o virtuale).
+- **Metodi Chiave:**
+  - `getNetworkInterfaces()`: Metodo statico che restituisce un'`Enumeration` di tutte le interfacce di rete sulla macchina.
+  - `isUp()`: Controlla se l'interfaccia è attiva.
+  - `isLoopback()`: Controlla se è l'interfaccia di loopback (localhost).
+  - `getHardwareAddress()`: Restituisce l'indirizzo MAC come un array di `byte[]`. Se l'interfaccia non ha un indirizzo hardware (es. è virtuale), restituisce `null`.
+  - `getInetAddresses()`: Restituisce un'`Enumeration` di tutti gli indirizzi IP (`InetAddress`) associati a questa interfaccia.
+
+**2. `java.net.InetAddress`**
+- **Scopo:** Rappresenta un indirizzo IP.
+- **Metodi Chiave:**
+  - `getHostAddress()`: Restituisce l'indirizzo IP come una stringa (es. "192.168.1.10").
+  - `getHostName()`: Tenta di risolvere il nome host associato all'indirizzo IP.
+
+--- OTTENERE INFORMAZIONI SU MITTENTE E DESTINATARIO ---
+
+Quando si stabilisce una connessione `Socket` tra un client e un server:
+
+- **Dal punto di vista del Server:**
+  - Dopo `serverSocket.accept()`, l'oggetto `Socket` restituito rappresenta la connessione con il client.
+  - `clientSocket.getInetAddress()`: Restituisce l'indirizzo **IP del client** (il mittente).
+  - `clientSocket.getPort()`: Restituisce la porta **remota** del client (la porta da cui è partita la connessione).
+  - `clientSocket.getLocalAddress()`: Restituisce l'indirizzo **IP locale** del server su cui è stata accettata la connessione.
+  - `clientSocket.getLocalPort()`: Restituisce la porta **locale** del server (la porta su cui era in ascolto).
+
+- **Dal punto di vista del Client:**
+  - Dopo `new Socket(...)`, l'oggetto `Socket` rappresenta la connessione con il server.
+  - `socket.getInetAddress()`: Restituisce l'indirizzo **IP del server** (il destinatario).
+  - `socket.getPort()`: Restituisce la porta **remota** del server a cui si è connesso.
+
+**Conclusione Fondamentale:**
+Tramite un `Socket`, un programma può sempre conoscere l'**indirizzo IP** dell'altro capo della connessione, ma **non può mai conoscere il suo indirizzo MAC**, perché questa informazione è confinata alla rete locale di quel computer e non viene trasmessa attraverso i router di Internet.

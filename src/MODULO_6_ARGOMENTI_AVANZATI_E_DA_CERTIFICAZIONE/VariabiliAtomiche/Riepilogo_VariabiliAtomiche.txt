@@ -1,0 +1,67 @@
+RIEPILOGO SULLE VARIABILI ATOMICHE
+
+--- IL PROBLEMA DELLA CONCORRENZA: RACE CONDITION ---
+
+In un ambiente multi-threaded, quando più thread accedono e modificano contemporaneamente una risorsa condivisa (come una semplice variabile `int`), possono verificarsi problemi di **race condition**.
+
+Una race condition si verifica quando il risultato di un'operazione dipende dall'ordine non deterministico in cui i thread eseguono le loro istruzioni.
+
+**Esempio: `contatore++`**
+L'operazione `contatore++` (incremento) sembra semplice, ma a basso livello si compone di tre passaggi:
+1.  **Leggi** il valore attuale di `contatore`.
+2.  **Incrementa** il valore letto.
+3.  **Scrivi** il nuovo valore in `contatore`.
+
+Se due thread eseguono questa operazione contemporaneamente:
+- Thread A legge `contatore = 0`.
+- Thread B legge `contatore = 0`.
+- Thread A incrementa (0+1=1) e scrive `contatore = 1`.
+- Thread B incrementa (0+1=1) e scrive `contatore = 1`.
+Il risultato finale è `1`, ma avrebbe dovuto essere `2`. Un incremento è andato perso.
+
+--- SOLUZIONI TRADIZIONALI (`synchronized`) ---
+
+Per risolvere le race condition, si usa la **sincronizzazione**. La keyword `synchronized` garantisce che solo un thread alla volta possa accedere a un blocco di codice o a un metodo.
+
+`public synchronized void incrementa() {`
+`    contatore++;`
+`}`
+
+**Svantaggi di `synchronized`:**
+- **Overhead:** La sincronizzazione introduce un costo in termini di performance.
+- **Blocco:** Può causare il blocco dei thread, riducendo la concorrenza.
+- **Complessità:** Gestire correttamente i blocchi `synchronized` può essere complesso e soggetto a errori (es. deadlock).
+
+--- LE CLASSI ATOMICHE (`java.util.concurrent.atomic`) ---
+
+Le classi atomiche, introdotte nel package `java.util.concurrent.atomic`, forniscono un modo per eseguire operazioni **thread-safe** su singole variabili senza ricorrere a blocchi `synchronized`.
+
+**- Principio:** Utilizzano operazioni a basso livello supportate dall'hardware (come "Compare-and-Swap" - CAS) che garantiscono che l'intera operazione (leggi-modifica-scrivi) sia eseguita come un'unica unità indivisibile (atomica).
+
+**- Classi Principali:**
+  - `AtomicInteger`: Per operazioni atomiche su un `int`.
+  - `AtomicLong`: Per operazioni atomiche su un `long`.
+  - `AtomicBoolean`: Per operazioni atomiche su un `boolean`.
+  - `AtomicReference<V>`: Per operazioni atomiche su un riferimento a un oggetto di tipo `V`.
+
+**- Metodi Comuni di `AtomicInteger` (e simili):**
+  - `get()`: Restituisce il valore corrente.
+  - `set(int newValue)`: Imposta il valore.
+  - `incrementAndGet()`: Incrementa il valore di 1 e restituisce il nuovo valore (atomico).
+  - `decrementAndGet()`: Decrementa il valore di 1 e restituisce il nuovo valore (atomico).
+  - `getAndIncrement()`: Restituisce il valore corrente e poi lo incrementa di 1 (atomico).
+  - `addAndGet(int delta)`: Aggiunge `delta` al valore corrente e restituisce il nuovo valore (atomico).
+  - `compareAndSet(int expectedValue, int newValue)`: È l'operazione CAS. Imposta il valore a `newValue` **solo se** il valore corrente è uguale a `expectedValue`. Restituisce `true` se l'operazione ha avuto successo, `false` altrimenti.
+
+**- Vantaggi delle Classi Atomiche:**
+  - **Performance:** Generalmente più veloci e scalabili di `synchronized` per operazioni semplici su singole variabili.
+  - **Non Bloccanti:** Non bloccano i thread in attesa, ma usano meccanismi "lock-free" (basati su CAS) che permettono ai thread di riprovare l'operazione se fallisce.
+  - **Semplificazione:** Riducono la complessità del codice per la gestione della concorrenza in molti scenari.
+
+--- QUANDO USARE LE CLASSI ATOMICHE? ---
+
+- Quando si devono eseguire operazioni thread-safe su **singole variabili** (contatori, flag, riferimenti).
+- Quando si vuole evitare l'overhead e i problemi di blocco associati a `synchronized` per operazioni semplici.
+- Sono i "mattoni" fondamentali per costruire algoritmi concorrenti più complessi e strutture dati "lock-free".
+
+Per operazioni più complesse che coinvolgono più variabili o blocchi di codice più grandi, `synchronized` o i `Lock` espliciti (`java.util.concurrent.locks`) potrebbero essere ancora necessari.

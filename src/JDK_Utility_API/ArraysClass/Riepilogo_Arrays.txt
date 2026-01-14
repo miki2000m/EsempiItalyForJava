@@ -1,0 +1,65 @@
+RIEPILOGO DETTAGLIATO SULLA CLASSE `java.util.Arrays`
+
+La classe `java.util.Arrays` è una classe di utilità (`utility class`) che contiene metodi `static` per eseguire operazioni comuni sugli array Java, come ordinamento, ricerca e manipolazione. È uno strumento fondamentale quando si lavora con gli array.
+
+--- 1. ORDINAMENTO (`sort`) ---
+
+- **`Arrays.sort(array)`**:
+  - **Scopo:** Ordinare un array "in-place" (modifica l'array originale).
+  - **Algoritmo:** Utilizza un algoritmo di ordinamento efficiente (una variante del QuickSort o MergeSort, a seconda del tipo di dato e della versione di Java), con performance medie di O(n log n).
+  - **Tipi:** Funziona con array di tipi primitivi (tranne `boolean`) e con array di oggetti che implementano l'interfaccia `Comparable`.
+  - **Overload:** Esiste una versione `sort(array, fromIndex, toIndex)` per ordinare solo una porzione dell'array e una versione `sort(array, Comparator)` per usare un criterio di ordinamento personalizzato.
+
+--- 2. RICERCA (`binarySearch`) ---
+
+- **`Arrays.binarySearch(array, key)`**:
+  - **Scopo:** Eseguire una ricerca binaria per trovare l'indice di un elemento (`key`) in un array.
+  - **REQUISITO FONDAMENTALE:** L'array **DEVE ESSERE ORDINATO** prima di chiamare questo metodo. Se l'array non è ordinato, il risultato è imprevedibile.
+  - **Valori di Ritorno:**
+    - Se l'elemento viene trovato, restituisce il suo **indice** (un numero >= 0).
+    - Se l'elemento **non** viene trovato, restituisce un valore **negativo** che indica il "punto di inserimento": `(-(punto di inserimento) - 1)`. Il punto di inserimento è l'indice in cui l'elemento verrebbe inserito per mantenere l'array ordinato. Questo è un dettaglio importante da ricordare per l'esame.
+
+--- 3. CONFRONTO (`equals`, `compare`, `mismatch`) ---
+
+- **`Arrays.equals(array1, array2)`**:
+  - **Scopo:** Confrontare il **contenuto** di due array.
+  - **Logica:** Restituisce `true` solo se i due array hanno la stessa lunghezza e tutti gli elementi corrispondenti sono uguali e nello stesso ordine. Gestisce correttamente i `null`.
+  - **Nota:** L'operatore `==` su due array confronta solo i riferimenti, non il contenuto.
+
+- **`Arrays.compare(array1, array2)`**:
+  - **Scopo:** Confrontare due array in modo lessicografico (come le parole in un dizionario).
+  - **Logica:** Confronta gli elementi uno per uno. Al primo elemento diverso, restituisce un numero negativo se l'elemento del primo array è minore, o positivo se è maggiore. Se sono identici, restituisce 0.
+
+- **`Arrays.mismatch(array1, array2)`**:
+  - **Scopo:** Trovare l'**indice del primo elemento diverso** tra due array.
+  - **Logica:** Restituisce l'indice del primo mismatch. Se gli array sono identici, restituisce -1.
+
+--- 4. MANIPOLAZIONE (`fill`, `copyOf`) ---
+
+- **`Arrays.fill(array, value)`**:
+  - **Scopo:** Riempire un intero array (o una sua porzione) con un valore specifico. Modifica l'array "in-place".
+
+- **`Arrays.copyOf(original, newLength)`**:
+  - **Scopo:** Creare una **nuova copia** di un array con una lunghezza specificata.
+  - **Logica:**
+    - Se `newLength` è maggiore della lunghezza originale, la copia viene riempita con valori di default (0, `false`, `null`).
+    - Se `newLength` è minore, la copia viene troncata.
+
+- **`Arrays.copyOfRange(original, from, to)`**:
+  - Simile a `copyOf`, ma copia solo una porzione specifica dell'array originale.
+
+--- 5. RAPPRESENTAZIONE E CONVERSIONE ---
+
+- **`Arrays.toString(array)`**:
+  - **Scopo:** Ottenere una rappresentazione testuale leggibile di un array **unidimensionale**.
+  - **Output:** `"[elemento1, elemento2, elemento3]"`
+  - È il modo standard per stampare il contenuto di un array. Stampare direttamente l'array (`System.out.println(array)`) produrrebbe solo il suo hash code.
+
+- **`Arrays.deepToString(array)`**:
+  - **Scopo:** Come `toString`, ma per array **multidimensionali**. Stampa il contenuto in modo ricorsivo.
+
+- **`Arrays.asList(T... a)`**:
+  - **Scopo:** Creare una vista di tipo `List` basata su un array.
+  - **ATTENZIONE (punto chiave da esame):** La lista restituita **non** è un `java.util.ArrayList`. È una vista a **dimensione fissa** dell'array originale.
+    - **Modifiche si riflettono:** Se modifichi un elemento nell'array, la modifica sarà visibile nella lista, e viceversa.
+    - **Operazioni non supportate:** Non puoi aggiungere o rimuovere elementi dalla lista (`add()`, `remove()`), altrimenti verrà lanciata una `UnsupportedOperationException`.

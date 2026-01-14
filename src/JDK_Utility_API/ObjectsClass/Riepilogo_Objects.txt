@@ -1,0 +1,71 @@
+RIEPILOGO DETTAGLIATO SULLA CLASSE `java.util.Objects`
+
+La classe `java.util.Objects`, introdotta in Java 7, è una classe di utilità (`utility class`) che contiene metodi `static` per operare sugli oggetti. Il suo scopo principale è fornire un modo standard e sicuro per gestire operazioni comuni che potrebbero altrimenti lanciare una `NullPointerException`.
+
+--- 1. GESTIONE E CONTROLLO DEI `null` ---
+
+Questi metodi sono il cuore della classe e sono estremamente utili per scrivere codice più robusto.
+
+- **`boolean isNull(Object obj)`**:
+  - Restituisce `true` se l'oggetto fornito è `null`, `false` altrimenti.
+  - È l'alternativa più leggibile e chiara a `obj == null`.
+
+- **`boolean nonNull(Object obj)`**:
+  - Restituisce `true` se l'oggetto fornito non è `null`, `false` altrimenti.
+  - È l'alternativa più leggibile e chiara a `obj != null`.
+
+- **`<T> T requireNonNull(T obj)`**:
+  - Controlla se l'oggetto fornito è `null`. Se lo è, lancia una `NullPointerException`. Se non lo è, restituisce l'oggetto stesso.
+  - È usato principalmente per la **validazione dei parametri** all'inizio di un metodo o di un costruttore (controllo delle precondizioni).
+
+- **`<T> T requireNonNull(T obj, String message)`**:
+  - Simile al precedente, ma permette di specificare un messaggio di dettaglio da includere nella `NullPointerException`.
+    `Objects.requireNonNull(param, "Il parametro 'param' non può essere nullo.");`
+
+- **`<T> T requireNonNull(T obj, Supplier<String> messageSupplier)`**:
+  - Versione "lazy" della precedente. Il `Supplier` per il messaggio viene invocato solo se l'oggetto è effettivamente `null`, migliorando le performance se la creazione del messaggio è un'operazione costosa.
+
+--- 2. CONFRONTO SICURO DI OGGETTI ---
+
+- **`boolean equals(Object a, Object b)`**:
+  - **Problema che risolve:** La chiamata `a.equals(b)` lancia una `NullPointerException` se la variabile `a` è `null`.
+  - **Soluzione:** `Objects.equals(a, b)` confronta due oggetti in modo sicuro.
+    - Se `a` e `b` sono entrambi `null`, restituisce `true`.
+    - Se solo uno dei due è `null`, restituisce `false`.
+    - Se nessuno dei due è `null`, chiama `a.equals(b)`.
+  - È il modo **standard e raccomandato** per confrontare due oggetti quando uno o entrambi potrebbero essere `null`.
+
+--- 3. CALCOLO SICURO DELL'HASH CODE ---
+
+Questi metodi sono fondamentali per implementare correttamente il metodo `hashCode()` in una classe, rispettando il contratto tra `equals()` e `hashCode()`.
+
+- **`int hashCode(Object o)`**:
+  - Restituisce `o.hashCode()` se l'oggetto non è `null`.
+  - Restituisce `0` se l'oggetto è `null`.
+  - Utile per calcolare l'hash code di un singolo campo che potrebbe essere nullo.
+
+- **`int hash(Object... values)`**:
+  - **Metodo fondamentale.** Calcola un hash code combinando gli hash code di più oggetti passati come varargs.
+  - Gestisce correttamente i `null` al suo interno.
+  - È il modo **standard e raccomandato** per implementare il metodo `hashCode()` in una classe con più campi.
+
+  **Esempio di implementazione di `hashCode()`:**
+  `@Override`
+  `public int hashCode() {`
+  `    return Objects.hash(campo1, campo2, campo3);`
+  `}`
+
+--- ALTRI METODI UTILI ---
+
+- **`String toString(Object o)`**:
+  - Restituisce `o.toString()` se l'oggetto non è `null`.
+  - Restituisce la stringa `"null"` se l'oggetto è `null`.
+
+- **`String toString(Object o, String nullDefault)`**:
+  - Simile al precedente, ma permette di specificare una stringa di default da restituire in caso di `null`.
+
+- **`<T> int compare(T a, T b, Comparator<? super T> c)`**:
+  - Confronta due oggetti usando un `Comparator` fornito, ma gestendo correttamente i `null` (considera `null` come "minore" di qualsiasi valore non nullo).
+
+IN SINTESI:
+La classe `Objects` è uno strumento essenziale per scrivere codice Java moderno, pulito e robusto. I suoi metodi dovrebbero essere usati sistematicamente per la validazione dei parametri (`requireNonNull`), il confronto (`equals`) e il calcolo degli hash code (`hash`), eliminando la necessità di scrivere manualmente controlli `if (obj == null)` ripetitivi e soggetti a errori.

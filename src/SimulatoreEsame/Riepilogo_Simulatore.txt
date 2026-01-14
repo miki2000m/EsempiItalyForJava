@@ -1,0 +1,67 @@
+RIEPILOGO DEL SIMULATORE D'ESAME
+
+Questo package contiene un simulatore d'esame interattivo progettato per aiutarti a preparare la certificazione OCP 1Z0-830. Non usa domande reali dell'esame, ma domande originali create per simulare lo stile e la difficoltà, concentrandosi sui casi limite e sui concetti chiave.
+
+--- COME FUNZIONA ---
+
+Il simulatore è composto da tre classi principali:
+
+1.  **`Domanda.java`**:
+    - È un `record` che rappresenta la struttura di una singola domanda.
+    - Contiene il testo, le opzioni, la risposta corretta, una spiegazione dettagliata e il modulo di appartenenza.
+
+2.  **`BancaDatiDomande.java`**:
+    - È il "cuore" del simulatore. Contiene una lista statica di tutte le domande disponibili.
+    - Le domande vengono create e aggiunte a questa lista in un blocco `static`.
+    - Fornisce metodi per recuperare tutte le domande o solo quelle di un modulo specifico.
+
+3.  **`MainSimulatoreEsame.java`**:
+    - È il programma eseguibile che avvia il simulatore.
+    - Presenta un menu per scegliere tra una **simulazione completa** (tutte le domande in ordine casuale) o una **pratica per modulo**.
+    - Gestisce il flusso del test, raccoglie le risposte, fornisce feedback immediato con spiegazioni e calcola il punteggio finale.
+
+--- COME USARE IL SIMULATORE ---
+
+1.  **Esegui `MainSimulatoreEsame.java`**.
+2.  Scegli l'opzione desiderata dal menu (simulazione completa o pratica per modulo).
+3.  Rispondi alle domande inserendo la lettera (o le lettere) dell'opzione corretta e premendo Invio.
+4.  Leggi attentamente le spiegazioni, specialmente per le domande a cui hai risposto in modo errato. L'obiettivo principale del simulatore è **imparare dagli errori**.
+5.  Alla fine della sessione, analizza il tuo punteggio per capire le tue aree di forza e di debolezza.
+
+--- **COME ESTENDERE IL SIMULATORE (IMPORTANTE!)** ---
+
+Questo simulatore è stato progettato per essere facilmente estendibile. Aggiungere nuove domande è il modo migliore per personalizzare il tuo studio.
+
+**Per aggiungere una nuova domanda:**
+
+1.  Apri il file **`BancaDatiDomande.java`**.
+2.  Vai all'interno del blocco di inizializzazione `static { ... }`.
+3.  Scegli il modulo corretto in cui vuoi inserire la domanda.
+4.  Copia e incolla un blocco `tutteLeDomande.add(new Domanda(...));` esistente.
+5.  Modifica i parametri:
+    - **`modulo`**: Il numero del modulo (da 1 a 6).
+    - **`testo`**: Il testo della domanda. Puoi usare i Text Blocks (`"""..."""`) per includere codice su più righe in modo leggibile.
+    - **`List.of(...)`**: La lista delle opzioni di risposta.
+    - **`rispostaCorretta`**: La stringa con la lettera/le lettere corrette (es. `"A"`, `"BC"`).
+    - **`spiegazione`**: La parte più importante. Scrivi una spiegazione dettagliata del perché la risposta è corretta e perché le altre sono sbagliate.
+
+**Esempio di una nuova domanda da aggiungere:**
+
+`tutteLeDomande.add(new Domanda(2, // Modulo OOP`
+`    """`
+`    Cosa stampa il seguente codice?`
+`    String s1 = "Java";`
+`    String s2 = new String("Java");`
+`    System.out.println(s1 == s2);`
+`    """,`
+`    List.of("true", "false", "Errore di compilazione"),`
+`    "B",`
+`    """`
+`    Spiegazione: L'operatore '==' confronta i riferimenti degli oggetti, non il loro contenuto.`
+`    `s1` punta a un oggetto nello "String Pool". `s2` è stato creato esplicitamente con `new`,`
+`    quindi punta a un oggetto diverso nell'heap. Poiché i due riferimenti sono diversi,`
+`    il risultato è 'false'. Per confrontare il contenuto, si sarebbe dovuto usare `s1.equals(s2)`.`
+`    """`
+`));`
+
+Più domande di qualità aggiungi, più efficace diventerà il tuo strumento di studio personalizzato. Buona fortuna!

@@ -1,0 +1,73 @@
+RIEPILOGO DETTAGLIATO SULLA CLASSE `java.lang.System`
+
+La classe `java.lang.System` è una delle classi fondamentali del JDK. Non può essere istanziata e tutti i suoi membri sono `static`. Fornisce accesso a funzionalità di "sistema", interagendo con l'ambiente di esecuzione (JVM) e il sistema operativo sottostante.
+
+--- 1. STANDARD I/O STREAMS ---
+
+La classe `System` espone tre stream (flussi di dati) statici e predefiniti:
+
+- **`System.out` (Standard Output):**
+  - **Tipo:** `java.io.PrintStream`
+  - **Scopo:** È lo stream di output standard, usato per stampare informazioni e risultati del programma. Per default, è collegato alla console.
+  - **Esempio:** `System.out.println("Ciao Mondo");`
+
+- **`System.err` (Standard Error):**
+  - **Tipo:** `java.io.PrintStream`
+  - **Scopo:** È lo stream di errore standard, usato specificamente per stampare messaggi di errore. Anche questo, per default, è collegato alla console.
+  - **Differenza da `System.out`:** Sebbene entrambi stampino in console, sono due stream separati. Questo permette di "redirezionare" l'output standard e quello di errore verso destinazioni diverse (es. due file di log separati). Gli IDE spesso visualizzano `System.err` in rosso per distinguerlo.
+
+- **`System.in` (Standard Input):**
+  - **Tipo:** `java.io.InputStream`
+  - **Scopo:** È lo stream di input standard, usato per leggere dati dall'utente. Per default, è collegato alla tastiera.
+  - **Uso:** Raramente si usa direttamente. Viene passato al costruttore di classi più comode per la lettura, come `java.util.Scanner`.
+    `Scanner scanner = new Scanner(System.in);`
+
+--- 2. PROPRIETÀ DI SISTEMA ---
+
+Le proprietà di sistema sono una collezione di coppie chiave-valore che contengono informazioni sulla configurazione della JVM e dell'ambiente corrente.
+
+- **`System.getProperty(String key)`**:
+  - Recupera il valore di una singola proprietà di sistema.
+  - **Proprietà Comuni:**
+    - `"java.version"`: La versione della JRE (es. "17.0.1").
+    - `"java.vendor"`: Il fornitore della JRE (es. "Oracle Corporation").
+    - `"os.name"`: Il nome del sistema operativo (es. "Windows 11", "Mac OS X").
+    - `"os.version"`: La versione del sistema operativo.
+    - `"user.home"`: La directory home dell'utente corrente.
+    - `"user.dir"`: La directory di lavoro corrente da cui è stata avviata l'applicazione.
+
+- **`System.getProperties()`**:
+  - Restituisce un oggetto `java.util.Properties` (che estende `Hashtable`) contenente tutte le proprietà di sistema.
+
+--- 3. VARIABILI D'AMBIENTE ---
+
+Le variabili d'ambiente sono coppie chiave-valore impostate a livello di **sistema operativo**, all'esterno della JVM.
+
+- **`System.getenv(String name)`**:
+  - Recupera il valore di una singola variabile d'ambiente.
+  - **Esempio:** `System.getenv("PATH")` per leggere la variabile `PATH` del sistema.
+
+- **`System.getenv()`**:
+  - Restituisce una `java.util.Map<String, String>` (immutabile) contenente tutte le variabili d'ambiente.
+
+**Differenza Chiave:** Le **proprietà** sono interne alla JVM (e possono essere impostate con il flag `-Dkey=value`), mentre le **variabili d'ambiente** sono esterne e definite dal sistema operativo.
+
+--- 4. CONTROLLO DELLA JVM E MISURAZIONE DEL TEMPO ---
+
+- **`System.exit(int status)`**:
+  - **Termina bruscamente la JVM**. È un'operazione drastica che ferma tutto, inclusi i thread attivi.
+  - **Importante:** I blocchi `finally` **non** vengono eseguiti.
+  - Lo `status` è un codice di uscita restituito al sistema operativo: per convenzione, `0` indica una terminazione normale, mentre un valore diverso da zero indica un errore.
+
+- **`System.gc()` (Garbage Collector)**:
+  - **Suggerisce** alla JVM di eseguire il Garbage Collector per liberare la memoria occupata da oggetti non più referenziati.
+  - **Non c'è alcuna garanzia** che il GC venga eseguito, né quando. È solo un suggerimento. Nella maggior parte dei casi, non è necessario chiamarlo esplicitamente.
+
+- **`System.currentTimeMillis()`**:
+  - Restituisce il numero di millisecondi trascorsi dal 1 Gennaio 1970 UTC (l'epoca UNIX).
+  - È utile per misurare il tempo "reale" o per ottenere un timestamp.
+
+- **`System.nanoTime()`**:
+  - Restituisce il tempo in nanosecondi da una sorgente ad alta risoluzione.
+  - **Non è correlato all'ora del giorno**. Il suo unico scopo è misurare **intervalli di tempo** con alta precisione (es. per benchmark).
+    `long start = System.nanoTime(); ... long end = System.nanoTime(); long elapsed = end - start;`
