@@ -1,4 +1,4 @@
-package InfoDiRete;
+package Rete.InfoDiRete;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

@@ -1,4 +1,4 @@
-package NetworkingSockets;
+package Rete.NetworkingSockets;
 
 import java.io.*;
 import java.net.*;

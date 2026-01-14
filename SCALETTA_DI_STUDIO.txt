@@ -132,8 +132,8 @@ Obiettivo: Imparare a leggere e scrivere dati e a gestire gli errori.
 
 4.  **Esempi Pratici di I/O:**
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/AudioPlayer`
-    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NetworkingSockets` (Bonus, non per l'esame)
-    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/InfoDiRete` (Bonus, non per l'esame)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Rete.NetworkingSockets` (Bonus, non per l'esame)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Rete.InfoDiRete` (Bonus, non per l'esame)
     *   Rivedi questi esempi per vedere applicazioni concrete delle API di I/O.
 
 ==================================================
