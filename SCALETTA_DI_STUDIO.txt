@@ -17,7 +17,7 @@ Obiettivo: Scrivere i primi, semplici programmi.
 
 1.  **Variabili e Tipi di Dato:**
     *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/Variabili`
-    *   PACKAGE: `MODULO_1_BASI_E_CONTROLLO/TipiPrimitivi`
+    *   PACKAGE: `_strumenti_di_studio/TipiPrimitivi`
     *   Impara la differenza tra tipi primitivi (int, double) e tipi riferimento (String), e a cosa servono le classi Wrapper. Scopri la keyword `var`.
 
 2.  **Controllo del Flusso:**
@@ -132,8 +132,8 @@ Obiettivo: Imparare a leggere e scrivere dati e a gestire gli errori.
 
 4.  **Esempi Pratici di I/O:**
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/AudioPlayer`
-    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Rete.NetworkingSockets` (Bonus, non per l'esame)
-    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Rete.InfoDiRete` (Bonus, non per l'esame)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NetworkingSockets` (Bonus, non per l'esame)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/InfoDiRete` (Bonus, non per l'esame)
     *   Rivedi questi esempi per vedere applicazioni concrete delle API di I/O.
 
 ==================================================
@@ -162,8 +162,8 @@ Obiettivo: Consolidare la conoscenza con gli argomenti più moderni e specifici.
     *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ModuliJPMS` (studia i file `.txt` per capire la teoria)
 
 5.  **API di Utilità (Bonus):**
-    *   PACKAGE: `JDK_Utility_API`
-    *   Scopri le classi di utilità fondamentali del JDK come `System`, `Objects`, `Arrays` e `Collections`.
+    *   PACKAGE: `_strumenti_di_studio/API_Di_Utilita`
+    *   Scopri come librerie esterne come Lombok, Apache Commons e Guava possono semplificare ulteriormente il tuo codice (questo non è materiale d'esame, ma è utile per la programmazione reale).
 
 ==================================================
 FASE FINALE: PREPARAZIONE ALL'ESAME
