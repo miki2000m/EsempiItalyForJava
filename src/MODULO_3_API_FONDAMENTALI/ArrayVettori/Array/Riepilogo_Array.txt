@@ -1,0 +1,89 @@
+RIEPILOGO DETTAGLIATO SUGLI ARRAY IN JAVA
+
+--- COS'È UN ARRAY? ---
+
+Un array è la struttura dati più fondamentale in Java. È un contenitore a **dimensione fissa** che memorizza una sequenza di elementi dello **stesso tipo**.
+
+**Caratteristiche Fondamentali:**
+- **Dimensione Fissa:** Una volta che un array viene creato, la sua dimensione non può più essere cambiata. Per una struttura dati dinamica, si usa `ArrayList`.
+- **Tipo Omogeneo:** Un array può contenere solo elementi dello stesso tipo (es. tutti `int` o tutti `String`).
+- **Indicizzato:** Ogni elemento nell'array ha un indice numerico, che parte da `0`. L'accesso a un elemento tramite il suo indice è estremamente veloce (tempo costante, O(1)).
+- **Oggetto:** In Java, gli array sono oggetti. Ereditano da `java.lang.Object` e hanno un campo pubblico `final` chiamato `length` che restituisce la dimensione dell'array.
+
+--- ARRAY UNIDIMENSIONALI (1D) ---
+
+**1. Dichiarazione:**
+   `tipo[] nomeArray;`
+   *Esempio:* `int[] numeri;`
+
+**2. Inizializzazione (Creazione):**
+   - **Con dimensione specificata:** Crea un array di una certa dimensione, riempito con i valori di default per quel tipo (0 per i tipi numerici, `false` per `boolean`, `null` per i tipi riferimento).
+     `numeri = new int[5]; // Crea un array di 5 interi, tutti inizializzati a 0`
+
+   - **Con valori letterali:** Crea e inizializza l'array con valori specifici in un colpo solo. La dimensione viene inferita.
+     `String[] nomi = {"Anna", "Marco", "Luca"};`
+
+**3. Accesso e Modifica:**
+   Si usa l'indice tra parentesi quadre. L'indice va da `0` a `length - 1`.
+   `nomi[0] = "Giulia"; // Modifica il primo elemento`
+   `String primoNome = nomi[0]; // Accede al primo elemento`
+
+   Se si tenta di accedere a un indice non valido (negativo o >= `length`), viene lanciata un'`ArrayIndexOutOfBoundsException`.
+
+**4. Iterazione:**
+   - **Ciclo `for` tradizionale (con indice):**
+     `for (int i = 0; i < nomi.length; i++) {`
+     `    System.out.println(nomi[i]);`
+     `}`
+   - **Ciclo `for-each` (senza indice):**
+     `for (String nome : nomi) {`
+     `    System.out.println(nome);`
+     `}`
+
+--- ARRAY MULTIDIMENSIONALI (es. 2D) ---
+
+Un array a due dimensioni (2D) può essere visto come una "tabella" o una "matrice". In realtà, in Java, è un **array di array**.
+
+**1. Dichiarazione e Inizializzazione:**
+   - **Con dimensioni specificate:**
+     `int[][] matrice = new int[3][4]; // Una "tabella" 3 righe x 4 colonne`
+
+   - **Con valori letterali:**
+     `String[][] classi = {`
+     `    {"Luca", "Simone"},   // Riga 0`
+     `    {"James", "Mario"},   // Riga 1`
+     `    {"Lorenzo", "Marco"}  // Riga 2`
+     `};`
+
+**2. Array "Ragged" (Irregolari):**
+   Poiché un array 2D è un array di array, ogni "riga" può avere una lunghezza diversa.
+   `int[][] triangolo = new int[3][];`
+   `triangolo[0] = new int[1];`
+   `triangolo[1] = new int[2];`
+   `triangolo[2] = new int[3];`
+
+**3. Accesso e Iterazione:**
+   Si usano due indici: il primo per la "riga" e il secondo per la "colonna".
+   `String studente = classi[1][0]; // "James"`
+
+   Per iterare, si usano cicli annidati:
+   `for (int i = 0; i < classi.length; i++) { // Scorre le righe`
+   `    for (int j = 0; j < classi[i].length; j++) { // Scorre le colonne della riga i`
+   `        System.out.print(classi[i][j] + " ");`
+   `    }`
+   `    System.out.println();`
+   `}`
+
+--- ARRAY vs `ArrayList` ---
+
+| Caratteristica      | Array (`int[]`)                               | `ArrayList<Integer>`                          |
+|---------------------|-----------------------------------------------|-----------------------------------------------|
+| Dimensione          | **Fissa**                                     | **Dinamica** (cresce automaticamente)         |
+| Tipi di Dato        | Primitivi e Riferimento                       | **Solo Tipi Riferimento** (usa le classi Wrapper) |
+| Performance (`get`) | Estremamente veloce (O(1))                    | Veloce (O(1))                                 |
+| API                 | Pochi metodi (su `java.util.Arrays`)          | Molti metodi comodi (`add`, `remove`, `size`, ecc.) |
+| Sintassi            | Speciale (`[]`)                               | Sintassi di una classe normale                |
+
+**Quando usare cosa?**
+- Usa un **array** quando la dimensione dei dati è fissa e nota in anticipo, e le massime performance sono una priorità.
+- Usa un **`ArrayList`** nella maggior parte degli altri casi, per la sua flessibilità e la ricchezza di metodi.

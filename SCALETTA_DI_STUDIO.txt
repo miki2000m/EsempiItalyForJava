@@ -121,9 +121,10 @@ Obiettivo: Imparare a leggere e scrivere dati e a gestire gli errori.
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/EccezioniAvanzate`
     *   Impara a gestire gli errori in modo robusto con `try-catch-finally` e `try-with-resources`.
 
-2.  **I/O su File (Testo e Binario):**
+2.  **I/O su File e Byte:**
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/CreateReadFile` (I/O classico)
-    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/FileBinari` (I/O binario)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/FileBinari` (I/O binario con DataStream)
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/GestioneByteStream` (Conversione da/a byte[])
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NIO2` (I/O moderno, il più importante da padroneggiare)
 
 3.  **Localizzazione:**
@@ -161,9 +162,9 @@ Obiettivo: Consolidare la conoscenza con gli argomenti più moderni e specifici.
     *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/AnnotazioniCustom`
     *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ModuliJPMS` (studia i file `.txt` per capire la teoria)
 
-5.  **API di Utilità (Bonus):**
-    *   PACKAGE: `_strumenti_di_studio/API_Di_Utilita`
-    *   Scopri come librerie esterne come Lombok, Apache Commons e Guava possono semplificare ulteriormente il tuo codice (questo non è materiale d'esame, ma è utile per la programmazione reale).
+5.  **API di Utilità del JDK (Bonus):**
+    *   PACKAGE: `JDK_Utility_API`
+    *   Scopri le classi di utilità fondamentali del JDK come `System`, `Objects`, `Arrays` e `Collections`.
 
 ==================================================
 FASE FINALE: PREPARAZIONE ALL'ESAME

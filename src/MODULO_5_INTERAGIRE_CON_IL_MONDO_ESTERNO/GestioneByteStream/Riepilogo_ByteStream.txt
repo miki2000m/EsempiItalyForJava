@@ -1,0 +1,52 @@
+RIEPILOGO SULLA MANIPOLAZIONE DI BYTE E STREAM BINARI
+
+Tutti i dati in un computer, che siano testo, immagini, audio o numeri, sono fondamentalmente memorizzati come sequenze di **byte**. Un byte è un'unità di 8 bit. La manipolazione di byte è quindi un'operazione di basso livello ma fondamentale per l'I/O (Input/Output) e la comunicazione di rete.
+
+--- 1. CONVERSIONE TRA `String` E `byte[]` ---
+
+- **Da `String` a `byte[]` (Codifica):**
+  Una stringa è una sequenza di caratteri. Per essere salvata o trasmessa, deve essere convertita in una sequenza di byte. Questo processo è chiamato **codifica** e richiede un **Charset**.
+  - **Charset:** Un "dizionario" che mappa ogni carattere a una sequenza specifica di uno o più byte.
+  - **`StandardCharsets.UTF_8`:** È il charset standard universale, capace di rappresentare qualsiasi carattere Unicode. È la scelta raccomandata nella maggior parte dei casi.
+  - **Metodo:** `string.getBytes(Charset charset)`
+    `byte[] bytes = "Ciao".getBytes(StandardCharsets.UTF_8);`
+
+- **Da `byte[]` a `String` (Decodifica):**
+  È il processo inverso. Per ricostruire correttamente la stringa, è **fondamentale usare lo stesso charset** usato per la codifica.
+  - **Metodo:** `new String(byte[] bytes, Charset charset)`
+    `String testo = new String(bytes, StandardCharsets.UTF_8);`
+  - **Errore Comune:** Se si usa un charset diverso in decodifica, i caratteri speciali o non-ASCII verranno persi o sostituiti da caratteri di errore (es. '?').
+
+--- 2. CONVERSIONE TRA TIPI PRIMITIVI E `byte[]` ---
+
+Per convertire tipi numerici (`int`, `long`, `double`, ecc.) in byte, non si può semplicemente fare un cast. Bisogna rappresentare il numero come una sequenza di byte. Il modo moderno e corretto per farlo è usare `java.nio.ByteBuffer`.
+
+- **`ByteBuffer`:**
+  - È un "contenitore" di byte a dimensione fissa che fornisce metodi per leggere e scrivere tipi primitivi.
+  - **`ByteBuffer.allocate(int capacity)`**: Crea un buffer in memoria con la capacità specificata in byte.
+  - **`putInt(int value)`, `putDouble(double value)`, ecc.**: Scrivono i byte del tipo primitivo nel buffer.
+  - **`array()`**: Restituisce l'array di byte (`byte[]`) sottostante al buffer.
+  - **`ByteBuffer.wrap(byte[] array)`**: Crea un buffer "avvolgendo" un array di byte esistente, per poter leggere da esso.
+  - **`getInt()`, `getDouble()`, ecc.**: Leggono i byte dal buffer e li riconvertono nel tipo primitivo corretto.
+
+- **Endianness (Ordine dei Byte):**
+  - I tipi numerici che occupano più di un byte (come `int` o `long`) possono essere memorizzati in due modi:
+    - **Big Endian:** Il byte più significativo viene prima (es. `0x12345678` -> `12 34 56 78`). È lo standard di rete e il default di Java.
+    - **Little Endian:** Il byte meno significativo viene prima (es. `0x12345678` -> `78 56 34 12`). È usato da molte architetture di CPU (es. Intel x86).
+  - `ByteBuffer` permette di specificare l'ordine con `buffer.order(ByteOrder.BIG_ENDIAN)` o `ByteOrder.LITTLE_ENDIAN`. È importante usare lo stesso ordine in scrittura e in lettura.
+
+--- 3. CONVERSIONE TRA `File` E `byte[]` (NIO.2) ---
+
+L'API NIO.2 (`java.nio.file`) fornisce metodi estremamente comodi per leggere e scrivere file direttamente come array di byte. Questo approccio è ideale per file di piccole e medie dimensioni, poiché carica l'intero contenuto in memoria.
+
+- **Da `File` a `byte[]` (Lettura):**
+  - **Metodo:** `Files.readAllBytes(Path path)`
+  - **Cosa fa:** Legge l'intero contenuto di un file e lo restituisce come un `byte[]`.
+  - **Uso:** `byte[] fileData = Files.readAllBytes(Paths.get("miofile.dat"));`
+
+- **Da `byte[]` a `File` (Scrittura):**
+  - **Metodo:** `Files.write(Path path, byte[] bytes, OpenOption... options)`
+  - **Cosa fa:** Scrive un intero array di byte su un file. Se il file esiste, viene sovrascritto. Si possono usare opzioni come `StandardOpenOption.APPEND` per aggiungere in coda.
+  - **Uso:** `Files.write(Paths.get("nuovofile.dat"), fileData);`
+
+Per file di grandi dimensioni, l'approccio a `Stream` (`FileInputStream` / `FileOutputStream`, possibilmente bufferizzati) rimane più efficiente in termini di memoria, poiché processa il file a pezzi senza caricarlo tutto in RAM.
