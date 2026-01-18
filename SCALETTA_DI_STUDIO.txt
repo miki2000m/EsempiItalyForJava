@@ -161,6 +161,7 @@ Obiettivo: Consolidare la conoscenza con gli argomenti più moderni e specifici.
 4.  **Metaprogrammazione e Struttura:**
     *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/AnnotazioniCustom`
     *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ModuliJPMS` (studia i file `.txt` per capire la teoria)
+    *   PACKAGE: `MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE/ManipolazioneBit`
 
 5.  **API di Utilità del JDK (Bonus):**
     *   PACKAGE: `JDK_Utility_API`
