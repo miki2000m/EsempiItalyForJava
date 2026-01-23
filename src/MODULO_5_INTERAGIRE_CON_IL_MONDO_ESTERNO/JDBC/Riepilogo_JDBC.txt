@@ -1,0 +1,64 @@
+RIEPILOGO SU JDBC (JAVA DATABASE CONNECTIVITY)
+
+JDBC è l'API standard di Java per connettersi ed eseguire query su database relazionali (SQL). Permette di scrivere codice Java che interagisce con qualsiasi database (MySQL, PostgreSQL, Oracle, H2, ecc.) semplicemente cambiando il driver.
+
+--- I COMPONENTI FONDAMENTALI ---
+
+1.  **Driver JDBC:**
+    È una libreria (file .jar) specifica per il database che vuoi usare. Traduce le chiamate JDBC standard nel protocollo proprietario del database.
+    *   *Nota:* In un progetto reale, devi aggiungere il driver al classpath (es. tramite Maven/Gradle). In questo esempio didattico, useremo un database in memoria (H2 o simulato) o spiegheremo il concetto teorico se non hai un driver configurato.
+
+2.  **`DriverManager` / `DataSource`:**
+    *   `DriverManager`: La vecchia classe per ottenere una connessione.
+    *   `DataSource`: L'interfaccia moderna e raccomandata (spesso usata con i connection pool).
+
+3.  **`Connection`:**
+    Rappresenta la sessione fisica con il database. Creare una connessione è un'operazione costosa, quindi va gestita con cura (e chiusa sempre!).
+
+4.  **`Statement` / `PreparedStatement`:**
+    *   `Statement`: Per eseguire query SQL statiche. Rischioso per SQL Injection se si concatenano stringhe.
+    *   `PreparedStatement`: **DA USARE SEMPRE** quando ci sono parametri. Precompila la query e gestisce i parametri in modo sicuro (previene SQL Injection).
+
+5.  **`ResultSet`:**
+    Contiene i dati restituiti da una query `SELECT`. È come una tabella con un cursore che punta alla riga corrente.
+    *   `next()`: Sposta il cursore alla riga successiva. Restituisce `false` se non ci sono più righe.
+    *   `getString("colonna")`, `getInt("colonna")`: Estrae i dati dalla riga corrente.
+
+--- IL FLUSSO DI LAVORO STANDARD ---
+
+Il codice JDBC segue quasi sempre questo schema (il "try-with-resources" è obbligatorio per chiudere tutto automaticamente):
+
+`String url = "jdbc:h2:mem:testdb"; // URL del database`
+`String user = "sa";`
+`String password = "";`
+
+`String sql = "SELECT * FROM utenti WHERE eta > ?";`
+
+`try (`
+`    Connection conn = DriverManager.getConnection(url, user, password);`
+`    PreparedStatement stmt = conn.prepareStatement(sql);`
+`) {`
+`    stmt.setInt(1, 18); // Imposta il primo parametro (?) a 18`
+
+`    try (ResultSet rs = stmt.executeQuery()) {`
+`        while (rs.next()) {`
+`            String nome = rs.getString("nome");`
+`            System.out.println(nome);`
+`        }`
+`    }`
+`}`
+
+--- TIPI DI STATEMENT ---
+
+1.  **`executeQuery()`**: Per le `SELECT`. Restituisce un `ResultSet`.
+2.  **`executeUpdate()`**: Per `INSERT`, `UPDATE`, `DELETE`. Restituisce un `int` (numero di righe modificate).
+3.  **`execute()`**: Generico, può fare entrambi (usato raramente se sai cosa stai facendo).
+
+--- TRANSAZIONI ---
+
+Per default, JDBC è in modalità `auto-commit` (ogni comando è una transazione confermata subito).
+Per gestire transazioni complesse (tutto o niente):
+1.  `conn.setAutoCommit(false);`
+2.  Esegui le varie operazioni SQL.
+3.  `conn.commit();` (Conferma tutto)
+4.  In caso di errore: `conn.rollback();` (Annulla tutto)

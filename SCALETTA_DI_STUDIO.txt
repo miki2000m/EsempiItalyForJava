@@ -127,11 +127,15 @@ Obiettivo: Imparare a leggere e scrivere dati e a gestire gli errori.
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/GestioneByteStream` (Conversione da/a byte[])
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NIO2` (I/O moderno, il più importante da padroneggiare)
 
-3.  **Localizzazione:**
+3.  **Database (JDBC):**
+    *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/JDBC`
+    *   Impara le basi per connetterti a un database, eseguire query SQL e leggere i risultati.
+
+4.  **Localizzazione:**
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/Localizzazione`
     *   Impara ad adattare la tua applicazione a diverse lingue e regioni.
 
-4.  **Esempi Pratici di I/O:**
+5.  **Esempi Pratici di I/O:**
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/AudioPlayer`
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/NetworkingSockets` (Bonus, non per l'esame)
     *   PACKAGE: `MODULO_5_INTERAGIRE_CON_IL_MONDO_ESTERNO/InfoDiRete` (Bonus, non per l'esame)

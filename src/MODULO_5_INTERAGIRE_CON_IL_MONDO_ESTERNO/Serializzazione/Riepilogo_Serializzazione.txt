@@ -14,7 +14,8 @@ RIEPILOGO SULL'I/O BINARIO (BINARY I/O) IN JAVA
   - Memorizzano i dati in un formato compatto e preciso, identico a come vengono rappresentati in memoria dalla JVM.
   - Sono molto più veloci ed efficienti per salvare dati strutturati o non testuali.
 
-L'I/O binario è la scelta ideale quando si devono salvare dati primitivi (`int`, `double`, ecc.) o lo stato di oggetti (`Serializzazione`) in modo rapido e con piena precisione, senza la conversione a testo.
+L'I/O binario è la scelta ideale quando si devono salvare dati primitivi (`int`, `double`, ecc.)
+o lo stato di oggetti (`Serializzazione`) in modo rapido e con piena precisione, senza la conversione a testo.
 
 --- STREAM PER L'I/O BINARIO ---
 

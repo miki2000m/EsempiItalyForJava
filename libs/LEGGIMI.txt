@@ -1,0 +1,5 @@
+In questa cartella devi inserire i file .jar delle librerie esterne.
+
+1. Scarica il driver (es. h2-2.2.224.jar).
+2. Copialo in questa cartella.
+3. Nell'IDE, fai click destro sul file .jar -> "Add as Library".
