@@ -1,6 +1,7 @@
 SCALETTA DI STUDIO COMPLETA - PROGETTO JAVAdallaBasi
 
-Questo file è la tua roadmap per studiare Java partendo da zero fino a raggiungere un livello avanzato, usando i package di questo progetto. Ogni argomento è pensato per costruire le basi per quello successivo.
+Questo file è la tua roadmap per studiare Java partendo da zero fino a raggiungere un livello avanzato, usando i package di questo progetto.
+Ogni argomento è pensato per costruire le basi per quello successivo.
 
 --- METODO DI STUDIO CONSIGLIATO PER OGNI PACKAGE ---
 
@@ -8,7 +9,8 @@ Per ogni package elencato di seguito, segui questi 4 passaggi:
 1.  **Leggi la Teoria:** Apri e leggi attentamente il file `Riepilogo_*.txt` per capire i concetti teorici.
 2.  **Analizza la Pratica:** Apri il file `Main*.java` e leggi il codice e i commenti per vedere come la teoria viene applicata.
 3.  **Esegui il Codice:** Fai partire il `main` e osserva l'output sulla console. Assicurati di capire cosa sta succedendo.
-4.  **Sperimenta:** Questo è il passo più importante. Modifica il codice. Cambia i valori. Prova a "romperlo" e vedi che errori ottieni. Fatti la domanda: "Cosa succede se...?" e trova la risposta.
+4.  **Sperimenta:** Questo è il passo più importante. Modifica il codice. Cambia i valori. Prova a "romperlo" e vedi che errori ottieni.
+        Fatti la domanda: "Cosa succede se...?" e trova la risposta.
 
 ==================================================
 MODULO 1: LE BASI FONDAMENTALI DEL LINGUAGGIO
@@ -175,6 +177,7 @@ Obiettivo: Consolidare la conoscenza con gli argomenti più moderni e specifici.
 FASE FINALE: PREPARAZIONE ALL'ESAME
 ==================================================
 Una volta completata questa scaletta, avrai una conoscenza profonda e solida di Java. A quel punto, e solo a quel punto, sarai pronto per l'ultimo passo:
-- **Usa un Simulatore di Esami:** Metti alla prova le tue conoscenze con domande a trabocchetto e casi limite. Usa il tuo progetto come riferimento per ripassare gli argomenti in cui il simulatore ti rivela delle debolezze.
+- **Usa un Simulatore di Esami:** Metti alla prova le tue conoscenze con domande a trabocchetto e casi limite.
+    Usa il tuo progetto come riferimento per ripassare gli argomenti in cui il simulatore ti rivela delle debolezze.
 
 Buono studio!

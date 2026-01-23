@@ -15,7 +15,7 @@ package MODULO_6_ARGOMENTI_AVANZATI_E_DA_CERTIFICAZIONE.eAPI_Di_Utilita;
 // sono stati commentati per evitare errori di compilazione nel progetto attuale.
 // =================================================================================
 
-// import lombok.Data;
+import lombok.Data;
 // import org.apache.commons.lang3.StringUtils;
 // import com.google.common.collect.ImmutableList;
 // import com.google.common.base.Preconditions;
@@ -51,6 +51,7 @@ public class MainAPIUtili {
         sezione3_Guava();
     }
 
+    //Libreria che automatizza la creazione di oggetti tramite le annotazioni (@Data)
     private static void sezione1_Lombok() {
         System.out.println("--- 1. Lombok: Scrivere meno, fare di più ---");
         System.out.println("Spiegazione: Lombok usa le annotazioni per generare codice Java comune al posto tuo.\n");
@@ -65,7 +66,19 @@ public class MainAPIUtili {
         System.out.println("  // class Prodotto { private final String nome; private double prezzo; }");
         System.out.println("  // Con Lombok, questa semplice dichiarazione genera costruttori, getter, setter, toString(), equals() e hashCode().");
         System.out.println("  // (Il codice è commentato per permettere la compilazione senza la libreria).\n");
+
+        System.out.println("----------------------- Esempio concreto -----------------------");
+        //Esempio
+        @Data
+        class Prodotto{
+            private final String nome;
+            private final double prezzo;
+        }
+        Prodotto prodotto = new Prodotto("Laptop", 1200.0);
+        System.out.println("prodotto.toString()");
+        System.out.println(prodotto.toString()+"\n"); // toString() generato automaticamentew
         System.out.println("----------------------------------------\n");
+
     }
 
     private static void sezione2_ApacheCommons() {

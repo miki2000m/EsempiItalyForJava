@@ -26,5 +26,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="h2-2.2.224" level="project" />
+    <orderEntry type="library" name="lombok" level="project" />
+    <orderEntry type="library" name="guava-33.5.0-jre" level="project" />
+    <orderEntry type="library" name="failureaccess-1.0.3" level="project" />
   </component>
 </module>
