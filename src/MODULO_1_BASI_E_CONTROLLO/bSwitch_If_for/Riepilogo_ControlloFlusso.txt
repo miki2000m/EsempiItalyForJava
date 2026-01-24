@@ -1,6 +1,7 @@
 RIEPILOGO SUL CONTROLLO DEL FLUSSO IN JAVA
 
-Le istruzioni di controllo del flusso sono costrutti che permettono di alterare l'esecuzione sequenziale di un programma, eseguendo blocchi di codice in base a determinate condizioni o ripetendoli più volte.
+Le istruzioni di controllo del flusso sono costrutti che permettono di alterare l'esecuzione sequenziale di un programma,
+eseguendo blocchi di codice in base a determinate condizioni o ripetendoli più volte.
 
 --- 1. ISTRUZIONI CONDIZIONALI ---
 
@@ -9,9 +10,11 @@ Le istruzioni di controllo del flusso sono costrutti che permettono di alterare 
 
 `if (condizione) {`
 `    // Blocco di codice eseguito se la condizione è true`
+    //else-if è l'equivalente di elif in python
 `} else if (altraCondizione) {`
 `    // Blocco eseguito se la prima condizione è false e questa è true`
-`} else {`
+`}
+ else {`
 `    // Blocco eseguito se tutte le condizioni precedenti sono false`
 `}`
 

@@ -63,7 +63,8 @@ Java esegue automaticamente la conversione tra tipi primitivi e le loro wrapper 
 
 --- 4. `var` - LOCAL VARIABLE TYPE INFERENCE (DA JAVA 10) ---
 
-La keyword `var` è una scorciatoia sintattica per dichiarare le **variabili locali**. Permette al compilatore di **inferire (capire) il tipo** della variabile dal valore con cui viene inizializzata.
+La keyword `var` è una scorciatoia sintattica per dichiarare le **variabili locali**.
+Permette al compilatore di **inferire (capire) il tipo** della variabile dal valore con cui viene inizializzata.
 
 **NON è un tipo dinamico.** Il tipo della variabile viene fissato al momento della compilazione e non può più cambiare.
 
@@ -78,14 +79,18 @@ La keyword `var` è una scorciatoia sintattica per dichiarare le **variabili loc
 
 **Vantaggi:**
 - **Leggibilità:** Riduce il codice ripetitivo ("boilerplate"), specialmente con tipi generici complessi, rendendo il codice più pulito.
-- **Manutenibilità:** Se il tipo di un'espressione cambia (es. un metodo che prima restituiva `ArrayList` ora restituisce `List`), il codice che usa `var` potrebbe non aver bisogno di modifiche.
+- **Manutenibilità:** Se il tipo di un'espressione cambia (es. un metodo che prima restituiva `ArrayList` ora restituisce `List`),
+    il codice che usa `var` potrebbe non aver bisogno di modifiche.
 
 **Regole e Limitazioni Fondamentali:**
-1.  **Solo per Variabili Locali:** `var` può essere usato solo per variabili all'interno di metodi, costruttori o blocchi di inizializzazione. Non può essere usato per campi di una classe, parametri di metodi o tipi di ritorno.
+1.  **Solo per Variabili Locali:** `var` può essere usato solo per variabili all'interno di metodi,
+        costruttori o blocchi di inizializzazione. Non può essere usato per campi di una classe, parametri di metodi o tipi di ritorno.
 2.  **Inizializzazione Obbligatoria:** Una variabile dichiarata con `var` deve essere inizializzata sulla stessa riga, altrimenti il compilatore non può inferire il tipo.
     `var nome; // ERRORE!`
 3.  **No a `null`:** Non si può inizializzare una variabile `var` con `null`, perché il tipo sarebbe ambiguo.
     `var x = null; // ERRORE!`
-4.  **No con Espressioni Lambda:** Non si può usare `var` per dichiarare una lambda senza specificare esplicitamente l'interfaccia funzionale, perché il compilatore non saprebbe a quale interfaccia assegnarla.
+4.  **No con Espressioni Lambda:** Non si può usare `var` per dichiarare una lambda senza specificare esplicitamente l'interfaccia funzionale,
+    perché il compilatore non saprebbe a quale interfaccia assegnarla.
+
     `var fn = () -> {}; // ERRORE!`
     `Runnable fn = () -> {}; // CORRETTO`
